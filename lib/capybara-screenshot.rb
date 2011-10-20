@@ -1,3 +1,4 @@
+require 'capybara/cucumber'
 require 'capybara-screenshot/world'
 
 module Capybara
