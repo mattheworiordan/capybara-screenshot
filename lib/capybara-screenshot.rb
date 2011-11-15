@@ -1,13 +1,16 @@
-require 'capybara/cucumber'
-require 'capybara-screenshot/world'
+# do nothing if Cucumber is not being used
+if defined?(Cucumber::RbSupport::RbDsl)
+  require 'capybara/cucumber'
+  require 'capybara-screenshot/world'
 
-module Capybara
-  module Screenshot
+  module Capybara
+    module Screenshot
+    end
   end
-end
 
-World(Capybara::Screenshot::World)
+  World(Capybara::Screenshot::World)
 
-After do |scenario|
-  screen_shot_and_save_page if scenario.failed?
+  After do |scenario|
+    screen_shot_and_save_page if scenario.failed?
+  end
 end
