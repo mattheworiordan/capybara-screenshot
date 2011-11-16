@@ -18,6 +18,13 @@ or update your Gemfile to include:
 
 That's it!
 
+Example application
+-------------------
+
+A simple Rails 3.1 example application has been set up at [https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1](https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1)
+Git clone the app, and then run Cucumber `rake cucumber` or RSpec `rspec spec/**/*_spec.rb` and expect failures.
+Then check the tmp/capybara folder for the automatic screen shots generated from failed tests.
+
 Repository
 ----------
 
