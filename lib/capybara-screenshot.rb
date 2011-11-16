@@ -22,9 +22,14 @@ if defined?(RSpec)
   require 'capybara-screenshot/rspec'
   RSpec.configure do |config|
     config.after do
-      unless Capybara.current_path.blank?
-        Capybara::Screenshot::RSpec.screen_shot_and_save_page(Capybara.body)
-      end
+      Capybara::Screenshot::RSpec.screen_shot_and_save_page
     end
   end
+end
+
+begin
+  require 'minitest/unit'
+  require 'capybara-screenshot/minitest'
+rescue
+  # mini test not available
 end
