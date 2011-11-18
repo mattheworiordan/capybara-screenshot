@@ -22,7 +22,7 @@ if defined?(RSpec)
   require 'capybara-screenshot/rspec'
   RSpec.configure do |config|
     config.after do
-      Capybara::Screenshot::RSpec.screen_shot_and_save_page
+      Capybara::Screenshot::RSpec.screen_shot_and_save_page if example.exception
     end
   end
 end
