@@ -2,10 +2,13 @@ module Capybara
   module Screenshot
     module Saver
       def self.screen_shot_and_save_page(capybara, body)        
+        #Our default return values
+        html_path = nil
+        image_path = nil
+        
         if capybara.current_path.to_s.empty?
           puts "Current path is empty, can't take a screenshot"
         else
-          puts "Trying to take a screenshot for #{capybara.current_path}."
           require 'capybara/util/save_and_open_page'
           file_base_name = "#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
           #will save to the capybara.save_and_open_page_path
@@ -22,9 +25,8 @@ module Capybara
             #screenshot_path = File.join(capybara.save_and_open_page_path.to_s, "#{file_base_name}.png")
             screenshot_path = "#{file_base_name}.png"
           end
-          
-          puts "Saving the screenshot as #{screenshot_path}."
             
+          #We try to figure out how to call the screenshot method on the current driver
           case capybara.current_driver
           when :poltergeist
             capybara.page.driver.render(screenshot_path, :full => true)
