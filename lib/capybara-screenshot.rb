@@ -2,7 +2,7 @@
 if defined?(Cucumber::RbSupport::RbDsl)
   require 'capybara/cucumber'
   require 'capybara-screenshot/cucumber'
-  
+
   After do |scenario|
     if scenario.failed?
       screenshot_path = Capybara::Screenshot::Cucumber.screen_shot_and_save_page[:image]
@@ -13,8 +13,6 @@ if defined?(Cucumber::RbSupport::RbDsl)
         encoded_img = Base64.encode64(IO.read(screenshot_path))
         #this will embed the image in the HTML report, embed() is defined in cucumber
         embed("data:image/png;base64,#{encoded_img}", 'image/png', "Screenshot of the error")
-      else
-        puts "Screenshot not found #{screenshot_path}"
       end
     end
   end

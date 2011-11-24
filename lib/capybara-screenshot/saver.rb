@@ -1,11 +1,11 @@
 module Capybara
   module Screenshot
     module Saver
-      def self.screen_shot_and_save_page(capybara, body)        
+      def self.screen_shot_and_save_page(capybara, body)
         #Our default return values
         html_path = nil
         image_path = nil
-        
+
         if capybara.current_path.to_s.empty?
           puts "Current path is empty, can't take a screenshot"
         else
@@ -14,7 +14,7 @@ module Capybara
           #will save to the capybara.save_and_open_page_path
           html_path = "{capybara.save_and_open_page_path}#{file_base_name}.html"
           capybara.save_page(body, "#{file_base_name}.html")
-          
+
           #where should we save the screenshot to
           if defined?(Rails)
             screenshot_path = Rails.root.join "#{capybara.save_and_open_page_path}/#{file_base_name}.png"
@@ -25,7 +25,7 @@ module Capybara
             #screenshot_path = File.join(capybara.save_and_open_page_path.to_s, "#{file_base_name}.png")
             screenshot_path = "#{file_base_name}.png"
           end
-            
+
           #We try to figure out how to call the screenshot method on the current driver
           case capybara.current_driver
           when :poltergeist
@@ -37,8 +37,6 @@ module Capybara
             #This includes e.g. capybara-webkit
             if capybara.page.driver.respond_to?(:render)
               capybara.page.driver.render(screenshot_path)
-            else
-              puts "Driver unknown and doesn't respond to :render, can't capture screenshots: #{capybara.current_driver}"
             end
           end
         end
