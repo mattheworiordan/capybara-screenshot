@@ -1,3 +1,9 @@
+2 December 2011
+---------------
+
+Fixed bug related to teardown hook not being available in Minitest for some reason (possibly version issues).
+https://github.com/mattheworiordan/capybara-screenshot/issues/5
+
 24 November 2011
 ----------------
 
