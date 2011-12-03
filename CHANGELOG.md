@@ -1,3 +1,10 @@
+3 December 2011
+---------------
+
+More robust handling of Minitest for users who have it installed as a dependency
+https://github.com/mattheworiordan/capybara-screenshot/issues/5
+
+
 2 December 2011
 ---------------
 
