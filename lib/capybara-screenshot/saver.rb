@@ -22,8 +22,7 @@ module Capybara
             # Sinatra support, untested
             screenshot_path = File.join(settings.root, "#{capybara.save_and_open_page_path}/#{file_base_name}.png")
           else
-            #screenshot_path = File.join(capybara.save_and_open_page_path.to_s, "#{file_base_name}.png")
-            screenshot_path = "#{file_base_name}.png"
+            screenshot_path = File.join(capybara.save_and_open_page_path.to_s, "#{file_base_name}.png")
           end
 
           #We try to figure out how to call the screenshot method on the current driver
