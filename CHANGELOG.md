@@ -1,3 +1,9 @@
+3 Jan 2012
+----------
+
+Removed Cucumber dependency https://github.com/mattheworiordan/capybara-screenshot/issues/7
+Allowed PNG save path to be configured using capybara.save_and_open_page_path
+
 3 December 2011
 ---------------
 
