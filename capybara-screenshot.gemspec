@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "capybara-screenshot"
 
-  s.add_dependency 'cucumber', '>= 1.0'
   s.add_dependency 'capybara', '>= 1.0'
   s.add_development_dependency 'rspec', '~> 2.6'
 
