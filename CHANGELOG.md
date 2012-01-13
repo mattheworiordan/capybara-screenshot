@@ -1,3 +1,8 @@
+13 Jan 2012
+-----------
+
+Updated documentation to reflect support for more frameworks, https://github.com/mattheworiordan/capybara-screenshot/issues/9
+
 3 Jan 2012
 ----------
 
