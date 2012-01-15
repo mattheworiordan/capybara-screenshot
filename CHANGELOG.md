@@ -1,3 +1,8 @@
+15 Jan 2012
+-----------
+
+Removed unnecessary and annoying warning that a screen shot cannot be taken.  This message was being shown when RSpec tests were run that did not even invoke Capybara
+
 13 Jan 2012
 -----------
 

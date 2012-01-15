@@ -6,9 +6,8 @@ module Capybara
         html_path = nil
         image_path = nil
 
-        if capybara.current_path.to_s.empty?
-          puts "Current path is empty, can't take a screenshot"
-        else
+        # if current_path empty then nothing to screen shot as browser has not loaded any URL
+        unless capybara.current_path.to_s.empty?
           require 'capybara/util/save_and_open_page'
           file_base_name = "#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
           #will save to the capybara.save_and_open_page_path
