@@ -1,7 +1,7 @@
 capybara-screenshot gem
 =======================
 
-Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test in [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or Minitest  fails, the HTML for the failed page and a screenshot (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit) or [Selenium](http://seleniumhq.org/)) is saved into /tmp/capybara.
+Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test in [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or Minitest  fails, the HTML for the failed page and a screenshot (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit) or [Selenium](http://seleniumhq.org/)) is saved into $APPLICATION_ROOT/tmp/capybara.
 
 This is a huge help when trying to diagnose a problem in your failing steps as you can view the source code and potentially how the page looked at the time of the failure.
 
@@ -23,7 +23,7 @@ Example application
 
 A simple Rails 3.1 example application has been set up at [https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1](https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1)
 Git clone the app, and then run Cucumber `rake cucumber`, RSpec `rspec spec/**/*_spec.rb` and Minitest `rake test` and expect intentional failures.
-Now check the tmp/capybara folder for the automatic screen shots generated from failed tests.
+Now check the $APPLICATION_ROOT/tmp/capybara folder for the automatic screen shots generated from failed tests.
 
 Repository
 ----------
