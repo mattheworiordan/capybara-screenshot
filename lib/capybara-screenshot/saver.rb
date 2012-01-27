@@ -17,6 +17,8 @@ module Capybara
           #where should we save the screenshot to
           if defined?(Rails)
             screenshot_path = Rails.root.join "#{capybara.save_and_open_page_path}/#{file_base_name}.png"
+          elsif defined?(Padrino)
+            screenshot_path = Padrino.root "#{capybara.save_and_open_page_path}/#{file_base_name}.png"
           elsif defined?(Sinatra)
             # Sinatra support, untested
             screenshot_path = File.join(settings.root, "#{capybara.save_and_open_page_path}/#{file_base_name}.png")
