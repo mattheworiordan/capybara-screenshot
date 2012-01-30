@@ -1,3 +1,8 @@
+30 Jan 2012
+-----------
+
+Merged pull request from https://github.com/hlascelles to support Padrino
+
 15 Jan 2012
 -----------
 
