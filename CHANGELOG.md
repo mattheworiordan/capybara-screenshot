@@ -1,3 +1,8 @@
+15 Feb 2012
+-----------
+
+Merged pull request https://github.com/mattheworiordan/capybara-screenshot/pull/14 to limit when capybara-screenshot is fired for RSpec
+
 30 Jan 2012
 -----------
 
