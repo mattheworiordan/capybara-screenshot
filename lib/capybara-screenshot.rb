@@ -25,7 +25,10 @@ if defined?(RSpec)
   require 'capybara-screenshot/rspec'
   RSpec.configure do |config|
     config.after do
-      Capybara::Screenshot::RSpec.screen_shot_and_save_page if example.exception && example.metadata[:type] == :request
+      if example.exception && example.metadata[:type] == :request
+        image = Capybara::Screenshot::RSpec.screen_shot_and_save_page[:image]
+        example.metadata[:full_description] += "\n     Screenshot: #{image}"
+      end
     end
   end
 end
