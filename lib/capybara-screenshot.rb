@@ -18,15 +18,6 @@ if defined?(RSpec)
   #   RSpec hooks afterwards, and thus executed first
   require 'capybara/rspec'
   require 'capybara-screenshot/rspec'
-  
-  RSpec.configure do |config|
-    config.after do
-      if Capybara::Screenshot.autosave_on_failure && example.exception && example.metadata[:type] == :request
-        image = Capybara::Screenshot::RSpec.screen_shot_and_save_page[:image]
-        example.metadata[:full_description] += "\n     Screenshot: #{image}"
-      end
-    end
-  end
 end
 
 begin
