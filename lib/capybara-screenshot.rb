@@ -3,6 +3,19 @@ module Capybara
     mattr_accessor :autosave_on_failure
     self.autosave_on_failure = true
 
+    def self.screen_shot_and_save_page
+      saver = Saver.new(Capybara, Capybara.body)
+      saver.save
+      {:html => saver.html_path, :image => saver.screenshot_path}
+    end
+
+    def self.screen_shot_and_open_image
+      saver = Saver.new(Capybara, Capybara.body, false)
+      saver.save
+      Launchy.open saver.screenshot_path
+      {:html => saver.html_path, :image => saver.screenshot_path}
+    end
+
     def self.capybara_root
       return @capybara_root if defined?(@capybara_root)
 

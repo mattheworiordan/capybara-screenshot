@@ -1,16 +1,13 @@
 module Capybara
   module Screenshot
     module Cucumber
-      extend self
 
       def screen_shot_and_save_page
-        Capybara::Screenshot::Saver.screen_shot_and_save_page(Capybara, Capybara.body)
+        Capybara::Screenshot.screen_shot_and_save_page
       end
 
       def screen_shot_and_open_image
-        saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.body, false)
-        saver.save
-        Launchy.open saver.screenshot_path
+        Capybara::Screenshot.screen_shot_and_open_image
       end
       
     end

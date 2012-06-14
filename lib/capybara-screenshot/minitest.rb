@@ -12,7 +12,7 @@ if defined?(ActionDispatch::IntegrationTest)
         # which has an instance variable @passed indicating success / failure
         context.instance_eval do
           if Capybara::Screenshot.autosave_on_failure && @passed.blank?
-            Capybara::Screenshot::Saver.screen_shot_and_save_page Capybara, Capybara.body
+            Capybara::Screenshot.screen_shot_and_save_page
           end
         end
       end

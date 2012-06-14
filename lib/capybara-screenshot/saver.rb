@@ -3,12 +3,6 @@ require 'capybara/util/save_and_open_page'
 module Capybara
   module Screenshot
     class Saver
-      def self.screen_shot_and_save_page(capybara, body)
-        saver = new(capybara, body)
-        saver.save
-        {:html => saver.html_path, :image => saver.screenshot_path}
-      end
-
       attr_reader :capybara, :body, :file_base_name
 
       def initialize(capybara, body, html_save=true)
