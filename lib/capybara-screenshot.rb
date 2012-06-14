@@ -2,6 +2,23 @@ module Capybara
   module Screenshot
     mattr_accessor :autosave_on_failure
     self.autosave_on_failure = true
+
+    def self.capybara_root
+      return @capybara_root if defined?(@capybara_root)
+
+      capybara_tmp_path = Capybara.save_and_open_page_path.to_s
+
+      @capybara = if defined?(Rails)
+        Rails.root.join capybara_tmp_path
+      elsif defined?(Padrino)
+        Padrino.root capybara_tmp_path
+      elsif defined?(Sinatra)
+        # Sinatra support, untested
+        File.join(settings.root, capybara_tmp_path)
+      else
+        capybara_tmp_path
+      end.to_s
+    end
   end
 end
 

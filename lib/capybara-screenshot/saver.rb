@@ -56,18 +56,7 @@ module Capybara
       end
 
       def screenshot_path
-        capybara_root = capybara.save_and_open_page_path
-
-        if defined?(Rails)
-          Rails.root.join "#{capybara_root}/#{file_base_name}.png"
-        elsif defined?(Padrino)
-          Padrino.root "#{capybara_root}/#{file_base_name}.png"
-        elsif defined?(Sinatra)
-          # Sinatra support, untested
-          File.join(settings.root, "#{capybara_root}/#{file_base_name}.png")
-        else
-          File.join(capybara_root.to_s, "#{file_base_name}.png")
-        end.to_s
+        File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.png")
       end
 
     end
