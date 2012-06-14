@@ -4,7 +4,7 @@ module Capybara
       extend self
 
       def screen_shot_and_save_page
-        Capybara::Screenshot::Save.screen_shot_and_save_page(Capybara, Capybara.body)
+        Capybara::Screenshot::Saver.screen_shot_and_save_page(Capybara, Capybara.body)
       end
 
       def screen_shot_and_open_image
@@ -21,7 +21,7 @@ World(Capybara::Screenshot::Cucumber)
 
 After do |scenario|
   if Capybara::Screenshot.autosave_on_failure && scenario.failed?
-    saver = Capybara::Screenshot::Save.new(Capybara, Capybara.body)
+    saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.body)
     saver.save
     screenshot_path = saver.screenshot_path
 
