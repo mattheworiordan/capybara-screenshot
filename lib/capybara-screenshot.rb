@@ -1,10 +1,19 @@
+module Capybara
+  module Screenshot
+    mattr_accessor :autosave_on_failure
+    self.autosave_on_failure = true
+  end
+end
+
+require 'capybara-screenshot/saver'
+
 # do nothing if Cucumber is not being used
 if defined?(Cucumber::RbSupport::RbDsl)
   require 'capybara/cucumber'
   require 'capybara-screenshot/cucumber'
 
   After do |scenario|
-    if scenario.failed?
+    if Capybara::Screenshot.autosave_on_failure && scenario.failed?
       screenshot_path = Capybara::Screenshot::Cucumber.screen_shot_and_save_page[:image]
       # Trying to embed the screenshot into our output."
       if File.exist?(screenshot_path)
@@ -23,9 +32,10 @@ if defined?(RSpec)
   #   RSpec hooks afterwards, and thus executed first
   require 'capybara/rspec'
   require 'capybara-screenshot/rspec'
+  
   RSpec.configure do |config|
     config.after do
-      if example.exception && example.metadata[:type] == :request
+      if Capybara::Screenshot.autosave_on_failure && example.exception && example.metadata[:type] == :request
         image = Capybara::Screenshot::RSpec.screen_shot_and_save_page[:image]
         example.metadata[:full_description] += "\n     Screenshot: #{image}"
       end
