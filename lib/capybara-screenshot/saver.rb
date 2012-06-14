@@ -25,7 +25,7 @@ module Capybara
       end
 
       def save_html
-        capybara.save_page(body, html_path)
+        capybara.save_page(body, "#{file_base_name}.html")
       end
 
       def save_screenshot
