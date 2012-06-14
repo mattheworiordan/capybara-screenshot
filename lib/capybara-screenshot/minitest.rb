@@ -1,5 +1,3 @@
-require 'capybara-screenshot/saver'
-
 if defined?(ActionDispatch::IntegrationTest)
   method = if ActionDispatch::IntegrationTest.respond_to? :teardown
     :teardown

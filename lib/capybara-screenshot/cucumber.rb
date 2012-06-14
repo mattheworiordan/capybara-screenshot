@@ -1,5 +1,3 @@
-require 'capybara-screenshot/saver'
-
 module Capybara
   module Screenshot
     module Cucumber
