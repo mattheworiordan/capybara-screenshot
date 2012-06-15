@@ -1,6 +1,9 @@
 module Capybara
   module Screenshot
-    mattr_accessor :autosave_on_failure
+    class << self
+      attr_accessor :autosave_on_failure
+    end
+
     self.autosave_on_failure = true
 
     def self.screen_shot_and_save_page

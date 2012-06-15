@@ -5,5 +5,4 @@ gemspec
 
 gem 'rake'
 gem 'fakefs'
-gem 'active_support'
 gem 'timecop'

@@ -6,7 +6,6 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 $: << '../lib'
-require 'active_support/core_ext/module'
 require 'capybara-screenshot'
 require 'timecop'
 
