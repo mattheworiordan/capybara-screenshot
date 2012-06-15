@@ -3,8 +3,15 @@ require 'spec_helper'
 describe Capybara::Screenshot::Saver do
   before do
     Capybara::Screenshot.stub(:capybara_root).and_return(capybara_root)
+    Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10))
   end
 
+  let(:capybara_root) { '/tmp' }
+  let(:file_basename) { "screenshot-2012-06-07-08-09-10" }
+  let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
+  
+  let(:body_mock) { mock(String) }
+  let(:driver_mock) { mock('Capybara driver').as_null_object }
   let(:capybara_mock) { 
     mock(Capybara).as_null_object.tap do |m|
       m.stub(:current_driver).and_return(:default)
@@ -12,31 +19,18 @@ describe Capybara::Screenshot::Saver do
       m.stub_chain(:page, :driver).and_return(driver_mock)
     end
   }
-  let(:capybara_root) { '/tmp' }
-  let(:body_mock) { mock(String) }
-  let(:driver_mock) { mock('Capybara driver').as_null_object }
-  let(:saver) {
-    Capybara::Screenshot::Saver.new(capybara_mock, body_mock)
-  }
-  let(:screenshot_path_regexp) {
-    /^#{Regexp.escape(capybara_root)}\/screenshot-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}\.png$/
-  }
 
-  it 'should save screenshot file in capybara root output directory' do
-    driver_mock.should_receive(:render).with(/^\/tmp\//)
-
-    saver.save
-  end
+  let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, body_mock) }
 
   it 'should save html file with "screenshot-Y-M-D-H-M-S.html" format' do
-    capybara_mock.should_receive(:save_page).with(body_mock, /^screenshot-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}\.html$/)
+    capybara_mock.should_receive(:save_page).with(body_mock, "#{file_basename}.html")
     
     saver.save
   end
 
-  it 'should save screenshot file with "screenshot-Y-M-D-H-M-S.png" format' do
-    driver_mock.should_receive(:render).with(/\/screenshot-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}\.png$/)
-    
+  it 'should save screenshot file in capybara root output directory with format "screenshot-Y-M-D-H-M-S.png"' do
+    driver_mock.should_receive(:render).with(screenshot_path)
+
     saver.save
   end
 
@@ -63,7 +57,7 @@ describe Capybara::Screenshot::Saver do
     it 'should save via browser' do
       browser_mock = mock('browser')
       driver_mock.should_receive(:browser).and_return(browser_mock)
-      browser_mock.should_receive(:save_screenshot).with(screenshot_path_regexp)
+      browser_mock.should_receive(:save_screenshot).with(screenshot_path)
 
       saver.save 
     end
@@ -75,7 +69,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should save driver render with :full => true' do
-      driver_mock.should_receive(:render).with(screenshot_path_regexp, {:full => true})
+      driver_mock.should_receive(:render).with(screenshot_path, {:full => true})
 
       saver.save 
     end
@@ -87,7 +81,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should save driver render' do
-      driver_mock.should_receive(:render).with(screenshot_path_regexp)
+      driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save 
     end
@@ -100,7 +94,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should save driver render' do
-      driver_mock.should_receive(:render).with(screenshot_path_regexp)
+      driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save 
     end
