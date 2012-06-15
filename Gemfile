@@ -4,3 +4,5 @@ source "http://rubygems.org"
 gemspec
 
 gem 'rake'
+gem 'fakefs'
+gem 'active_support'
