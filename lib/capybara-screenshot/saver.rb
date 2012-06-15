@@ -7,7 +7,7 @@ module Capybara
 
       def initialize(capybara, body, html_save=true)
         @capybara, @body, @html_save = capybara, body, html_save
-        @file_base_name = "#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
+        @file_base_name = "screenshot-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
       end
 
       def save
