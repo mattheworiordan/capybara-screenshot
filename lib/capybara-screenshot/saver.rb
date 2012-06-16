@@ -1,5 +1,3 @@
-require 'capybara/util/save_and_open_page'
-
 module Capybara
   module Screenshot
     class Saver
@@ -19,6 +17,7 @@ module Capybara
       end
 
       def save_html
+        require 'capybara/util/save_and_open_page'
         capybara.save_page(body, "#{file_base_name}.html")
       end
 

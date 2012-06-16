@@ -13,6 +13,8 @@ module Capybara
     end
 
     def self.screen_shot_and_open_image
+      require "launchy"
+
       saver = Saver.new(Capybara, Capybara.body, false)
       saver.save
       Launchy.open saver.screenshot_path
