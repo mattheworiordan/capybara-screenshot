@@ -10,20 +10,19 @@ describe Capybara::Screenshot::Saver do
   let(:file_basename) { "screenshot-2012-06-07-08-09-10" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
   
-  let(:body_mock) { mock(String) }
   let(:driver_mock) { mock('Capybara driver').as_null_object }
+  let(:page_mock) { mock('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
   let(:capybara_mock) { 
     mock(Capybara).as_null_object.tap do |m|
       m.stub(:current_driver).and_return(:default)
       m.stub(:current_path).and_return('/')
-      m.stub_chain(:page, :driver).and_return(driver_mock)
     end
   }
 
-  let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, body_mock) }
+  let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
 
   it 'should save html file with "screenshot-Y-M-D-H-M-S.html" format' do
-    capybara_mock.should_receive(:save_page).with(body_mock, "#{file_basename}.html")
+    capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
     
     saver.save
   end
@@ -35,7 +34,7 @@ describe Capybara::Screenshot::Saver do
   end
 
   it 'should not save html if false passed as html argument' do
-    saver = Capybara::Screenshot::Saver.new(capybara_mock, body_mock, false)
+    saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, false)
     capybara_mock.should_not_receive(:save_page)
 
     saver.save

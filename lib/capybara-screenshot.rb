@@ -7,7 +7,7 @@ module Capybara
     self.autosave_on_failure = true
 
     def self.screen_shot_and_save_page
-      saver = Saver.new(Capybara, Capybara.body)
+      saver = Saver.new(Capybara, Capybara.page)
       saver.save
       {:html => saver.html_path, :image => saver.screenshot_path}
     end
@@ -15,7 +15,7 @@ module Capybara
     def self.screen_shot_and_open_image
       require "launchy"
 
-      saver = Saver.new(Capybara, Capybara.body, false)
+      saver = Saver.new(Capybara, Capybara.page, false)
       saver.save
       Launchy.open saver.screenshot_path
       {:html => saver.html_path, :image => saver.screenshot_path}

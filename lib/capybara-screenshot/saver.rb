@@ -1,10 +1,10 @@
 module Capybara
   module Screenshot
     class Saver
-      attr_reader :capybara, :body, :file_base_name
+      attr_reader :capybara, :page, :file_base_name
 
-      def initialize(capybara, body, html_save=true)
-        @capybara, @body, @html_save = capybara, body, html_save
+      def initialize(capybara, page, html_save=true)
+        @capybara, @page, @html_save = capybara, page, html_save
         @file_base_name = "screenshot-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
       end
 
@@ -18,7 +18,7 @@ module Capybara
 
       def save_html
         require 'capybara/util/save_and_open_page'
-        capybara.save_page(body, "#{file_base_name}.html")
+        capybara.save_page(page.body, "#{file_base_name}.html")
       end
 
       def save_screenshot
