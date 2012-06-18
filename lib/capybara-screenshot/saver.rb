@@ -22,27 +22,17 @@ module Capybara
       end
 
       def save_screenshot
-        driver_save_method = :"save_with_#{capybara.current_driver}"
-        if respond_to?(driver_save_method)
-          send(driver_save_method)
+        if Capybara::Screenshot.registered_drivers.has_key?(capybara.current_driver)
+          Capybara::Screenshot.registered_drivers[capybara.current_driver].call(page.driver, screenshot_path)
         else
-          warn "capybara-screenshot could not detect a save method for driver '#{capybara.current_driver}'. Saving with default with unknown results."
+          warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
           save_with_default
         end
       end
 
-      def save_with_selenium
-        capybara.page.driver.browser.save_screenshot(screenshot_path)
-      end
-
-      def save_with_poltergeist
-        capybara.page.driver.render(screenshot_path, :full => true)
-      end
-
       def save_with_default
-        capybara.page.driver.render(screenshot_path)
+        page.driver.render(screenshot_path)
       end
-      alias_method :save_with_webkit, :save_with_default
 
       def html_path
         "#{capybara.save_and_open_page_path}#{file_base_name}.html"

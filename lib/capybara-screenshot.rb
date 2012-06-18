@@ -2,9 +2,11 @@ module Capybara
   module Screenshot
     class << self
       attr_accessor :autosave_on_failure
+      attr_accessor :registered_drivers
     end
 
     self.autosave_on_failure = true
+    self.registered_drivers = {}
 
     def self.screen_shot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
@@ -37,8 +39,24 @@ module Capybara
         capybara_tmp_path
       end.to_s
     end
+
+    def self.register_driver(driver, &block)
+      self.registered_drivers[driver] = block
+    end
   end
 end
+
+Capybara::Screenshot.register_driver(:selenium) do |driver, path|
+  driver.browser.save_screenshot(path)
+end 
+
+Capybara::Screenshot.register_driver(:poltergeist) do |driver, path|
+  driver.render(path, :full => true)
+end 
+
+Capybara::Screenshot.register_driver(:webkit) do |driver, path|
+  driver.render(path)
+end 
 
 require 'capybara-screenshot/saver'
 

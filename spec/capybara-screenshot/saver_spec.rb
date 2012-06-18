@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe Capybara::Screenshot::Saver do
+  before(:all) do
+    @original_drivers = Capybara::Screenshot.registered_drivers
+    Capybara::Screenshot.registered_drivers[:default] = lambda {|driver, path| driver.render(path) }
+  end
+
+  after(:all) do
+    Capybara::Screenshot.registered_drivers = @original_drivers
+  end
+
   before do
     Capybara::Screenshot.stub(:capybara_root).and_return(capybara_root)
     Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10))
@@ -100,7 +109,7 @@ describe Capybara::Screenshot::Saver do
 
     it 'should output warning about unknown results' do
       # Not pure mock testing 
-      saver.should_receive(:warn).with(/driver 'unknown'.*unknown results/).and_return(nil)
+      saver.should_receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
 
       saver.save 
     end
