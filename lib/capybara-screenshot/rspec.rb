@@ -1,11 +1,10 @@
 RSpec.configure do |config|
-  config.after do
-    if Capybara::Screenshot.autosave_on_failure && example.exception && example.metadata[:type] == :request
+  config.after(:type => :request) do
+    if Capybara::Screenshot.autosave_on_failure && example.exception
       saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page)
       saver.save
-      image = saver.screenshot_path
 
-      example.metadata[:full_description] += "\n     Screenshot: #{image}"
+      example.metadata[:full_description] += "\n     Screenshot: #{saver.screenshot_path}"
     end
   end
 end
