@@ -4,5 +4,4 @@ source "http://rubygems.org"
 gemspec
 
 gem 'rake'
-gem 'fakefs'
 gem 'timecop'
