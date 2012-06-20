@@ -35,7 +35,7 @@ module Capybara
       end
 
       def html_path
-        "#{capybara.save_and_open_page_path}#{file_base_name}.html"
+        File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.html")
       end
 
       def screenshot_path
