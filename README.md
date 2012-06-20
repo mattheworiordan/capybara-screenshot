@@ -18,6 +18,28 @@ or update your Gemfile to include:
 
 That's it!
 
+If you require more control, you can generate the screenshot on demand rather than on failure. This is useful
+if the failure occurs at a point where the screen shot is not as useful for debugging a rendering problem.
+
+In Cucumber,
+
+	screen_shot_and_save_page
+
+Or for screenshot only, with image automatically opened
+
+	screen_shot_and_open_image
+
+Or anywhere, including specs and tests
+	
+	Capybara::Screenshot.screen_shot_and_save_page
+
+	Capybara::Screenshot.screen_shot_and_open_image
+
+This can be more useful if you disable the auto-generate on failure feature with the following config
+
+	Capybara::Screenshot.autosave_on_failure = false
+
+
 Example application
 -------------------
 

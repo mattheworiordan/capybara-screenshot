@@ -1,11 +1,10 @@
-require 'capybara-screenshot/saver'
+RSpec.configure do |config|
+  config.after(:type => :request) do
+    if Capybara::Screenshot.autosave_on_failure && example.exception
+      saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page)
+      saver.save
 
-module Capybara
-  module Screenshot
-    class RSpec
-      def self.screen_shot_and_save_page
-        Capybara::Screenshot::Saver.screen_shot_and_save_page Capybara, Capybara.body
-      end
+      example.metadata[:full_description] += "\n     Screenshot: #{saver.screenshot_path}"
     end
   end
 end
