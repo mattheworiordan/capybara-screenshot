@@ -5,7 +5,7 @@ module Capybara
 
       def initialize(capybara, page, html_save=true)
         @capybara, @page, @html_save = capybara, page, html_save
-        @file_base_name = "screenshot-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
+        @file_base_name = ENV['screenshot_name'] || "screenshot-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
       end
 
       def save
