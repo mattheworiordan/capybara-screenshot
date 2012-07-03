@@ -58,24 +58,30 @@ module Capybara
   end
 end
 
-Capybara::Screenshot.register_driver(:default) do |driver, path|
-  driver.render(path)
+# Register driver renderers
+Capybara::Screenshot.class_eval do
+  register_driver(:default) do |driver, path|
+    driver.render(path)
+  end
+
+  register_driver(:selenium) do |driver, path|
+    driver.browser.save_screenshot(path)
+  end 
+
+  register_driver(:poltergeist) do |driver, path|
+    driver.render(path, :full => true)
+  end 
+
+  register_driver(:webkit) do |driver, path|
+    driver.render(path)
+  end 
 end
 
-Capybara::Screenshot.register_driver(:selenium) do |driver, path|
-  driver.browser.save_screenshot(path)
-end 
-
-Capybara::Screenshot.register_driver(:poltergeist) do |driver, path|
-  driver.render(path, :full => true)
-end 
-
-Capybara::Screenshot.register_driver(:webkit) do |driver, path|
-  driver.render(path)
-end 
-
-Capybara::Screenshot.register_filename_prefix_formatter(:default) do |test|
-  'screenshot'
+# Register filename prefix formatters
+Capybara::Screenshot.class_eval do
+  register_filename_prefix_formatter(:default) do |test|
+    'screenshot'
+  end
 end
 
 require 'capybara-screenshot/saver'
