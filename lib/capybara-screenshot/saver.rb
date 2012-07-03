@@ -22,16 +22,10 @@ module Capybara
       end
 
       def save_screenshot
-        if Capybara::Screenshot.registered_drivers.has_key?(capybara.current_driver)
-          Capybara::Screenshot.registered_drivers[capybara.current_driver].call(page.driver, screenshot_path)
-        else
+        Capybara::Screenshot.registered_drivers.fetch(capybara.current_driver) { |driver_name|
           warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
-          save_with_default
-        end
-      end
-
-      def save_with_default
-        page.driver.render(screenshot_path)
+          Capybara::Screenshot.registered_drivers[:default]
+        }.call(page.driver, screenshot_path)
       end
 
       def html_path

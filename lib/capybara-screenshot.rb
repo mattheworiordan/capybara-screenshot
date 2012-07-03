@@ -58,6 +58,10 @@ module Capybara
   end
 end
 
+Capybara::Screenshot.register_driver(:default) do |driver, path|
+  driver.render(path)
+end
+
 Capybara::Screenshot.register_driver(:selenium) do |driver, path|
   driver.browser.save_screenshot(path)
 end 
