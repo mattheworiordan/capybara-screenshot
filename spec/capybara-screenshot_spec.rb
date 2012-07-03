@@ -18,7 +18,7 @@ describe Capybara::Screenshot do
     end
   end
 
-  describe ".regiter_filename_prefix_formatter" do
+  describe ".register_filename_prefix_formatter" do
     before(:all) do
       @original_formatters = Capybara::Screenshot.filename_prefix_formatters.dup
     end
