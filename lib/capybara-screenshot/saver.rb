@@ -3,9 +3,9 @@ module Capybara
     class Saver
       attr_reader :capybara, :page, :file_base_name
 
-      def initialize(capybara, page, html_save=true)
+      def initialize(capybara, page, html_save=true, filename_prefix='screenshot')
         @capybara, @page, @html_save = capybara, page, html_save
-        @file_base_name = "screenshot-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
+        @file_base_name = "#{filename_prefix}-#{Time.now.strftime('%Y-%m-%d-%H-%M-%S')}"
       end
 
       def save
