@@ -10,10 +10,13 @@ if defined?(ActionDispatch::IntegrationTest)
       ActionDispatch::IntegrationTest.send method do |context|
         # by adding the argument context, MiniTest passes the context of the test
         # which has an instance variable @passed indicating success / failure
-        context.instance_eval do
-          if Capybara::Screenshot.autosave_on_failure && @passed.blank?
-            Capybara::Screenshot.screen_shot_and_save_page
-          end
+        failed = context.instance_variable_get(:@passed).blank?
+
+        if Capybara::Screenshot.autosave_on_failure && failed
+          filename_prefix = Capybara::Screenshot.filename_prefix_for(:minitest, context)
+
+          saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
+          saver.save
         end
       end
     rescue NoMethodError

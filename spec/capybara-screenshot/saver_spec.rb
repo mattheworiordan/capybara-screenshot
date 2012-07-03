@@ -16,7 +16,8 @@ describe Capybara::Screenshot::Saver do
   end
 
   let(:capybara_root) { '/tmp' }
-  let(:file_basename) { "screenshot-2012-06-07-08-09-10" }
+  let(:timestamp) { '2012-06-07-08-09-10' }
+  let(:file_basename) { "screenshot-#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
   
   let(:driver_mock) { mock('Capybara driver').as_null_object }
@@ -30,16 +31,41 @@ describe Capybara::Screenshot::Saver do
 
   let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
 
-  it 'should save html file with "screenshot-Y-M-D-H-M-S.html" format' do
-    capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
-    
-    saver.save
+  context 'html filename' do
+    it 'should have default format of "screenshot-Y-M-D-H-M-S.html"' do
+      capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
+      
+      saver.save
+    end
+
+    it 'should use name argument as prefix' do
+      saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
+
+      capybara_mock.should_receive(:save_page).with('body', "custom-prefix-#{timestamp}.html")
+      
+      saver.save
+    end
   end
 
-  it 'should save screenshot file in capybara root output directory with format "screenshot-Y-M-D-H-M-S.png"' do
-    driver_mock.should_receive(:render).with(screenshot_path)
+  context 'screenshot image path' do
+    it 'should be in capybara root output' do
+      driver_mock.should_receive(:render).with(/^#{capybara_root}\//)
 
-    saver.save
+      saver.save
+    end
+
+    it 'should have default filename format of "screenshot-Y-M-D-H-M-S.png"' do
+      driver_mock.should_receive(:render).with(/#{file_basename}\.png$/)
+
+      saver.save
+    end
+
+    it 'should use filename prefix argument as basename prefix' do
+      saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
+      driver_mock.should_receive(:render).with(/custom-prefix-#{timestamp}\.png$/)
+
+      saver.save
+    end
   end
 
   it 'should not save html if false passed as html argument' do
