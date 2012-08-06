@@ -1,20 +1,3 @@
-module Capybara
-  module Screenshot
-    module Cucumber
-
-      def screen_shot_and_save_page
-        Capybara::Screenshot.screen_shot_and_save_page
-      end
-
-      def screen_shot_and_open_image
-        Capybara::Screenshot.screen_shot_and_open_image
-      end
-      
-    end
-  end
-end
-World(Capybara::Screenshot::Cucumber)
-
 After do |scenario|
   if Capybara::Screenshot.autosave_on_failure && scenario.failed?
     filename_prefix = Capybara::Screenshot.filename_prefix_for(:cucumber, scenario)
