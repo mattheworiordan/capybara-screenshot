@@ -91,22 +91,18 @@ end
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
 
-# do nothing if Cucumber is not being used
-if defined?(Cucumber::RbSupport::RbDsl)
+if defined? Cucumber::RbSupport::RbDsl
   require 'capybara/cucumber'
   require 'capybara-screenshot/cucumber'
 end
 
-if defined?(RSpec)
-  # capybara rspec must be included first so that this config.after is added to
-  #   RSpec hooks afterwards, and thus executed first
-  require 'capybara/rspec'
+case 'constant'
+when defined? RSpec
+  require 'capybara/rspec' unless defined? Capybara::RSpecMatchers
   require 'capybara-screenshot/rspec'
-end
-
-begin
-  require 'minitest/unit'
+when defined? Minitest
+  require 'minitest/unit' unless defined? MiniTest::Unit
   require 'capybara-screenshot/minitest'
-rescue LoadError
-  # mini test not available
+else
+  raise(RuntimeError, 'Unable to find RSpec or Minitest, do you use another library? If so file a ticket.')
 end
