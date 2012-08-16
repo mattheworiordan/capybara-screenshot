@@ -88,25 +88,6 @@ Capybara::Screenshot.class_eval do
   end
 end
 
+require 'capybara/dsl'
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
-
-# do nothing if Cucumber is not being used
-if defined?(Cucumber::RbSupport::RbDsl)
-  require 'capybara/cucumber'
-  require 'capybara-screenshot/cucumber'
-end
-
-if defined?(RSpec)
-  # capybara rspec must be included first so that this config.after is added to
-  #   RSpec hooks afterwards, and thus executed first
-  require 'capybara/rspec'
-  require 'capybara-screenshot/rspec'
-end
-
-begin
-  require 'minitest/unit'
-  require 'capybara-screenshot/minitest'
-rescue LoadError
-  # mini test not available
-end
