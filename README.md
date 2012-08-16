@@ -10,34 +10,77 @@ Usage
 
     gem install capybara-screenshot
 
-or update your Gemfile to include:
+Then update your Gemfile to include:
 
     group :test do
       gem 'capybara-screenshot'
     end
 
-That's it!
+For Cucumber, in env.rb or a support file, 
+
+  require 'capybara-screenshot/cucumber'
+
+For RSpec, in spec_helper.rb or a support file, after the require for 'capybara/rspec'
+
+  # you should require 'capybara/rspec' first
+  require 'capybara-screenshot/rspec'
+
+For Minitest
+
+  require 'capybara-screenshot/minitest'
+
 
 If you require more control, you can generate the screenshot on demand rather than on failure. This is useful
-if the failure occurs at a point where the screen shot is not as useful for debugging a rendering problem.
+if the failure occurs at a point where the screen shot is not as useful for debugging a rendering problem. This
+can be more useful if you disable the auto-generate on failure feature with the following config
 
-In Cucumber,
+	Capybara::Screenshot.autosave_on_failure = false
+
+
+Anywhere the Capybara DSL methods (visit, click etc.) are available so too will are the screenshot methods.
 
 	screen_shot_and_save_page
 
-Or for screenshot only, with image automatically opened
+Or for screenshot only, which will automatically open the image.
 
 	screen_shot_and_open_image
 
-Or anywhere, including specs and tests
+These are just calls on the main library methods.
 	
 	Capybara::Screenshot.screen_shot_and_save_page
 
 	Capybara::Screenshot.screen_shot_and_open_image
 
-This can be more useful if you disable the auto-generate on failure feature with the following config
 
-	Capybara::Screenshot.autosave_on_failure = false
+Driver configuration
+--------------------
+
+The gem supports the default rendering method for Capybara to generate the screenshot, which is:
+
+	page.driver.render(path)	
+
+There are also some specific driver configurations for Selenium, Webkit, and Poltergeist. See [https://github.com/mattheworiordan/capybara-screenshot/blob/master/lib/capybara-screenshot.rb](the definitions here). The Rack::Test driver, Rails' default, does not allow
+rendering, so it has a driver definition as a noop.
+
+If a driver is not found the default rendering will be used. If this doesn't work with your driver, then you can
+add another driver configuration like so
+
+	# The driver name should match the Capybara driver config name.
+	Capybara::Screenshot.register_driver(:exotic_browser_driver) do |driver, path|
+	  driver.super_dooper_render(path)
+	end
+
+
+Custom screenshot filename
+--------------------------
+
+If you want to control the screenshot filename for a specific test libarary, to inject the test name into it for example, 
+you can override how the basename is generated for the file like so
+
+	Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
+	    "screenshot-#{example.description.gsub(' ', '-')}"
+	  end
+	end
 
 
 Example application
