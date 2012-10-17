@@ -7,6 +7,7 @@
 
 $: << '../lib'
 require 'capybara-screenshot'
+require 'capybara-screenshot/rspec'
 require 'timecop'
 
 RSpec.configure do |config|
