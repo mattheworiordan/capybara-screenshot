@@ -19,10 +19,10 @@ describe Capybara::Screenshot::Saver do
   let(:timestamp) { '2012-06-07-08-09-10' }
   let(:file_basename) { "screenshot-#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
-  
+
   let(:driver_mock) { mock('Capybara driver').as_null_object }
   let(:page_mock) { mock('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
-  let(:capybara_mock) { 
+  let(:capybara_mock) {
     mock(Capybara).as_null_object.tap do |m|
       m.stub(:current_driver).and_return(:default)
       m.stub(:current_path).and_return('/')
@@ -34,7 +34,7 @@ describe Capybara::Screenshot::Saver do
   context 'html filename' do
     it 'should have default format of "screenshot-Y-M-D-H-M-S.html"' do
       capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
-      
+
       saver.save
     end
 
@@ -42,7 +42,7 @@ describe Capybara::Screenshot::Saver do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
       capybara_mock.should_receive(:save_page).with('body', "custom-prefix-#{timestamp}.html")
-      
+
       saver.save
     end
   end
@@ -80,7 +80,7 @@ describe Capybara::Screenshot::Saver do
     capybara_mock.should_not_receive(:save_page)
     driver_mock.should_not_receive(:render)
 
-    saver.save 
+    saver.save
   end
 
   describe "with selenium driver" do
@@ -93,7 +93,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:browser).and_return(browser_mock)
       browser_mock.should_receive(:save_screenshot).with(screenshot_path)
 
-      saver.save 
+      saver.save
     end
   end
 
@@ -105,7 +105,7 @@ describe Capybara::Screenshot::Saver do
     it 'should save driver render with :full => true' do
       driver_mock.should_receive(:render).with(screenshot_path, {:full => true})
 
-      saver.save 
+      saver.save
     end
   end
 
@@ -117,7 +117,19 @@ describe Capybara::Screenshot::Saver do
     it 'should save driver render' do
       driver_mock.should_receive(:render).with(screenshot_path)
 
-      saver.save 
+      saver.save
+    end
+  end
+
+  describe "with webkit debug driver" do
+    before do
+      capybara_mock.stub(:current_driver).and_return(:webkit_debug)
+    end
+
+    it 'should save driver render' do
+      driver_mock.should_receive(:render).with(screenshot_path)
+
+      saver.save
     end
   end
 
@@ -130,14 +142,14 @@ describe Capybara::Screenshot::Saver do
     it 'should save driver render' do
       driver_mock.should_receive(:render).with(screenshot_path)
 
-      saver.save 
+      saver.save
     end
 
     it 'should output warning about unknown results' do
-      # Not pure mock testing 
+      # Not pure mock testing
       saver.should_receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
 
-      saver.save 
+      saver.save
     end
   end
 end

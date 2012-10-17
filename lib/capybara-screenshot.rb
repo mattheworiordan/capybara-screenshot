@@ -70,15 +70,19 @@ Capybara::Screenshot.class_eval do
 
   register_driver(:selenium) do |driver, path|
     driver.browser.save_screenshot(path)
-  end 
+  end
 
   register_driver(:poltergeist) do |driver, path|
     driver.render(path, :full => true)
-  end 
+  end
 
   register_driver(:webkit) do |driver, path|
     driver.render(path)
-  end 
+  end
+
+  register_driver(:webkit_debug) do |driver, path|
+    driver.render(path)
+  end
 end
 
 # Register filename prefix formatters
