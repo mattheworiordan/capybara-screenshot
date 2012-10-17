@@ -101,13 +101,5 @@ if defined?(Cucumber::RbSupport::RbDsl)
   require 'capybara-screenshot/cucumber'
 end
 
-if defined?(RSpec)
-  require 'capybara-screenshot/rspec'
-end
-
-begin
-  require 'minitest/unit'
-  require 'capybara-screenshot/minitest'
-rescue LoadError
-  # mini test not available
-end
+require 'capybara-screenshot/rspec' if defined?(RSpec)
+require 'capybara-screenshot/minitest' if defined?(MiniTest)

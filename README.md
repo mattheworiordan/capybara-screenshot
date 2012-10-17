@@ -10,7 +10,7 @@ Usage
 
     gem install capybara-screenshot
 
-or update your Gemfile to include:
+or update your Gemfile to include capybara-screenshot at the bottom (as of Bundler 0.10):
 
     group :test do
       gem 'capybara-screenshot'
@@ -30,7 +30,7 @@ Or for screenshot only, with image automatically opened
 	screen_shot_and_open_image
 
 Or anywhere, including specs and tests
-	
+
 	Capybara::Screenshot.screen_shot_and_save_page
 
 	Capybara::Screenshot.screen_shot_and_open_image
@@ -46,6 +46,17 @@ Example application
 A simple Rails 3.1 example application has been set up at [https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1](https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1)
 Git clone the app, and then run Cucumber `rake cucumber`, RSpec `rspec spec/**/*_spec.rb` and Minitest `rake test` and expect intentional failures.
 Now check the $APPLICATION_ROOT/tmp/capybara folder for the automatic screen shots generated from failed tests.
+
+Common problems
+---------------
+
+If you find that screen shots are not automatically being generated, then it's possible the `capybara-screenshot` gem is loading before your testing framework is loading, and thus unable to determine which framework to hook into.  Make sure you include `capybara-screenshot` gem last in your Gemfile (order is respected by Bundler as of 0.10).  Alternatively, manually require `capybara-screenshot` using one of the following based on your framework:
+
+    require 'capybara-screenshot/cucumber' # For Cucumber support
+    require 'capybara-screenshot/rspec' # For RSpec support
+    require 'capybara-screenshot/minitest' # For MiniSpec support
+
+[Raise an issue on the Capybara-Screenshot issue tracker](https://github.com/mattheworiordan/capybara-screenshot/issues) if you are still having problems.
 
 Repository
 ----------
