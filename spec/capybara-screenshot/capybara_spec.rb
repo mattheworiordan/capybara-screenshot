@@ -1,6 +1,8 @@
+require 'capybara/dsl'
+
 module Capybara::Screenshot
 	describe Capybara do
-    
+
     it 'should add screen shot methods to the Capybara module' do
       ::Capybara.should respond_to(:screen_shot_and_save_page)
       ::Capybara.should respond_to(:screen_shot_and_open_image)

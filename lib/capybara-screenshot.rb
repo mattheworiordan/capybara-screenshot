@@ -102,9 +102,6 @@ if defined?(Cucumber::RbSupport::RbDsl)
 end
 
 if defined?(RSpec)
-  # capybara rspec must be included first so that this config.after is added to
-  #   RSpec hooks afterwards, and thus executed first
-  require 'capybara/rspec'
   require 'capybara-screenshot/rspec'
 end
 
