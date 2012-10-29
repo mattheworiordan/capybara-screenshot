@@ -22,17 +22,17 @@ can be more useful if you disable the auto-generate on failure feature with the 
 
 Anywhere the Capybara DSL methods (visit, click etc.) are available so too will are the screenshot methods.
 
-	screen_shot_and_save_page
+	screenshot_and_save_page
 
 Or for screenshot only, which will automatically open the image.
 
-	screen_shot_and_open_image
+	screenshot_and_open_image
 
 These are just calls on the main library methods.
 
-	Capybara::Screenshot.screen_shot_and_save_page
+	Capybara::Screenshot.screenshot_and_save_page
 
-	Capybara::Screenshot.screen_shot_and_open_image
+	Capybara::Screenshot.screenshot_and_open_image
 
 
 Driver configuration
