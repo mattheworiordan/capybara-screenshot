@@ -10,19 +10,24 @@ module Capybara
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
 
-    def self.screen_shot_and_save_page
+    def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
       saver.save
       {:html => saver.html_path, :image => saver.screenshot_path}
     end
 
-    def self.screen_shot_and_open_image
+    def self.screenshot_and_open_image
       require "launchy"
 
       saver = Saver.new(Capybara, Capybara.page, false)
       saver.save
       Launchy.open saver.screenshot_path
       {:html => saver.html_path, :image => saver.screenshot_path}
+    end
+
+    class << self
+      alias screen_shot_and_save_page screenshot_and_save_page
+      alias screen_shot_and_open_image screenshot_and_open_image
     end
 
     def self.filename_prefix_for(test_type, test)
