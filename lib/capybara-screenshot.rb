@@ -22,7 +22,7 @@ module Capybara
       saver = Saver.new(Capybara, Capybara.page, false)
       saver.save
       Launchy.open saver.screenshot_path
-      {:html => saver.html_path, :image => saver.screenshot_path}
+      {:html => nil, :image => saver.screenshot_path}
     end
 
     class << self
