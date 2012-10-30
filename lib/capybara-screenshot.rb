@@ -97,14 +97,6 @@ Capybara::Screenshot.class_eval do
   end
 end
 
+require 'capybara/dsl'
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
-
-# do nothing if Cucumber is not being used
-if defined?(Cucumber::RbSupport::RbDsl)
-  require 'capybara/cucumber'
-  require 'capybara-screenshot/cucumber'
-end
-
-require 'capybara-screenshot/rspec' if defined?(RSpec)
-require 'capybara-screenshot/minitest' if defined?(MiniTest)
