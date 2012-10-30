@@ -1,3 +1,9 @@
+30 Oct 2012 - Significant version bump 0.3
+-----------
+
+After some consideration, and continued problems with load order of capybara-screenshot in relation to other required gems, the commits from @adzap in the pull request https://github.com/mattheworiordan/capybara-screenshot/pull/29 have been incorporated.  Moving forwards, for every testing framework you use, you will be required to add an explicit require.
+
+
 15 Feb 2012
 -----------
 
