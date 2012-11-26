@@ -12,12 +12,12 @@ describe Capybara::Screenshot::Saver do
 
   before do
     Capybara::Screenshot.stub(:capybara_root).and_return(capybara_root)
-    Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10))
+    Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10, 0))
   end
 
   let(:capybara_root) { '/tmp' }
-  let(:timestamp) { '2012-06-07-08-09-10' }
-  let(:file_basename) { "screenshot-#{timestamp}" }
+  let(:timestamp) { '2012-06-07-08-09-10.000' }
+  let(:file_basename) { "screenshot_#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
 
   let(:driver_mock) { mock('Capybara driver').as_null_object }
@@ -31,8 +31,12 @@ describe Capybara::Screenshot::Saver do
 
   let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
 
-  context 'html filename' do
-    it 'should have default format of "screenshot-Y-M-D-H-M-S.html"' do
+  context 'html filename with Capybara Version 1' do
+    before do
+      stub_const("Capybara::VERSION", '1')
+    end
+
+    it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
       capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
 
       saver.save
@@ -41,7 +45,27 @@ describe Capybara::Screenshot::Saver do
     it 'should use name argument as prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
-      capybara_mock.should_receive(:save_page).with('body', "custom-prefix-#{timestamp}.html")
+      capybara_mock.should_receive(:save_page).with('body', "custom-prefix_#{timestamp}.html")
+
+      saver.save
+    end
+  end
+
+  context 'html filename with Capybara Version 2' do
+    before do
+      stub_const("Capybara::VERSION", '2')
+    end
+
+    it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
+      capybara_mock.should_receive(:save_page).with("#{file_basename}.html")
+
+      saver.save
+    end
+
+    it 'should use name argument as prefix' do
+      saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
+
+      capybara_mock.should_receive(:save_page).with("custom-prefix_#{timestamp}.html")
 
       saver.save
     end
@@ -54,7 +78,7 @@ describe Capybara::Screenshot::Saver do
       saver.save
     end
 
-    it 'should have default filename format of "screenshot-Y-M-D-H-M-S.png"' do
+    it 'should have default filename format of "screenshot_Y-M-D-H-M-S.ms.png"' do
       driver_mock.should_receive(:render).with(/#{file_basename}\.png$/)
 
       saver.save
@@ -62,7 +86,7 @@ describe Capybara::Screenshot::Saver do
 
     it 'should use filename prefix argument as basename prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
-      driver_mock.should_receive(:render).with(/custom-prefix-#{timestamp}\.png$/)
+      driver_mock.should_receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
 
       saver.save
     end
