@@ -17,8 +17,13 @@ module Capybara
       end
 
       def save_html
-        require 'capybara/util/save_and_open_page'
-        capybara.save_page(page.body, "#{file_base_name}.html")
+        if Capybara::VERSION.match(/^\d+/)[0] == '1'
+          require 'capybara/util/save_and_open_page'
+          capybara.save_page(page.body, "#{file_base_name}.html")
+        else
+          capybara.save_page("#{file_base_name}.html")
+        end
+        warn "Saved file #{file_base_name}"
       end
 
       def save_screenshot
