@@ -98,5 +98,9 @@ Capybara::Screenshot.class_eval do
 end
 
 require 'capybara/dsl'
+require 'capybara/util/save_and_open_page' if Capybara::VERSION.match(/^\d+/)[0] == '1' # no longer needed in Capybara version 2
+
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
+
+
