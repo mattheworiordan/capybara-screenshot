@@ -63,7 +63,7 @@ The gem supports the default rendering method for Capybara to generate the scree
 
 	page.driver.render(path)
 
-There are also some specific driver configurations for Selenium, Webkit, and Poltergeist. See [https://github.com/mattheworiordan/capybara-screenshot/blob/master/lib/capybara-screenshot.rb](the definitions here). The Rack::Test driver, Rails' default, does not allow
+There are also some specific driver configurations for Selenium, Webkit, and Poltergeist. See [the definitions here](https://github.com/mattheworiordan/capybara-screenshot/blob/master/lib/capybara-screenshot.rb). The Rack::Test driver, Rails' default, does not allow
 rendering, so it has a driver definition as a noop.
 
 If a driver is not found the default rendering will be used. If this doesn't work with your driver, then you can
