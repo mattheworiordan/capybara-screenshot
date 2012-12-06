@@ -86,6 +86,14 @@ you can override how the basename is generated for the file like so
 	  end
 	end
 
+Screenshot path in RSpec metadata
+---------------------------------
+
+By default capybara-screenshot will append the screenshot path to a failing spec's full_description which effectively
+changes the name of the spec and breaks trend reporting using tools like CI Reporter.  You can turn off the default behavior
+with the following invocation
+
+    Capybara::Screenshot.append_screenshot_path = false
 
 Example application
 -------------------
