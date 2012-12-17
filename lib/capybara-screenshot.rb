@@ -84,7 +84,11 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver(:webkit) do |driver, path|
-    driver.render(path)
+    if driver.respond_to?(:save_screenshot)
+      driver.save_screenshot(path)
+    else
+      driver.render(path)
+    end
   end
 
   register_driver(:webkit_debug) do |driver, path|
