@@ -138,10 +138,28 @@ describe Capybara::Screenshot::Saver do
       capybara_mock.stub(:current_driver).and_return(:webkit)
     end
 
-    it 'should save driver render' do
-      driver_mock.should_receive(:render).with(screenshot_path)
+    context 'has render method' do
+      before do
+        driver_mock.stub(:respond_to?).with(:'save_screenshot').and_return(false)
+      end
 
-      saver.save
+      it 'should save driver render' do
+        driver_mock.should_receive(:render).with(screenshot_path)
+
+        saver.save
+      end
+    end
+
+    context 'has save_screenshot method' do
+      before do
+        driver_mock.stub(:respond_to?).with(:'save_screenshot').and_return(true)
+      end
+
+      it 'should save driver render' do
+        driver_mock.should_receive(:save_screenshot).with(screenshot_path)
+
+        saver.save
+      end
     end
   end
 
