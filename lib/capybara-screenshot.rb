@@ -4,11 +4,13 @@ module Capybara
       attr_accessor :autosave_on_failure
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
+      attr_accessor :append_screenshot_path
     end
 
     self.autosave_on_failure = true
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
+    self.append_screenshot_path = true
 
     def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
@@ -82,7 +84,11 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver(:webkit) do |driver, path|
-    driver.render(path)
+    if driver.respond_to?(:save_screenshot)
+      driver.save_screenshot(path)
+    else
+      driver.render(path)
+    end
   end
 
   register_driver(:webkit_debug) do |driver, path|
