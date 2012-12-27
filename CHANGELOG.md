@@ -1,3 +1,8 @@
+27 Dec 2012
+-----------
+
+Previos version bump broke Ruby 1.8.7 support, so Travis CI build added to this Gem and Ruby 1.8.7 support along with JRuby support added.
+
 30 Oct 2012 - Significant version bump 0.3
 -----------
 
