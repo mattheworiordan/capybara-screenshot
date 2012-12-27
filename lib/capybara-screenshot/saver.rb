@@ -5,7 +5,8 @@ module Capybara
 
       def initialize(capybara, page, html_save=true, filename_prefix='screenshot')
         @capybara, @page, @html_save = capybara, page, html_save
-        @file_base_name = "#{filename_prefix}_#{Time.now.strftime('%Y-%m-%d-%H-%M-%S.%L')}"
+        time_now = Time.now
+        @file_base_name = "#{filename_prefix}_#{time_now.strftime('%Y-%m-%d-%H-%M-%S.')}#{'%03d' % (time_now.usec/1000).to_i}"
       end
 
       def save
