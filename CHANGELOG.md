@@ -1,3 +1,8 @@
+07 Jan 2013
+-----------
+
+Support for Terminus, thanks to https://github.com/jamesotron
+
 27 Dec 2012
 -----------
 
