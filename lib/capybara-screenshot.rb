@@ -94,6 +94,10 @@ Capybara::Screenshot.class_eval do
   register_driver(:webkit_debug) do |driver, path|
     driver.render(path)
   end
+
+  register_driver(:terminus) do |driver, path|
+    driver.save_screenshot(path) if driver.respond_to?(:save_screenshot)
+  end
 end
 
 # Register filename prefix formatters
