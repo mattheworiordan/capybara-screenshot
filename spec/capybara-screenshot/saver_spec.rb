@@ -107,7 +107,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     context 'when url_base is set' do
-      let(:url_base) { 'http://foo.com/bar' }
+      let(:url_base) { 'http://foo.com/bar/' }
 
       it { should == screenshot_url }
     end
