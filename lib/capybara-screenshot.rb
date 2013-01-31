@@ -5,6 +5,7 @@ module Capybara
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
       attr_accessor :append_screenshot_path
+      attr_accessor :url_base
     end
 
     self.autosave_on_failure = true
