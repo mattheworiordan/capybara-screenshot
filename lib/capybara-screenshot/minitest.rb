@@ -16,6 +16,10 @@ unless method.nil?
 
         saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
         saver.save
+
+        if Capybara::Screenshot.open_on_failure
+          Launchy.open(saver.screenshot_path)
+        end
       end
     end
   rescue NoMethodError

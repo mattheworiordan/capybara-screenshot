@@ -11,6 +11,10 @@ RSpec.configure do |config|
         if Capybara::Screenshot.append_screenshot_path
           example.metadata[:full_description] += "\n     Screenshot: #{saver.screenshot_path}"
         end
+
+        if Capybara::Screenshot.open_on_failure
+          Launchy.open(saver.screenshot_path)
+        end
       end
     end
   end
