@@ -85,8 +85,7 @@ If you want to control the screenshot filename for a specific test libarary, to 
 you can override how the basename is generated for the file like so
 
 	Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
-	    "screenshot-#{example.description.gsub(' ', '-')}"
-	  end
+	  "screenshot-#{example.description.gsub(' ', '-')}"
 	end
 
 Screenshot path in RSpec metadata
