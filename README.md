@@ -88,6 +88,13 @@ you can override how the basename is generated for the file like so
 	  end
 	end
 
+Custom screenshot directory
+--------------------------
+By default screenshots are saved to the current working directory. If you want to customize the location, override the file path as:
+
+    Capybara.save_and_open_page_path = "/file/path"
+
+
 Screenshot path in RSpec metadata
 ---------------------------------
 
