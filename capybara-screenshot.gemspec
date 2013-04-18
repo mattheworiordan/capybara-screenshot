@@ -14,7 +14,12 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "capybara-screenshot"
 
-  s.add_dependency 'capybara', ['>= 1.0', '< 3']
+  if RUBY_VERSION < "1.9"
+    s.add_dependency 'capybara', ['>= 1.0', '< 2']
+  else
+    s.add_dependency 'capybara', ['>= 1.0', '< 3']
+  end
+
   s.add_development_dependency 'rspec', '~> 2.7'
   s.add_development_dependency 'timecop'
 
