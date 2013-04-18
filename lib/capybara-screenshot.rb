@@ -2,12 +2,14 @@ module Capybara
   module Screenshot
     class << self
       attr_accessor :autosave_on_failure
+      attr_accessor :open_on_failure
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
       attr_accessor :append_screenshot_path
     end
 
     self.autosave_on_failure = true
+    self.open_on_failure = false
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
     self.append_screenshot_path = true
