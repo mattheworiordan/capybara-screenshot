@@ -48,8 +48,7 @@ module Capybara
       elsif defined?(Padrino)
         Padrino.root capybara_tmp_path
       elsif defined?(Sinatra)
-        # Sinatra support, untested
-        File.join(settings.root, capybara_tmp_path)
+        File.join(Sinatra::Application.root, capybara_tmp_path)
       else
         capybara_tmp_path
       end.to_s
