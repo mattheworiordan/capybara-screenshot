@@ -43,8 +43,8 @@ module Capybara
       #If the path isn't set, default to the current directory
       capybara_tmp_path = Capybara.save_and_open_page_path || '.'
 
-      @capybara = if defined?(Rails)
-        Rails.root.join capybara_tmp_path
+      @capybara = if defined?(::Rails)
+        ::Rails.root.join capybara_tmp_path
       elsif defined?(Padrino)
         Padrino.root capybara_tmp_path
       elsif defined?(Sinatra)
