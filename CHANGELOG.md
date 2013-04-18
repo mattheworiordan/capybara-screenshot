@@ -1,3 +1,8 @@
+18 Apri 2013
+-----------
+
+Improved documentation, Ruby 1.8.7 support by not allowing Capybara 2.1 to be used, improved Sinatra support.
+
 07 Jan 2013
 -----------
 
