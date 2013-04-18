@@ -29,6 +29,7 @@ For **Cucumber**, in env.rb or a support file, please add:
 For **RSpec**, in spec_helper.rb or a support file, after the require for 'capybara/rspec', please add:
 
     # you should require 'capybara/rspec' first
+    require 'capybara-screenshot'
     require 'capybara-screenshot/rspec'
 
 For **Minitest**, typically in 'test/test_helper.rb', please add:
@@ -83,10 +84,9 @@ Custom screenshot filename
 If you want to control the screenshot filename for a specific test libarary, to inject the test name into it for example,
 you can override how the basename is generated for the file like so
 
-	Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
-	    "screenshot-#{example.description.gsub(' ', '-')}"
+	  Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
+	    "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
 	  end
-	end
 
 Custom screenshot directory
 --------------------------
