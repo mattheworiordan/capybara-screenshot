@@ -37,7 +37,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
-      capybara_mock.should_receive(:save_page).with('body', "#{file_basename}.html")
+      capybara_mock.should_receive(:save_page).with('body', File.join(capybara_root, "#{file_basename}.html"))
 
       saver.save
     end
@@ -45,7 +45,7 @@ describe Capybara::Screenshot::Saver do
     it 'should use name argument as prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
-      capybara_mock.should_receive(:save_page).with('body', "custom-prefix_#{timestamp}.html")
+      capybara_mock.should_receive(:save_page).with('body', File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
 
       saver.save
     end
@@ -57,7 +57,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
-      capybara_mock.should_receive(:save_page).with("#{file_basename}.html")
+      capybara_mock.should_receive(:save_page).with(File.join(capybara_root, "#{file_basename}.html"))
 
       saver.save
     end
@@ -65,7 +65,7 @@ describe Capybara::Screenshot::Saver do
     it 'should use name argument as prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
-      capybara_mock.should_receive(:save_page).with("custom-prefix_#{timestamp}.html")
+      capybara_mock.should_receive(:save_page).with(File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
 
       saver.save
     end
