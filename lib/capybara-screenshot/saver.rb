@@ -19,11 +19,11 @@ module Capybara
 
       def save_html
         if Capybara::VERSION.match(/^\d+/)[0] == '1'
-          capybara.save_page(page.body, "#{file_base_name}.html")
+          capybara.save_page(page.body, "#{html_path}")
         else
-          capybara.save_page("#{file_base_name}.html")
+          capybara.save_page("#{html_path}")
         end
-        warn "Saved file #{file_base_name}"
+        warn "Saved file #{html_path}"
       end
 
       def save_screenshot
