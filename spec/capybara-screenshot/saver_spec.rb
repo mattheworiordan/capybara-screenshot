@@ -84,6 +84,14 @@ describe Capybara::Screenshot::Saver do
       saver.save
     end
 
+    it 'should accept filename-override from ENV["CAPYBARA_SCREENSHOT_FILENAME"]' do
+      ENV["CAPYBARA_SCREENSHOT_FILENAME"] = "foo"
+      driver_mock.should_receive(:render).with(/foo\.png$/)
+
+      saver.save
+      ENV["CAPYBARA_SCREENSHOT_FILENAME"] = nil
+    end
+
     it 'should use filename prefix argument as basename prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
       driver_mock.should_receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
