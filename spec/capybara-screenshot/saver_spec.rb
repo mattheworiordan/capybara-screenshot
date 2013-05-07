@@ -19,6 +19,7 @@ describe Capybara::Screenshot::Saver do
   let(:timestamp) { '2012-06-07-08-09-10.000' }
   let(:file_basename) { "screenshot_#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
+  let(:screenshot_url) { URI.join(url_base, "#{file_basename}.png") }
 
   let(:driver_mock) { mock('Capybara driver').as_null_object }
   let(:page_mock) { mock('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
@@ -89,6 +90,26 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
 
       saver.save
+    end
+  end
+
+  describe '#screenshot_url' do
+    subject { saver.screenshot_url }
+
+    before do
+      Capybara::Screenshot.stub(:url_base).and_return(url_base)
+    end
+
+    context 'when url_base is nil' do
+      let(:url_base) { nil }
+
+      it { should == screenshot_path }
+    end
+
+    context 'when url_base is set' do
+      let(:url_base) { 'http://foo.com/bar/' }
+
+      it { should == screenshot_url }
     end
   end
 

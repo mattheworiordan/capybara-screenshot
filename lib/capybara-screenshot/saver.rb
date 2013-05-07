@@ -1,3 +1,5 @@
+require 'uri'
+
 module Capybara
   module Screenshot
     class Saver
@@ -41,6 +43,9 @@ module Capybara
         File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.png")
       end
 
+      def screenshot_url
+        Capybara::Screenshot.url_base ? URI.join(Capybara::Screenshot.url_base, "#{file_base_name}.png") : screenshot_path
+      end
     end
   end
 end
