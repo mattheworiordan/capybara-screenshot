@@ -2,6 +2,7 @@ capybara-screenshot gem
 =======================
 
 [![Build Status](https://travis-ci.org/mattheworiordan/capybara-screenshot.png)](https://travis-ci.org/mattheworiordan/capybara-screenshot)
+[![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.png)](https://codeclimate.com/github/mattheworiordan/capybara-screenshot)
 
 Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test in [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or Minitest  fails, the HTML for the failed page and a screenshot (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into $APPLICATION_ROOT/tmp/capybara.
 
