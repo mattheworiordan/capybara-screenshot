@@ -1,14 +1,14 @@
-capybara-screenshot gem
-=======================
+capybara-screenshot gem (ruby 1.8 support)
+==========================================
 
 [![Build Status](https://travis-ci.org/mattheworiordan/capybara-screenshot.png)](https://travis-ci.org/mattheworiordan/capybara-screenshot)
 [![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.png)](https://codeclimate.com/github/mattheworiordan/capybara-screenshot)
 
+**Please note that [this branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support) supports Ruby 1.8, however support moving forwards for this branch will be limited**
+
 Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test in [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or Minitest  fails, the HTML for the failed page and a screenshot (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into $APPLICATION_ROOT/tmp/capybara.
 
 This is a huge help when trying to diagnose a problem in your failing steps as you can view the source code and potentially how the page looked at the time of the failure.
-
-_Please note that Ruby 1.9 is required to use this Gem.  For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
 
 Installation
 -----
@@ -17,11 +17,15 @@ Installation
 
 Using Bundler, add the following to your Gemfile
 
-    gem 'capybara-screenshot', :group => :test
+    gem 'capybara-screenshot', :group => :test, :git => 'git://github.com/mattheworiordan/capybara-screenshot.git', :branch => 'ruby-1.8-support'
 
-or install manually using Ruby Gems:
+or install manually using Ruby Gems (quite complex because you need to checkout from a branch):
 
-    gem install capybara-screenshot
+    git clone git://github.com/mattheworiordan/capybara-screenshot.git
+    cd capybara-screenshot
+    git checkout -b ruby-1.8-support remotes/origin/ruby-1.8-support
+    rake build gem
+    gem install pkg/capybara-screenshot-0.3.11.gem
 
 ### Step 2
 

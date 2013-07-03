@@ -11,14 +11,11 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/mattheworiordan/capybara-screenshot"
   s.summary     = %q{Automatically create snapshots when Cucumber steps fail with Capybara and Rails}
   s.description = %q{When a Cucumber step fails, it is useful to create a screenshot image and HTML file of the current page}
+  s.required_ruby_version = "~> 1.8"
 
   s.rubyforge_project = "capybara-screenshot"
 
-  if RUBY_VERSION < "1.9"
-    s.add_dependency 'capybara', ['>= 1.0', '< 2']
-  else
-    s.add_dependency 'capybara', ['>= 1.0', '< 3']
-  end
+  s.add_dependency 'capybara', ['>= 1.0', '< 2']
 
   s.add_development_dependency 'rspec', '~> 2.7'
   s.add_development_dependency 'timecop'
