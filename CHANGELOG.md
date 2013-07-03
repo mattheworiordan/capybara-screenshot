@@ -1,3 +1,8 @@
+3 June 2013
+-----------
+
+Dropped Ruby 1.8 support for this Gem because of conflicts with Nokogiri requiring a later version of Ruby.  Instead, there is a new branch https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support which can be used if requiring backwards compatabiltiy.
+
 18 Apr 2013
 -----------
 
