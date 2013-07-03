@@ -8,6 +8,8 @@ Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test
 
 This is a huge help when trying to diagnose a problem in your failing steps as you can view the source code and potentially how the page looked at the time of the failure.
 
+_Please note that Ruby 1.9 is required to use this Gem.  For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
+
 Installation
 -----
 
