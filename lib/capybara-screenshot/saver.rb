@@ -18,19 +18,24 @@ module Capybara
       end
 
       def save_html
-        if Capybara::VERSION.match(/^\d+/)[0] == '1'
-          capybara.save_page(page.body, "#{html_path}")
-        else
-          capybara.save_page("#{html_path}")
+        clear_save_and_open_page_path do
+          if Capybara::VERSION.match(/^\d+/)[0] == '1'
+            capybara.save_page(page.body, "#{html_path}")
+          else
+            capybara.save_page("#{html_path}")
+          end
         end
         warn "Saved file #{html_path}"
       end
 
       def save_screenshot
-        Capybara::Screenshot.registered_drivers.fetch(capybara.current_driver) { |driver_name|
-          warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
-          Capybara::Screenshot.registered_drivers[:default]
-        }.call(page.driver, screenshot_path)
+        clear_save_and_open_page_path do
+          Capybara.save_and_open_page_path = nil
+          Capybara::Screenshot.registered_drivers.fetch(capybara.current_driver) { |driver_name|
+            warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
+            Capybara::Screenshot.registered_drivers[:default]
+          }.call(page.driver, screenshot_path)
+        end
       end
 
       def html_path
@@ -41,6 +46,15 @@ module Capybara
         File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.png")
       end
 
+      # If Capybara.save_and_open_page_path is set then
+      # the html_path or screenshot_path will be appended to this path
+      # instead of replacing it
+      def clear_save_and_open_page_path
+        old_path = Capybara.save_and_open_page_path
+        Capybara.save_and_open_page_path = nil
+        yield
+        Capybara.save_and_open_page_path = old_path
+      end
     end
   end
 end
