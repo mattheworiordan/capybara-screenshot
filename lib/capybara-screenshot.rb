@@ -73,6 +73,10 @@ Capybara::Screenshot.class_eval do
   register_driver(:rack_test) do |driver, path|
     warn "Rack::Test capybara driver has no ability to output screen shots. Skipping."
   end
+  
+  register_driver(:mechanize) do |driver, path|
+    warn "Mechanize capybara driver has no ability to output screen shots. Skipping."
+  end
 
   register_driver(:selenium) do |driver, path|
     driver.browser.save_screenshot(path)
