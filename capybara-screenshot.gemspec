@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/mattheworiordan/capybara-screenshot"
   s.summary     = %q{Automatically create snapshots when Cucumber steps fail with Capybara and Rails}
   s.description = %q{When a Cucumber step fails, it is useful to create a screenshot image and HTML file of the current page}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "capybara-screenshot"
 
