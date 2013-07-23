@@ -1,3 +1,8 @@
+23 July 2013
+-----------
+
+https://github.com/stevenwilkin contributed code to display a warning for [Mechanize](http://mechanize.rubyforge.org/) users.
+
 3 June 2013
 -----------
 
