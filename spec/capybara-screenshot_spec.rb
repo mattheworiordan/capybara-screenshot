@@ -37,7 +37,7 @@ describe Capybara::Screenshot do
 
   describe ".filename_prefix_for" do
     it 'should return "screenshot" for undefined formatter' do
-      Capybara::Screenshot.filename_prefix_for(:foo, mock('test')).should eq 'screenshot'
+      Capybara::Screenshot.filename_prefix_for(:foo, double('test')).should eq 'screenshot'
     end
   end
 end

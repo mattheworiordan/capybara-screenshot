@@ -20,10 +20,10 @@ describe Capybara::Screenshot::Saver do
   let(:file_basename) { "screenshot_#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
 
-  let(:driver_mock) { mock('Capybara driver').as_null_object }
-  let(:page_mock) { mock('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
+  let(:driver_mock) { double('Capybara driver').as_null_object }
+  let(:page_mock) { double('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
   let(:capybara_mock) {
-    mock(Capybara).as_null_object.tap do |m|
+    double(Capybara).as_null_object.tap do |m|
       m.stub(:current_driver).and_return(:default)
       m.stub(:current_path).and_return('/')
     end
@@ -113,7 +113,7 @@ describe Capybara::Screenshot::Saver do
     end
 
     it 'should save via browser' do
-      browser_mock = mock('browser')
+      browser_mock = double('browser')
       driver_mock.should_receive(:browser).and_return(browser_mock)
       browser_mock.should_receive(:save_screenshot).with(screenshot_path)
 
