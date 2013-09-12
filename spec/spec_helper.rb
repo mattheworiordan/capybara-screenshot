@@ -17,3 +17,5 @@ RSpec.configure do |config|
 end
 
 Capybara.app = lambda { |env| [200, {}, ["OK"]] }
+
+ENV['CAPYBARA_SCREENSHOT_FILENAME'] = nil
