@@ -1,3 +1,15 @@
+12 September 2013
+-----------
+
+Added support for Test Unit, fixed RSpec deprecation warnings and fixed a dependency issue.
+
+Thanks to:
+
+* https://github.com/budnik
+* https://github.com/jkraemer
+* https://github.com/mariovisic
+
+
 23 July 2013
 -----------
 
