@@ -38,6 +38,10 @@ For **Minitest**, typically in 'test/test_helper.rb', please add:
 
     require 'capybara-screenshot/minitest'
 
+For **Test::Unit**, typically in 'test/test_helper.rb', please add:
+
+    require 'capybara-screenshot/testunit'
+
 Manual screenshots
 ----
 
