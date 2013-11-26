@@ -9,7 +9,8 @@ After do |scenario|
     if File.exist?(saver.screenshot_path)
       require "base64"
       #encode the image into it's base64 representation
-      encoded_img = Base64.encode64(IO.read(saver.screenshot_path))
+      image = open(saver.screenshot_path, 'rb') {|io|io.read}
+      encoded_img = Base64.encode64(image)
       #this will embed the image in the HTML report, embed() is defined in cucumber
       embed("data:image/png;base64,#{encoded_img}", 'image/png', "Screenshot of the error")
     end
