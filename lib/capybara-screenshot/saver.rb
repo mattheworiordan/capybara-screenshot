@@ -32,7 +32,6 @@ module Capybara
       def save_screenshot
         path = screenshot_path
         clear_save_and_open_page_path do
-          Capybara.save_and_open_page_path = nil
           Capybara::Screenshot.registered_drivers.fetch(capybara.current_driver) { |driver_name|
             warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
             Capybara::Screenshot.registered_drivers[:default]
