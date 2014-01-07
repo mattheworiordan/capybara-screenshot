@@ -1,3 +1,9 @@
+7 January 2014
+-----------
+
+Bug fix for Minitest 5, thanks to https://github.com/cschramm
+
+
 12 September 2013
 -----------
 
