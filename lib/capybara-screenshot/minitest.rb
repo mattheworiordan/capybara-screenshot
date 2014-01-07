@@ -9,7 +9,7 @@ unless method.nil?
     ActionDispatch::IntegrationTest.send method do |context|
       # by adding the argument context, MiniTest passes the context of the test
       # which has an instance variable @passed indicating success / failure
-      failed = context.instance_variable_get(:@passed).blank?
+      failed = !context.passed?
 
       if Capybara::Screenshot.autosave_on_failure && failed
         filename_prefix = Capybara::Screenshot.filename_prefix_for(:minitest, context)
