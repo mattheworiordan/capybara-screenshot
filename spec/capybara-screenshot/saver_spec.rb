@@ -84,6 +84,15 @@ describe Capybara::Screenshot::Saver do
       saver.save
     end
 
+    it "should not append timestamp if append_timestamp is false " do
+      default_config = Capybara::Screenshot.append_timestamp
+      Capybara::Screenshot.append_timestamp = false
+      driver_mock.should_receive(:render).with(/screenshot.png$/)
+
+      saver.save
+      Capybara::Screenshot.append_timestamp = default_config
+    end
+
     it 'should use filename prefix argument as basename prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
       driver_mock.should_receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
