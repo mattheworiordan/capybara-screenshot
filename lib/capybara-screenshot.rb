@@ -5,12 +5,14 @@ module Capybara
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
       attr_accessor :append_screenshot_path
+      attr_accessor :append_timestamp
     end
 
     self.autosave_on_failure = true
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
     self.append_screenshot_path = true
+    self.append_timestamp = true
 
     def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
@@ -73,7 +75,7 @@ Capybara::Screenshot.class_eval do
   register_driver(:rack_test) do |driver, path|
     warn "Rack::Test capybara driver has no ability to output screen shots. Skipping."
   end
-  
+
   register_driver(:mechanize) do |driver, path|
     warn "Mechanize capybara driver has no ability to output screen shots. Skipping."
   end

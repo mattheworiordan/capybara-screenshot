@@ -87,12 +87,17 @@ add another driver configuration like so
 Custom screenshot filename
 --------------------------
 
-If you want to control the screenshot filename for a specific test libarary, to inject the test name into it for example,
+If you want to control the screenshot filename for a specific test library, to inject the test name into it for example,
 you can override how the basename is generated for the file like so
 
 	  Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
 	    "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
 	  end
+
+By default capybara-screenshot will append a timestamp to the basename. If you want to disable this behavior set the following option:
+
+    Capybara::Screenshot.append_timestamp = false
+
 
 Custom screenshot directory
 --------------------------
