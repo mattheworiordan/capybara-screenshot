@@ -106,6 +106,7 @@ describe Capybara::Screenshot::Saver do
     capybara_mock.should_not_receive(:save_page)
 
     saver.save
+    saver.html_saved?.should be_false
   end
 
   it 'should not save if current_path is empty' do
@@ -114,6 +115,8 @@ describe Capybara::Screenshot::Saver do
     driver_mock.should_not_receive(:render)
 
     saver.save
+    saver.screenshot_saved?.should be_false
+    saver.html_saved?.should be_false
   end
 
   describe "with selenium driver" do
@@ -127,6 +130,7 @@ describe Capybara::Screenshot::Saver do
       browser_mock.should_receive(:save_screenshot).with(screenshot_path)
 
       saver.save
+      saver.screenshot_saved?.should be_true
     end
   end
 
@@ -139,6 +143,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path, {:full => true})
 
       saver.save
+      saver.screenshot_saved?.should be_true
     end
   end
 
@@ -156,6 +161,7 @@ describe Capybara::Screenshot::Saver do
         driver_mock.should_receive(:render).with(screenshot_path)
 
         saver.save
+        saver.screenshot_saved?.should be_true
       end
     end
 
@@ -168,6 +174,7 @@ describe Capybara::Screenshot::Saver do
         driver_mock.should_receive(:save_screenshot).with(screenshot_path)
 
         saver.save
+        saver.screenshot_saved?.should be_true
       end
     end
   end
@@ -181,6 +188,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save
+      saver.screenshot_saved?.should be_true
     end
   end
 
@@ -194,6 +202,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save
+      saver.screenshot_saved?.should be_true
     end
 
     it 'should output warning about unknown results' do
@@ -201,6 +210,31 @@ describe Capybara::Screenshot::Saver do
       saver.should_receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
 
       saver.save
+      saver.screenshot_saved?.should be_true
+    end
+
+    describe "with rack_test driver" do
+      before do
+        capybara_mock.stub(:current_driver).and_return(:rack_test)
+      end
+
+      it 'should warn and indicate that a screenshot could not be saved' do
+        Capybara::Screenshot.should_receive(:warn).with(/driver has no ability to output screen shots/).and_return(nil)
+        saver.save
+        saver.screenshot_saved?.should be_false
+      end
+    end
+
+    describe "with mechanize driver" do
+      before do
+        capybara_mock.stub(:current_driver).and_return(:mechanize)
+      end
+
+      it 'should warn and indicate that a screenshot could not be saved' do
+        Capybara::Screenshot.should_receive(:warn).with(/driver has no ability to output screen shots/).and_return(nil)
+        saver.save
+        saver.screenshot_saved?.should be_false
+      end
     end
   end
 end
