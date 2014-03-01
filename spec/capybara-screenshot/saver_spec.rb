@@ -218,8 +218,7 @@ describe Capybara::Screenshot::Saver do
         capybara_mock.stub(:current_driver).and_return(:rack_test)
       end
 
-      it 'should warn and indicate that a screenshot could not be saved' do
-        Capybara::Screenshot.should_receive(:warn).with(/driver has no ability to output screen shots/).and_return(nil)
+      it 'should indicate that a screenshot could not be saved' do
         saver.save
         saver.screenshot_saved?.should be_false
       end
@@ -230,8 +229,7 @@ describe Capybara::Screenshot::Saver do
         capybara_mock.stub(:current_driver).and_return(:mechanize)
       end
 
-      it 'should warn and indicate that a screenshot could not be saved' do
-        Capybara::Screenshot.should_receive(:warn).with(/driver has no ability to output screen shots/).and_return(nil)
+      it 'should indicate that a screenshot could not be saved' do
         saver.save
         saver.screenshot_saved?.should be_false
       end
