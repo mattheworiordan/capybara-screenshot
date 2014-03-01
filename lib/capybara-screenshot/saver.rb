@@ -28,7 +28,6 @@ module Capybara
             capybara.save_page("#{path}")
           end
         end
-        warn "Saved file #{path}"
         @html_saved = true
       end
 
