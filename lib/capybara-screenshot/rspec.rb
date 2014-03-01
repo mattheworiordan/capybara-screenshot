@@ -9,7 +9,7 @@ RSpec.configure do |config|
         saver.save
 
         if Capybara::Screenshot.append_screenshot_path
-          example.metadata[:full_description] += "\n     Screenshot: #{saver.screenshot_path}"
+          example.metadata[:full_description] += "\n     Screenshot: #{saver.screenshot_path}" if saver.screenshot_saved?
         end
       end
     end
