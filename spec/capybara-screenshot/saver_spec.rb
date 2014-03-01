@@ -108,7 +108,7 @@ describe Capybara::Screenshot::Saver do
     saver.save
   end
 
-  it 'should save if current_path is empty' do
+  it 'should not save if current_path is empty' do
     capybara_mock.stub(:current_path).and_return(nil)
     capybara_mock.should_not_receive(:save_page)
     driver_mock.should_not_receive(:render)
