@@ -66,18 +66,19 @@ module Capybara
   end
 end
 
-# Register driver renderers
+# Register driver renderers.
+# The block should return `:not_supported` if a screenshot could not be saved.
 Capybara::Screenshot.class_eval do
   register_driver(:default) do |driver, path|
     driver.render(path)
   end
 
   register_driver(:rack_test) do |driver, path|
-    warn "Rack::Test capybara driver has no ability to output screen shots. Skipping."
+    :not_supported
   end
 
   register_driver(:mechanize) do |driver, path|
-    warn "Mechanize capybara driver has no ability to output screen shots. Skipping."
+    :not_supported
   end
 
   register_driver(:selenium) do |driver, path|
@@ -101,7 +102,11 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver(:terminus) do |driver, path|
-    driver.save_screenshot(path) if driver.respond_to?(:save_screenshot)
+    if driver.respond_to?(:save_screenshot)
+      driver.save_screenshot(path)
+    else
+      :not_supported
+    end
   end
 end
 
