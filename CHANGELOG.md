@@ -1,3 +1,11 @@
+2 March 2014 - 0.3.16 -> 0.3.17
+-----------
+
+* Added support for RSpec 3 and cleaned up the logging so there is less noise within the test results when a driver does not support a particular format.
+* Updated Travis to test against Ruby 2.0 and Ruby 2.1
+
+Thanks to https://github.com/noniq
+
 7 January 2014
 -----------
 
