@@ -1,6 +1,10 @@
 RSpec.configure do |config|
   # use the before hook to add an after hook that runs last
-  config.after do
+  config.after do |example_from_block_arg|
+
+    # RSpec 3 no longer defines `example`, but passes the example as block argument instead
+    example = respond_to?(:example) ? self.example : example_from_block_arg
+
     if Capybara.page.respond_to?(:save_page) # Capybara DSL method has been included for a feature we can snapshot
       if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
         filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
