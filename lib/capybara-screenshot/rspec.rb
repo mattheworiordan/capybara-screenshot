@@ -3,7 +3,7 @@ RSpec.configure do |config|
   config.after do |example_from_block_arg|
 
     # RSpec 3 no longer defines `example`, but passes the example as block argument instead
-    example = respond_to?(:example) ? self.example : example_from_block_arg
+    example = config.respond_to?(:expose_current_running_example_as) ? example_from_block_arg : self.example
 
     if Capybara.page.respond_to?(:save_page) # Capybara DSL method has been included for a feature we can snapshot
       if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
