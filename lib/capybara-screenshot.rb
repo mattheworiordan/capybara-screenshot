@@ -4,14 +4,12 @@ module Capybara
       attr_accessor :autosave_on_failure
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
-      attr_accessor :append_screenshot_path
       attr_accessor :append_timestamp
     end
 
     self.autosave_on_failure = true
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
-    self.append_screenshot_path = true
     self.append_timestamp = true
 
     def self.screenshot_and_save_page

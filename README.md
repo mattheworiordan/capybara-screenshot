@@ -106,14 +106,19 @@ By default screenshots are saved to the current working directory. If you want t
     Capybara.save_and_open_page_path = "/file/path"
 
 
-Screenshot path in RSpec metadata
----------------------------------
+Information about screenshots in RSpec output
+---------------------------------------------
 
-By default capybara-screenshot will append the screenshot path to a failing spec's full_description which effectively
-changes the name of the spec and breaks trend reporting using tools like CI Reporter.  You can turn off the default behavior
-with the following invocation
+By default, capybara-screenshot extend RSpec’s formatters to include a link to the screenshot and/or saved html page for each failed spec. If you want to disable this feature completely (eg. to avoid problems with CI tools), use:
 
-    Capybara::Screenshot.append_screenshot_path = false
+    Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples = false
+
+It’s also possible to directly embed the screenshot image in the output if you’re using RSpec’s HtmlFormatter:
+
+    Capybara::Screenshot::RSpec::REPORTERS["RSpec::Core::Formatters::HtmlFormatter"] = Capybara::Screenshot::RSpec::HtmlEmbedReporter
+
+If you want to further customize the information added to RSpec’s output, just implement your own reporter class and customize `Capybara::Screenshot::RSpec::REPORTERS` accordingly. See [rspec.rb](lib/capybara-screenshot/rspec.rb) for more info.
+
 
 Example application
 -------------------
