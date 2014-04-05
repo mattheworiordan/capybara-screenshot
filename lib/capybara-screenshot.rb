@@ -12,6 +12,12 @@ module Capybara
     self.filename_prefix_formatters = {}
     self.append_timestamp = true
 
+    def self.append_screenshot_path=(value)
+      $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
+        "Please use Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples instead."
+      RSpec.add_link_to_screenshot_for_failed_examples = value
+    end
+
     def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
       saver.save
