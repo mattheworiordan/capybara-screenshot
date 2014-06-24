@@ -75,6 +75,10 @@ The gem supports the default rendering method for Capybara to generate the scree
 There are also some specific driver configurations for Selenium, Webkit, and Poltergeist. See [the definitions here](https://github.com/mattheworiordan/capybara-screenshot/blob/master/lib/capybara-screenshot.rb). The Rack::Test driver, Rails' default, does not allow
 rendering, so it has a driver definition as a noop.
 
+Capybara-webkit defaults to a screenshot size of 1000px by 10px. To specify a custom size, use the following option:
+
+    Capybara::Screenshot.webkit_options = {width: 1024, height: 768}
+
 If a driver is not found the default rendering will be used. If this doesn't work with your driver, then you can
 add another driver configuration like so
 
