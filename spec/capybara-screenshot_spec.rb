@@ -40,4 +40,21 @@ describe Capybara::Screenshot do
       Capybara::Screenshot.filename_prefix_for(:foo, double('test')).should eq 'screenshot'
     end
   end
+
+  describe '.append_screenshot_path' do
+    it 'prints a deprecation message and delegates to RSpec.add_link_to_screenshot_for_failed_examples' do
+      begin
+        original_stderr = $stderr
+        $stderr = StringIO.new
+        expect {
+          Capybara::Screenshot.append_screenshot_path = false
+        }.to change {
+          Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples
+        }.from(true).to(false)
+        $stderr.string.should include("append_screenshot_path is deprecated")
+      ensure
+        $stderr = original_stderr
+      end
+    end
+  end
 end

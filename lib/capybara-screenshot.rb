@@ -4,7 +4,6 @@ module Capybara
       attr_accessor :autosave_on_failure
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
-      attr_accessor :append_screenshot_path
       attr_accessor :append_timestamp
       attr_accessor :webkit_options
     end
@@ -12,9 +11,14 @@ module Capybara
     self.autosave_on_failure = true
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
-    self.append_screenshot_path = true
     self.append_timestamp = true
     self.webkit_options = {}
+
+    def self.append_screenshot_path=(value)
+      $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
+        "Please use Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples instead."
+      RSpec.add_link_to_screenshot_for_failed_examples = value
+    end
 
     def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
