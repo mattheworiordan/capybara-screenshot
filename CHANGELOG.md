@@ -1,3 +1,11 @@
+11 July 2014 - 0.3.19 -> 0.3.20
+-----------
+
+* Added reporters to improve screenshot info in RSpec output
+* Added support for Webkit options such as width and height
+
+Thanks to https://github.com/multiplegeorges and https://github.com/noniq
+
 2 April 2014 - 0.3.18 -> 0.3.19
 -----------
 
