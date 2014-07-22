@@ -106,7 +106,7 @@ describe Capybara::Screenshot::Saver do
     capybara_mock.should_not_receive(:save_page)
 
     saver.save
-    saver.html_saved?.should be_false
+    expect(saver.html_saved?).to be_falsey
   end
 
   it 'should not save if current_path is empty' do
@@ -115,8 +115,8 @@ describe Capybara::Screenshot::Saver do
     driver_mock.should_not_receive(:render)
 
     saver.save
-    saver.screenshot_saved?.should be_false
-    saver.html_saved?.should be_false
+    expect(saver.screenshot_saved?).to be_falsey
+    expect(saver.html_saved?).to be_falsey
   end
 
   describe '#output_screenshot_path' do
@@ -151,7 +151,7 @@ describe Capybara::Screenshot::Saver do
       browser_mock.should_receive(:save_screenshot).with(screenshot_path)
 
       saver.save
-      saver.screenshot_saved?.should be_true
+      expect(saver.screenshot_saved?).to be_truthy
     end
   end
 
@@ -164,7 +164,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path, {:full => true})
 
       saver.save
-      saver.screenshot_saved?.should be_true
+      expect(saver.screenshot_saved?).to be_truthy
     end
   end
 
@@ -182,7 +182,7 @@ describe Capybara::Screenshot::Saver do
         driver_mock.should_receive(:render).with(screenshot_path)
 
         saver.save
-        saver.screenshot_saved?.should be_true
+        expect(saver.screenshot_saved?).to be_truthy
       end
     end
 
@@ -197,7 +197,7 @@ describe Capybara::Screenshot::Saver do
         driver_mock.should_receive(:save_screenshot).with(screenshot_path, {})
 
         saver.save
-        saver.screenshot_saved?.should be_true
+        expect(saver.screenshot_saved?).to be_truthy
       end
 
       it 'should pass webkit_options to driver' do
@@ -205,7 +205,7 @@ describe Capybara::Screenshot::Saver do
         driver_mock.should_receive(:save_screenshot).with(screenshot_path, webkit_options)
 
         saver.save
-        saver.screenshot_saved?.should be_true
+        expect(saver.screenshot_saved?).to be_truthy
       end
     end
   end
@@ -219,7 +219,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save
-      saver.screenshot_saved?.should be_true
+      expect(saver.screenshot_saved?).to be_truthy
     end
   end
 
@@ -233,7 +233,7 @@ describe Capybara::Screenshot::Saver do
       driver_mock.should_receive(:render).with(screenshot_path)
 
       saver.save
-      saver.screenshot_saved?.should be_true
+      expect(saver.screenshot_saved?).to be_truthy
     end
 
     it 'should output warning about unknown results' do
@@ -241,7 +241,7 @@ describe Capybara::Screenshot::Saver do
       saver.should_receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
 
       saver.save
-      saver.screenshot_saved?.should be_true
+      expect(saver.screenshot_saved?).to be_truthy
     end
 
     describe "with rack_test driver" do
@@ -251,7 +251,7 @@ describe Capybara::Screenshot::Saver do
 
       it 'should indicate that a screenshot could not be saved' do
         saver.save
-        saver.screenshot_saved?.should be_false
+        expect(saver.screenshot_saved?).to be_falsey
       end
     end
 
@@ -262,7 +262,7 @@ describe Capybara::Screenshot::Saver do
 
       it 'should indicate that a screenshot could not be saved' do
         saver.save
-        saver.screenshot_saved?.should be_false
+        expect(saver.screenshot_saved?).to be_falsey
       end
     end
   end
