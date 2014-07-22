@@ -1,3 +1,8 @@
+22 July 2014 - 0.3.20 -> 0.3.21
+-----------
+
+As a result of recent merges and insufficient test coverage, it seems that for test suites other than RSpec the HTML or Image screenshot path was no longer being outputted in the test results.  This has now been fixed, and screenshot output format for RSpec and all other test suites has been standardised.
+
 11 July 2014 - 0.3.19 -> 0.3.20
 -----------
 
