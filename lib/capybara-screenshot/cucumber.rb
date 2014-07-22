@@ -4,6 +4,7 @@ After do |scenario|
 
     saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
     saver.save
+    saver.output_screenshot_path
 
     # Trying to embed the screenshot into our output."
     if File.exist?(saver.screenshot_path)

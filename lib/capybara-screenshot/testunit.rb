@@ -11,6 +11,7 @@ Test::Unit::TestResult.class_eval do
 
         saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
         saver.save
+        saver.output_screenshot_path
       end
     end
   end

@@ -1,3 +1,5 @@
+require 'colorize'
+
 module Capybara
   module Screenshot
     class Saver
@@ -66,6 +68,11 @@ module Capybara
         Capybara.save_and_open_page_path = nil
         yield
         Capybara.save_and_open_page_path = old_path
+      end
+
+      def output_screenshot_path
+        puts "    #{"HTML screenshot:  #{html_path}".colorize(:yellow)}" if html_saved?
+        puts "    #{"Image screenshot: #{screenshot_path}".colorize(:yellow)}" if screenshot_saved?
       end
     end
   end
