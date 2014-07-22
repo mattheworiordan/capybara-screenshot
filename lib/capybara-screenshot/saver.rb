@@ -71,8 +71,13 @@ module Capybara
       end
 
       def output_screenshot_path
-        puts "    #{"HTML screenshot:  #{html_path}".colorize(:yellow)}" if html_saved?
-        puts "    #{"Image screenshot: #{screenshot_path}".colorize(:yellow)}" if screenshot_saved?
+        output "HTML screenshot: #{html_path}" if html_saved?
+        output "Image screenshot: #{screenshot_path}" if screenshot_saved?
+      end
+
+      private
+      def output(message)
+        puts "    #{message.colorize(:yellow)}"
       end
     end
   end

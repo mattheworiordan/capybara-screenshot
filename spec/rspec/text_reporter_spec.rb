@@ -42,20 +42,20 @@ describe Capybara::Screenshot::RSpec::TextReporter do
   end
 
   context 'when a html file was saved' do
-    let(:example) { double("example", metadata: {screenshot: {html: "path/to/html"}}) }
+    let(:example) { double("example", metadata: { screenshot: { html: "path/to/html" } }) }
 
     it 'appends the html file path to the original output' do
       @reporter.dump_failure_info(example)
-      @reporter.output.string.should == "original failure info\n  colorized(HTML page: path/to/html)\n"
+      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n"
     end
   end
 
   context 'when a html file and an image were saved' do
-    let(:example) { double("example", metadata: {screenshot: {html: "path/to/html", image: "path/to/image"}}) }
+    let(:example) { double("example", metadata: { screenshot: { html: "path/to/html", image: "path/to/image" } }) }
 
     it 'appends the image path to the original output' do
       @reporter.dump_failure_info(example)
-      @reporter.output.string.should == "original failure info\n  colorized(HTML page: path/to/html)\n  colorized(Screenshot: path/to/image)\n"
+      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n  #{"Image screenshot: path/to/image".colorize(:yellow)}\n"
     end
   end
 
@@ -69,8 +69,8 @@ describe Capybara::Screenshot::RSpec::TextReporter do
     end
     old_reporter = old_reporter_class.new
     old_reporter.singleton_class.send :include, described_class
-    example = double("example", metadata: {screenshot: {html: "path/to/html"}})
+    example = double("example", metadata: { screenshot: { html: "path/to/html" } })
     old_reporter.dump_failure_info(example)
-    old_reporter.output.string.should == "original failure info\n  red(HTML page: path/to/html)\n"
+    old_reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n"
   end
 end

@@ -119,6 +119,27 @@ describe Capybara::Screenshot::Saver do
     saver.html_saved?.should be_false
   end
 
+  describe '#output_screenshot_path' do
+    let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
+
+    before do
+      allow(saver).to receive(:html_path) { 'page.html' }
+      allow(saver).to receive(:screenshot_path) { 'screenshot.png' }
+    end
+
+    it 'should output the path for the HTML screenshot' do
+      saver.stub(:html_saved?).and_return(true)
+      expect(saver).to receive(:output).with("HTML screenshot: page.html")
+      saver.output_screenshot_path
+    end
+
+    it 'should output the path for the Image screenshot' do
+      saver.stub(:screenshot_saved?).and_return(true)
+      expect(saver).to receive(:output).with("Image screenshot: screenshot.png")
+      saver.output_screenshot_path
+    end
+  end
+
   describe "with selenium driver" do
     before do
       capybara_mock.stub(:current_driver).and_return(:selenium)

@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'launchy'
   s.add_dependency 'colorize'
 
-  s.add_development_dependency 'rspec', '~> 2.7'
+  s.add_development_dependency 'rspec', '~> 2.9'
   s.add_development_dependency 'timecop'
 
   s.files         = `git ls-files`.split("\n")
