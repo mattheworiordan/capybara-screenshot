@@ -6,6 +6,7 @@ module Capybara
       attr_accessor :filename_prefix_formatters
       attr_accessor :append_timestamp
       attr_accessor :webkit_options
+      attr_writer   :final_session_name
     end
 
     self.autosave_on_failure = true
@@ -68,6 +69,10 @@ module Capybara
 
     def self.register_filename_prefix_formatter(test_type, &block)
       self.filename_prefix_formatters[test_type] = block
+    end
+
+    def self.final_session_name
+      @final_session_name || Capybara.session_name || :default
     end
   end
 end

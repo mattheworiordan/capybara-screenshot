@@ -45,14 +45,17 @@ module Capybara
 
         def after_failed_example(example)
           if Capybara.page.respond_to?(:save_page) # Capybara DSL method has been included for a feature we can snapshot
-            if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
-              filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
-              saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
-              saver.save
+            Capybara.using_session(Capybara::Screenshot.final_session_name) do
+              if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
+                filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
 
-              example.metadata[:screenshot] = {}
-              example.metadata[:screenshot][:html]  = saver.html_path if saver.html_saved?
-              example.metadata[:screenshot][:image] = saver.screenshot_path if saver.screenshot_saved?
+                saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
+                saver.save
+
+                example.metadata[:screenshot] = {}
+                example.metadata[:screenshot][:html]  = saver.html_path if saver.html_saved?
+                example.metadata[:screenshot][:image] = saver.screenshot_path if saver.screenshot_saved?
+              end
             end
           end
         end
@@ -64,6 +67,10 @@ module Capybara
 end
 
 RSpec.configure do |config|
+  config.before do
+    Capybara::Screenshot.final_session_name = nil
+  end
+
   config.after do |example_from_block_arg|
     # RSpec 3 no longer defines `example`, but passes the example as block argument instead
     example = config.respond_to?(:expose_current_running_example_as) ? example_from_block_arg : self.example
