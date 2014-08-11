@@ -138,6 +138,12 @@ Common problems
 
 If you have recently upgraded from v0.2, or you find that screen shots are not automatically being generated, then it's most likely you have not included the necessary `require` statement for your testing framework described above.  As of version 0.3, without the explicit require, Capybara-Screenshot will not automatically take screen shots.  Please re-read the installation instructions above.
 
+Also make sure that you're not calling `Capybara.reset_sessions!` before the screenshot hook runs. For RSpec you want to make sure that you're using `append_after` instead of `after`, for instance:
+
+    config.append_after(:each) do
+      Capybara.reset_sessions!
+    end
+
 [Raise an issue on the Capybara-Screenshot issue tracker](https://github.com/mattheworiordan/capybara-screenshot/issues) if you are still having problems.
 
 Repository
