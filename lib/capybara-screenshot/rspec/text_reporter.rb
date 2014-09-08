@@ -11,8 +11,8 @@ module Capybara
           dump_failure_info_without_screenshot(example)
           return unless (screenshot = example.metadata[:screenshot])
 
-          output.puts(long_padding + "HTML screenshot: #{screenshot[:html]}".colorize(:yellow)) if screenshot[:html]
-          output.puts(long_padding + "Image screenshot: #{screenshot[:image]}".colorize(:yellow)) if screenshot[:image]
+          output.puts(long_padding + "HTML screenshot: #{screenshot[:html]}".yellow) if screenshot[:html]
+          output.puts(long_padding + "Image screenshot: #{screenshot[:image]}".yellow) if screenshot[:image]
         end
       end
     end

@@ -1,3 +1,8 @@
+22 July 2014 - 0.3.21 -> 0.3.22
+-----------
+
+Replaced [colorize](https://rubygems.org/gems/colorize) gem with [colored](https://rubygems.org/gems/colored) due to license issue, see https://github.com/mattheworiordan/capybara-screenshot/issues/93.
+
 22 July 2014 - 0.3.20 -> 0.3.21
 -----------
 

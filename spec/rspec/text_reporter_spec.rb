@@ -46,7 +46,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
 
     it 'appends the html file path to the original output' do
       @reporter.dump_failure_info(example)
-      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n"
+      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n"
     end
   end
 
@@ -55,7 +55,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
 
     it 'appends the image path to the original output' do
       @reporter.dump_failure_info(example)
-      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n  #{"Image screenshot: path/to/image".colorize(:yellow)}\n"
+      @reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n  #{"Image screenshot: path/to/image".yellow}\n"
     end
   end
 
@@ -71,6 +71,6 @@ describe Capybara::Screenshot::RSpec::TextReporter do
     old_reporter.singleton_class.send :include, described_class
     example = double("example", metadata: { screenshot: { html: "path/to/html" } })
     old_reporter.dump_failure_info(example)
-    old_reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".colorize(:yellow)}\n"
+    old_reporter.output.string.should == "original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n"
   end
 end
