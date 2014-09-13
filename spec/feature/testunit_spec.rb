@@ -1,7 +1,7 @@
 require "spec_helper"
 require "aruba/api"
 
-describe "Using  Capybara::Screenshot with Test::Unit " do
+describe "Using Capybara::Screenshot with Test::Unit " do
   include Aruba::Api
 
   before do
@@ -9,13 +9,18 @@ describe "Using  Capybara::Screenshot with Test::Unit " do
   end
 
   def run_failing_case(code)
+    gem_root = File.expand_path('../..', File.dirname(__FILE__))
+
     write_file('test/integration/test_failure.rb', <<-RUBY)
+      %w(lib spec).each do |include_folder|
+        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
+      end
       require 'test/unit'
       require 'capybara'
       require 'capybara/rspec'
       require 'capybara-screenshot'
       require 'capybara-screenshot/testunit'
-      require '../../../../spec/support/test_app'
+      require 'support/test_app'
 
       Capybara.app = TestApp
       Capybara.save_and_open_page_path = 'tmp'
