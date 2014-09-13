@@ -26,7 +26,7 @@ describe Capybara::Screenshot::RSpec do
 
         it 'adds the html file path to the screenshot metadata' do
           described_class.after_failed_example(example)
-          example.metadata[:screenshot][:html].should start_with("./screenshot")
+          example.metadata[:screenshot][:html].should match("./screenshot")
         end
       end
 
@@ -35,7 +35,7 @@ describe Capybara::Screenshot::RSpec do
 
         it 'adds the image path to the screenshot metadata' do
           described_class.after_failed_example(example)
-          example.metadata[:screenshot][:image].should start_with("./screenshot")
+          example.metadata[:screenshot][:image].should match("./screenshot")
         end
       end
     end
