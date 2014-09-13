@@ -1,14 +1,12 @@
 require 'test/unit/testresult'
-Test::Unit::TestResult.class_eval do
 
-  def setup
+Test::Unit::TestCase.class_eval do
+  setup do
     Capybara::Screenshot.final_session_name = nil
-    setup_without_screenshot
   end
+end
 
-  alias setup_without_screenshot setup
-  alias setup setup_with_screenshot
-
+Test::Unit::TestResult.class_eval do
   private
 
   def notify_fault_with_screenshot(fault, *args)
