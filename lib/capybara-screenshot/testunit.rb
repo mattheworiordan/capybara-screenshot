@@ -11,7 +11,7 @@ Test::Unit::TestResult.class_eval do
 
   def notify_fault_with_screenshot(fault, *args)
     notify_fault_without_screenshot fault, *args
-    if fault.location.first =~ %r{test/integration}
+    if fault.location.any? { |location| location =~ %r{test/integration} }
       if Capybara::Screenshot.autosave_on_failure
         Capybara.using_session(Capybara::Screenshot.final_session_name) do
           filename_prefix = Capybara::Screenshot.filename_prefix_for(:testunit, fault)
