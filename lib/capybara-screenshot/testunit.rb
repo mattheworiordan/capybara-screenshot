@@ -25,5 +25,4 @@ Test::Unit::TestResult.class_eval do
   end
   alias notify_fault_without_screenshot notify_fault
   alias notify_fault notify_fault_with_screenshot
-
 end

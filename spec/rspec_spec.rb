@@ -24,7 +24,7 @@ describe Capybara::Screenshot::RSpec do
       context 'when a html file gets saved' do
         before { mock_saver.stub(:html_saved? => true) }
 
-        it 'adds the html file path to the screenshot metadata' do``
+        it 'adds the html file path to the screenshot metadata' do
           described_class.after_failed_example(example)
           example.metadata[:screenshot][:html].should match("./screenshot")
         end
