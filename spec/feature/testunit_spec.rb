@@ -1,7 +1,7 @@
 require "spec_helper"
 require "aruba/api"
 
-describe "Using Capybara::Screenshot with Test::Unit " do
+describe "Using Capybara::Screenshot with Test::Unit" do
   include Aruba::Api
 
   before do
