@@ -19,7 +19,10 @@ describe "Using Capybara::Screenshot with MiniTest" do
       Capybara.app = TestApp
       Capybara.save_and_open_page_path = 'tmp'
       Capybara::Screenshot.append_timestamp = false
-      Capybara::Screenshot.register_filename_prefix_formatter(:minitest) { 'my_screenshot' }
+      Capybara::Screenshot.register_filename_prefix_formatter(:minitest) do | test_case |
+        raise "expected fault" unless test_case.__name__.include? 'test_failure'
+        'my_screenshot'
+      end
 
       class TestFailure < Minitest::Unit::TestCase
         include Capybara::DSL
