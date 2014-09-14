@@ -17,9 +17,10 @@ Then(/^I run the feature file named "([^"]*)" with cucumber$/) do |arg|
   run_simple "#{Cucumber::BINARY} #{arg} -r ../../features", false
 end
 
-Given(/^a screenshot failure file named "([^"]*)"$/) do |arg|
+Given(/^a screenshot failure file named "([^"]*)" for a scenario named "([^"]*)"$/) do |file_name, expected_scenario_title|
   Capybara::Screenshot.append_timestamp = false
-  Capybara::Screenshot.register_filename_prefix_formatter(:cucumber) do |example|
-    arg
+  Capybara::Screenshot.register_filename_prefix_formatter(:cucumber) do |scenario|
+    raise 'unexpected failing scenario' unless scenario.title == expected_scenario_title
+    file_name
   end
 end

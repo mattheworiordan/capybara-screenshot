@@ -5,7 +5,7 @@ Feature: Saving a screenshot
       @restore-capybara-default-session
       Feature: Failure
       Scenario: Failure
-        Given a screenshot failure file named "my_screenshot"
+        Given a screenshot failure file named "my_screenshot" for a scenario named "Failure"
         When I visit "/"
         And I click on a missing link
       """
@@ -21,7 +21,7 @@ Feature: Saving a screenshot
       @restore-capybara-default-session
       Feature: Failure
       Scenario: Failure
-        Given a screenshot failure file named "my_screenshot"
+        Given a screenshot failure file named "my_screenshot" for a scenario named "Failure"
         When I visit "/"
         And I click on a missing link on a different page in a different session
       """
