@@ -25,7 +25,10 @@ describe "Using Capybara::Screenshot with Test::Unit" do
       Capybara.app = TestApp
       Capybara.save_and_open_page_path = 'tmp'
       Capybara::Screenshot.append_timestamp = false
-      Capybara::Screenshot.register_filename_prefix_formatter(:testunit) { 'my_screenshot' }
+      Capybara::Screenshot.register_filename_prefix_formatter(:testunit) do | fault |
+        raise "expected fault" unless fault.exception.message.include? %q{Unable to find link or button "you'll never find me"}
+        'my_screenshot'
+      end
 
       class TestFailure < Test::Unit::TestCase
         include Capybara::DSL
