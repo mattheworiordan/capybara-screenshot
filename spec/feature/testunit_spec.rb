@@ -8,10 +8,10 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     clean_current_dir
   end
 
-  def run_failing_case(code)
+  def run_failing_case(code, integration_path = '.')
     gem_root = File.expand_path('../..', File.dirname(__FILE__))
 
-    write_file('test/integration/test_failure.rb', <<-RUBY)
+    write_file("#{integration_path}/test_failure.rb", <<-RUBY)
       %w(lib spec).each do |include_folder|
         $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
       end
@@ -39,14 +39,13 @@ describe "Using Capybara::Screenshot with Test::Unit" do
       end
     RUBY
 
-    cmd = 'ruby test/integration/test_failure.rb' # need to include the string test/integration
-    expect(cmd).to include 'test/integration'
+    cmd = "ruby #{integration_path}/test_failure.rb"
     run_simple cmd, false
     expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end
 
-  it "saves a screenshot on failure" do
-    run_failing_case <<-RUBY
+  it "saves a screenshot on failure for any test in path 'test/integration'" do
+    run_failing_case(<<-RUBY, 'test/integration')
       visit '/'
       assert(page.body.include?('This is the root page'))
       click_on "you'll never find me"
@@ -54,8 +53,18 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
   end
 
+  it "does not generate a screenshot for tests that are not in 'test/integration'" do
+    run_failing_case(<<-RUBY, 'test/something-else')
+      visit '/'
+      assert(page.body.include?('This is the root page'))
+      click_on "you'll never find me"
+    RUBY
+
+    check_file_presence(%w{tmp/my_screenshot.html}, false)
+  end
+
   it "saves a screenshot for the correct session for failures using_session" do
-    run_failing_case <<-RUBY
+    run_failing_case(<<-RUBY, 'test/integration')
       visit '/'
       assert(page.body.include?('This is the root page'))
       using_session :different_session do
