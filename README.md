@@ -44,6 +44,10 @@ For **Minitest**, typically in 'test/test_helper.rb', please add:
 For **Test::Unit**, typically in 'test/test_helper.rb', please add:
 
     require 'capybara-screenshot/testunit'
+    
+By default, screenshots will be captured for tests in the path 'test/integration'.  You can add additional paths as:
+
+    Capybara::Screenshot.testunit_paths << 'test/feature'
 
 Manual screenshots
 ----

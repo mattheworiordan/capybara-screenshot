@@ -1,5 +1,13 @@
 require 'test/unit/testresult'
 
+module Capybara::Screenshot
+  class << self
+    attr_accessor :testunit_paths
+  end
+
+  self.testunit_paths = [%r{test/integration}]
+end
+
 Test::Unit::TestCase.class_eval do
   setup do
     Capybara::Screenshot.final_session_name = nil
@@ -11,7 +19,10 @@ Test::Unit::TestResult.class_eval do
 
   def notify_fault_with_screenshot(fault, *args)
     notify_fault_without_screenshot fault, *args
-    if fault.location.any? { |location| location =~ %r{test/integration} }
+    is_integration_test = fault.location.any? do |location|
+      Capybara::Screenshot.testunit_paths.any? { |path| location.match(path) }
+    end
+    if is_integration_test
       if Capybara::Screenshot.autosave_on_failure
         Capybara.using_session(Capybara::Screenshot.final_session_name) do
           filename_prefix = Capybara::Screenshot.filename_prefix_for(:testunit, fault)
