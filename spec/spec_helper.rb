@@ -19,7 +19,7 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
   config.before do
-    @aruba_timeout_seconds = 20
+    @aruba_timeout_seconds = 60
   end if RUBY_PLATFORM == 'java'
 end
 
