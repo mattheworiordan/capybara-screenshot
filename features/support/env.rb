@@ -12,6 +12,10 @@ require 'aruba/jruby'
 Capybara.save_and_open_page_path = 'tmp'
 Capybara.app = TestApp
 
+Before do
+  @aruba_timeout_seconds = 20
+end if RUBY_PLATFORM == 'java'
+
 After('@restore-capybara-default-session') do
   Capybara.session_name = nil
 end
