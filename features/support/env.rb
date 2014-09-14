@@ -7,6 +7,7 @@ require 'capybara/cucumber'
 require 'capybara-screenshot'
 require 'capybara-screenshot/cucumber'
 require 'aruba/cucumber'
+require 'aruba/jruby'
 
 Capybara.save_and_open_page_path = 'tmp'
 Capybara.app = TestApp
