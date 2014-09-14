@@ -39,7 +39,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     cmd = 'ruby test/integration/test_failure.rb' # need to include the string test/integration
     expect(cmd).to include 'test/integration'
     run_simple cmd, false
-    expect(output_from(cmd)).to include '1 error'
+    expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end
 
   it "saves a screenshot on failure" do
