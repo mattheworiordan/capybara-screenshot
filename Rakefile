@@ -9,4 +9,4 @@ Cucumber::Rake::Task.new(:features) do |t|
 end
 
 RSpec::Core::RakeTask.new(:spec)
-task default: %i{spec features}
+task default: [:spec, :features]
