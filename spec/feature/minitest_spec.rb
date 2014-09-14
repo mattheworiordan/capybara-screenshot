@@ -1,5 +1,4 @@
 require "spec_helper"
-require "aruba/api"
 
 describe "Using Capybara::Screenshot with MiniTest" do
   include Aruba::Api

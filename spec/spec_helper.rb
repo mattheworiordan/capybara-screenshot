@@ -9,6 +9,8 @@ $: << '../lib'
 require 'capybara-screenshot'
 require 'capybara-screenshot/rspec'
 require 'timecop'
+require 'aruba/api'
+require 'aruba/jruby'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
@@ -16,6 +18,10 @@ RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
   config.run_all_when_everything_filtered = true
   config.filter_run :focus
+  config.before do
+    @aruba_timeout_seconds = 20
+  end if RUBY_PLATFORM == 'java'
 end
 
 Capybara.app = lambda { |env| [200, {}, ["OK"]] }
+
