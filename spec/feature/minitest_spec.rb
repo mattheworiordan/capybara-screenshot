@@ -25,18 +25,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
         'my_screenshot'
       end
 
-      module ActionDispatch
-        class IntegrationTest < Minitest::Unit::TestCase
-        end
-      end
-
-      class TestFailure < ActionDispatch::IntegrationTest
-        include Capybara::DSL
-
-        def test_failure
-          #{code}
-        end
-      end
+      #{code}
     RUBY
 
     cmd = 'ruby test_failure.rb'
@@ -46,21 +35,56 @@ describe "Using Capybara::Screenshot with MiniTest" do
 
   it "saves a screenshot on failure" do
     run_failing_case <<-RUBY
-      visit '/'
-      assert(page.body.include?('This is the root page'))
-      click_on "you'll never find me"
+      module ActionDispatch
+        class IntegrationTest < Minitest::Unit::TestCase; end
+      end
+
+      class TestFailure < ActionDispatch::IntegrationTest
+        include Capybara::DSL
+
+        def test_failure
+          visit '/'
+          assert(page.body.include?('This is the root page'))
+          click_on "you'll never find me"
+        end
+      end
     RUBY
     check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
   end
 
+  it "does not save a screenshot for tests that don't inherit from ActionDispatch::IntegrationTest" do
+    run_failing_case <<-RUBY
+      class TestFailure < MiniTest::Unit::TestCase
+        include Capybara::DSL
+
+        def test_failure
+          visit '/'
+          assert(page.body.include?('This is the root page'))
+          click_on "you'll never find me"
+        end
+      end
+    RUBY
+    check_file_presence(%w{tmp/my_screenshot.html}, false)
+  end
+
   it "saves a screenshot for the correct session for failures using_session" do
     run_failing_case <<-RUBY
-      visit '/'
-      assert(page.body.include?('This is the root page'))
-      using_session :different_session do
-        visit '/different_page'
-        assert(page.body.include?('This is a different page'))
-        click_on "you'll never find me"
+      module ActionDispatch
+        class IntegrationTest < Minitest::Unit::TestCase; end
+      end
+
+      class TestFailure < ActionDispatch::IntegrationTest
+        include Capybara::DSL
+
+        def test_failure
+          visit '/'
+          assert(page.body.include?('This is the root page'))
+          using_session :different_session do
+            visit '/different_page'
+            assert(page.body.include?('This is a different page'))
+            click_on "you'll never find me"
+          end
+        end
       end
     RUBY
     check_file_content('tmp/my_screenshot.html', 'This is a different page', true)
