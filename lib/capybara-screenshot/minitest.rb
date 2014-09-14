@@ -6,7 +6,8 @@ module Capybara::Screenshot::MiniTestPlugin
 
   def after_teardown
     super
-    if Capybara::Screenshot.autosave_on_failure && !passed?
+    if self.class.ancestors.map(&:to_s).include?('ActionDispatch::IntegrationTest') &&
+      Capybara::Screenshot.autosave_on_failure && !passed?
       Capybara.using_session(Capybara::Screenshot.final_session_name) do
         filename_prefix = Capybara::Screenshot.filename_prefix_for(:minitest, self)
 

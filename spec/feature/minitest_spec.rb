@@ -25,7 +25,12 @@ describe "Using Capybara::Screenshot with MiniTest" do
         'my_screenshot'
       end
 
-      class TestFailure < Minitest::Unit::TestCase
+      module ActionDispatch
+        class IntegrationTest < Minitest::Unit::TestCase
+        end
+      end
+
+      class TestFailure < ActionDispatch::IntegrationTest
         include Capybara::DSL
 
         def test_failure
