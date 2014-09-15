@@ -34,10 +34,11 @@ module Capybara
       # gets injected into the appropriate formatter.
 
       REPORTERS = {
-        "RSpec::Core::Formatters::ProgressFormatter" => Capybara::Screenshot::RSpec::TextReporter,
-        "RSpec::Core::Formatters::HtmlFormatter"     => Capybara::Screenshot::RSpec::HtmlLinkReporter,
-        "RSpec::Core::Formatters::TextMateFormatter" => Capybara::Screenshot::RSpec::TextMateLinkReporter, # RSpec 2
-        "RSpec::Mate::Formatters::TextMateFormatter" => Capybara::Screenshot::RSpec::TextMateLinkReporter  # RSpec 3
+        "RSpec::Core::Formatters::ProgressFormatter"      => Capybara::Screenshot::RSpec::TextReporter,
+        "RSpec::Core::Formatters::DocumentationFormatter" => Capybara::Screenshot::RSpec::TextReporter,
+        "RSpec::Core::Formatters::HtmlFormatter"          => Capybara::Screenshot::RSpec::HtmlLinkReporter,
+        "RSpec::Core::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter, # RSpec 2
+        "RSpec::Mate::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter  # RSpec 3
       }
 
       class << self
