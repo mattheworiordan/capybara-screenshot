@@ -8,8 +8,13 @@ describe "Using Capybara::Screenshot with Spinach" do
   end
 
   def run_failing_case(failure_message, code)
+    gem_root = File.expand_path('../..', File.dirname(__FILE__))
+
     write_file('steps/failure.rb', <<-RUBY)
-      require '../../spec/spinach/support/spinach_failure.rb'
+      %w(lib spec).each do |include_folder|
+        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
+      end
+      require 'spinach/support/spinach_failure.rb'
     RUBY
 
     write_file('spinach.feature', code)
