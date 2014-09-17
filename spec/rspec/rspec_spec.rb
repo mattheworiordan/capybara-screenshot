@@ -45,12 +45,18 @@ describe Capybara::Screenshot::RSpec do
       check_file_content('tmp/screenshot.html', 'This is the root page', true)
     end
 
-    {
+    formatters = {
       progress:      "HTML screenshot:",
       documentation: "HTML screenshot:",
-      html:          %r{<a.*>HTML page</a>},
-      textmate:      %r{TextMate\.system\(.*open file://\./tmp/screenshot.html}
-    }.each do |formatter, error_message|
+      html:          %r{<a href="file://\./tmp/screenshot\.html"[^>]*>HTML page</a>}
+    }
+
+    # Textmate formatter is only included in RSpec 2
+    if RSpec::Version::STRING.to_i == 2
+      formatters[:textmate] = %r{TextMate\.system\(.*open file://\./tmp/screenshot.html}
+    end
+
+    formatters.each do |formatter, error_message|
       it "uses the associated #{formatter} formatter" do
         run_failing_case <<-RUBY, error_message, formatter
           feature 'screenshot with failure' do

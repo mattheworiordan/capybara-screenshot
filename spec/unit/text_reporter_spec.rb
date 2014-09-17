@@ -26,35 +26,55 @@ describe Capybara::Screenshot::RSpec::TextReporter do
       def dump_failure_info(example)
         output.puts "original failure info"
       end
+      alias_method :example_failed, :dump_failure_info
     end
 
     @reporter = @reporter_class.new
     @reporter.singleton_class.send :include, described_class
   end
 
+  let(:example_failed_method) do
+    if ::RSpec::Version::STRING.to_i <= 2
+      :dump_failure_info
+    else
+      :example_failed
+    end
+  end
+
+  def example_failed_method_argument_double(metadata = {})
+    example = double("example", metadata: metadata)
+    if ::RSpec::Version::STRING.to_i <= 2
+      example
+    else
+      double("notification").tap do |notification|
+        allow(notification).to receive(:example).and_return(example)
+      end
+    end
+  end
+
   context 'when there is no screenshot' do
-    let(:example) { double("example", metadata: {}) }
+    let(:example) { example_failed_method_argument_double }
 
     it 'doesnt change the original output of the reporter' do
-      @reporter.dump_failure_info(example)
+      @reporter.send(example_failed_method, example)
       expect(@reporter.output.string).to eql("original failure info\n")
     end
   end
 
   context 'when a html file was saved' do
-    let(:example) { double("example", metadata: { screenshot: { html: "path/to/html" } }) }
+    let(:example) { example_failed_method_argument_double(screenshot: { html: "path/to/html" }) }
 
     it 'appends the html file path to the original output' do
-      @reporter.dump_failure_info(example)
+      @reporter.send(example_failed_method, example)
       expect(@reporter.output.string).to eql("original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n")
     end
   end
 
   context 'when a html file and an image were saved' do
-    let(:example) { double("example", metadata: { screenshot: { html: "path/to/html", image: "path/to/image" } }) }
+    let(:example) { example_failed_method_argument_double(screenshot: { html: "path/to/html", image: "path/to/image" }) }
 
     it 'appends the image path to the original output' do
-      @reporter.dump_failure_info(example)
+      @reporter.send(example_failed_method, example)
       expect(@reporter.output.string).to eql("original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n  #{"Image screenshot: path/to/image".yellow}\n")
     end
   end
@@ -69,8 +89,8 @@ describe Capybara::Screenshot::RSpec::TextReporter do
     end
     old_reporter = old_reporter_class.new
     old_reporter.singleton_class.send :include, described_class
-    example = double("example", metadata: { screenshot: { html: "path/to/html" } })
-    old_reporter.dump_failure_info(example)
+    example = example_failed_method_argument_double(screenshot: { html: "path/to/html" })
+    old_reporter.send(example_failed_method, example)
     expect(old_reporter.output.string).to eql("original failure info\n  #{"HTML screenshot: path/to/html".yellow}\n")
   end
 end
