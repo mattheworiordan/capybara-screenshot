@@ -11,7 +11,7 @@ describe Capybara::Screenshot::Saver do
   end
 
   before do
-    Capybara::Screenshot.stub(:capybara_root).and_return(capybara_root)
+    allow(Capybara::Screenshot).to receive(:capybara_root).and_return(capybara_root)
     Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10, 0))
   end
 
@@ -24,8 +24,8 @@ describe Capybara::Screenshot::Saver do
   let(:page_mock) { double('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
   let(:capybara_mock) {
     double(Capybara).as_null_object.tap do |m|
-      m.stub(:current_driver).and_return(:default)
-      m.stub(:current_path).and_return('/')
+      allow(m).to receive(:current_driver).and_return(:default)
+      allow(m).to receive(:current_path).and_return('/')
     end
   }
 
@@ -36,16 +36,16 @@ describe Capybara::Screenshot::Saver do
       stub_const("Capybara::VERSION", '1')
     end
 
-    it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
-      capybara_mock.should_receive(:save_page).with('body', File.join(capybara_root, "#{file_basename}.html"))
+    it 'has a default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
+      expect(capybara_mock).to receive(:save_page).with('body', File.join(capybara_root, "#{file_basename}.html"))
 
       saver.save
     end
 
-    it 'should use name argument as prefix' do
+    it 'uses name argument as prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
-      capybara_mock.should_receive(:save_page).with('body', File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
+      expect(capybara_mock).to receive(:save_page).with('body', File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
 
       saver.save
     end
@@ -56,67 +56,67 @@ describe Capybara::Screenshot::Saver do
       stub_const("Capybara::VERSION", '2')
     end
 
-    it 'should have default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
-      capybara_mock.should_receive(:save_page).with(File.join(capybara_root, "#{file_basename}.html"))
+    it 'has a default format of "screenshot_Y-M-D-H-M-S.ms.html"' do
+      expect(capybara_mock).to receive(:save_page).with(File.join(capybara_root, "#{file_basename}.html"))
 
       saver.save
     end
 
-    it 'should use name argument as prefix' do
+    it 'uses name argument as prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
 
-      capybara_mock.should_receive(:save_page).with(File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
+      expect(capybara_mock).to receive(:save_page).with(File.join(capybara_root, "custom-prefix_#{timestamp}.html"))
 
       saver.save
     end
   end
 
   context 'screenshot image path' do
-    it 'should be in capybara root output' do
-      driver_mock.should_receive(:render).with(/^#{capybara_root}\//)
+    it 'is in capybara root output' do
+      expect(driver_mock).to receive(:render).with(/^#{capybara_root}\//)
 
       saver.save
     end
 
-    it 'should have default filename format of "screenshot_Y-M-D-H-M-S.ms.png"' do
-      driver_mock.should_receive(:render).with(/#{file_basename}\.png$/)
+    it 'has a default filename format of "screenshot_Y-M-D-H-M-S.ms.png"' do
+      expect(driver_mock).to receive(:render).with(/#{file_basename}\.png$/)
 
       saver.save
     end
 
-    it "should not append timestamp if append_timestamp is false " do
+    it "does not append timestamp if append_timestamp is false " do
       default_config = Capybara::Screenshot.append_timestamp
       Capybara::Screenshot.append_timestamp = false
-      driver_mock.should_receive(:render).with(/screenshot.png$/)
+      expect(driver_mock).to receive(:render).with(/screenshot.png$/)
 
       saver.save
       Capybara::Screenshot.append_timestamp = default_config
     end
 
-    it 'should use filename prefix argument as basename prefix' do
+    it 'uses filename prefix argument as basename prefix' do
       saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, true, 'custom-prefix')
-      driver_mock.should_receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
+      expect(driver_mock).to receive(:render).with(/#{capybara_root}\/custom-prefix_#{timestamp}\.png$/)
 
       saver.save
     end
   end
 
-  it 'should not save html if false passed as html argument' do
+  it 'does not save html if false passed as html argument' do
     saver = Capybara::Screenshot::Saver.new(capybara_mock, page_mock, false)
-    capybara_mock.should_not_receive(:save_page)
+    expect(capybara_mock).to_not receive(:save_page)
 
     saver.save
-    expect(saver.html_saved?).to be_falsey
+    expect(saver).to_not be_html_saved
   end
 
-  it 'should not save if current_path is empty' do
-    capybara_mock.stub(:current_path).and_return(nil)
-    capybara_mock.should_not_receive(:save_page)
-    driver_mock.should_not_receive(:render)
+  it 'does not save if current_path is empty' do
+    allow(capybara_mock).to receive(:current_path).and_return(nil)
+    expect(capybara_mock).to_not receive(:save_page)
+    expect(driver_mock).to_not receive(:render)
 
     saver.save
-    expect(saver.screenshot_saved?).to be_falsey
-    expect(saver.html_saved?).to be_falsey
+    expect(saver).to_not be_screenshot_saved
+    expect(saver).to_not be_html_saved
   end
 
   describe '#output_screenshot_path' do
@@ -127,14 +127,14 @@ describe Capybara::Screenshot::Saver do
       allow(saver).to receive(:screenshot_path) { 'screenshot.png' }
     end
 
-    it 'should output the path for the HTML screenshot' do
-      saver.stub(:html_saved?).and_return(true)
+    it 'outputs the path for the HTML screenshot' do
+      allow(saver).to receive(:html_saved?).and_return(true)
       expect(saver).to receive(:output).with("HTML screenshot: page.html")
       saver.output_screenshot_path
     end
 
-    it 'should output the path for the Image screenshot' do
-      saver.stub(:screenshot_saved?).and_return(true)
+    it 'outputs the path for the Image screenshot' do
+      allow(saver).to receive(:screenshot_saved?).and_return(true)
       expect(saver).to receive(:output).with("Image screenshot: screenshot.png")
       saver.output_screenshot_path
     end
@@ -142,47 +142,47 @@ describe Capybara::Screenshot::Saver do
 
   describe "with selenium driver" do
     before do
-      capybara_mock.stub(:current_driver).and_return(:selenium)
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium)
     end
 
-    it 'should save via browser' do
+    it 'saves via browser' do
       browser_mock = double('browser')
-      driver_mock.should_receive(:browser).and_return(browser_mock)
-      browser_mock.should_receive(:save_screenshot).with(screenshot_path)
+      expect(driver_mock).to receive(:browser).and_return(browser_mock)
+      expect(browser_mock).to receive(:save_screenshot).with(screenshot_path)
 
       saver.save
-      expect(saver.screenshot_saved?).to be_truthy
+      expect(saver).to be_screenshot_saved
     end
   end
 
   describe "with poltergeist driver" do
     before do
-      capybara_mock.stub(:current_driver).and_return(:poltergeist)
+      allow(capybara_mock).to receive(:current_driver).and_return(:poltergeist)
     end
 
-    it 'should save driver render with :full => true' do
-      driver_mock.should_receive(:render).with(screenshot_path, {:full => true})
+    it 'saves driver render with :full => true' do
+      expect(driver_mock).to receive(:render).with(screenshot_path, {:full => true})
 
       saver.save
-      expect(saver.screenshot_saved?).to be_truthy
+      expect(saver).to be_screenshot_saved
     end
   end
 
   describe "with webkit driver" do
     before do
-      capybara_mock.stub(:current_driver).and_return(:webkit)
+      allow(capybara_mock).to receive(:current_driver).and_return(:webkit)
     end
 
     context 'has render method' do
       before do
-        driver_mock.stub(:respond_to?).with(:'save_screenshot').and_return(false)
+        allow(driver_mock).to receive(:respond_to?).with(:'save_screenshot').and_return(false)
       end
 
-      it 'should save driver render' do
-        driver_mock.should_receive(:render).with(screenshot_path)
+      it 'saves driver render' do
+        expect(driver_mock).to receive(:render).with(screenshot_path)
 
         saver.save
-        expect(saver.screenshot_saved?).to be_truthy
+        expect(saver).to be_screenshot_saved
       end
     end
 
@@ -190,79 +190,79 @@ describe Capybara::Screenshot::Saver do
       let(:webkit_options){ {width: 800, height: 600} }
 
       before do
-        driver_mock.stub(:respond_to?).with(:'save_screenshot').and_return(true)
+        allow(driver_mock).to receive(:respond_to?).with(:'save_screenshot').and_return(true)
       end
 
-      it 'should save driver render' do
-        driver_mock.should_receive(:save_screenshot).with(screenshot_path, {})
+      it 'saves driver render' do
+        expect(driver_mock).to receive(:save_screenshot).with(screenshot_path, {})
 
         saver.save
-        expect(saver.screenshot_saved?).to be_truthy
+        expect(saver).to be_screenshot_saved
       end
 
-      it 'should pass webkit_options to driver' do
-        Capybara::Screenshot.stub(:webkit_options).and_return( webkit_options )
-        driver_mock.should_receive(:save_screenshot).with(screenshot_path, webkit_options)
+      it 'passes webkit_options to driver' do
+        allow(Capybara::Screenshot).to receive(:webkit_options).and_return( webkit_options )
+        expect(driver_mock).to receive(:save_screenshot).with(screenshot_path, webkit_options)
 
         saver.save
-        expect(saver.screenshot_saved?).to be_truthy
+        expect(saver).to be_screenshot_saved
       end
     end
   end
 
   describe "with webkit debug driver" do
     before do
-      capybara_mock.stub(:current_driver).and_return(:webkit_debug)
+      allow(capybara_mock).to receive(:current_driver).and_return(:webkit_debug)
     end
 
-    it 'should save driver render' do
-      driver_mock.should_receive(:render).with(screenshot_path)
+    it 'saves driver render' do
+      expect(driver_mock).to receive(:render).with(screenshot_path)
 
       saver.save
-      expect(saver.screenshot_saved?).to be_truthy
+      expect(saver).to be_screenshot_saved
     end
   end
 
   describe "with unknown driver" do
     before do
-      capybara_mock.stub(:current_driver).and_return(:unknown)
-      saver.stub(:warn).and_return(nil)
+      allow(capybara_mock).to receive(:current_driver).and_return(:unknown)
+      allow(saver).to receive(:warn).and_return(nil)
     end
 
-    it 'should save driver render' do
-      driver_mock.should_receive(:render).with(screenshot_path)
+    it 'saves driver render' do
+      expect(driver_mock).to receive(:render).with(screenshot_path)
 
       saver.save
-      expect(saver.screenshot_saved?).to be_truthy
+      expect(saver).to be_screenshot_saved
     end
 
-    it 'should output warning about unknown results' do
+    it 'outputs warning about unknown results' do
       # Not pure mock testing
-      saver.should_receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
+      expect(saver).to receive(:warn).with(/screenshot driver for 'unknown'.*unknown results/).and_return(nil)
 
       saver.save
-      expect(saver.screenshot_saved?).to be_truthy
+      expect(saver).to be_screenshot_saved
     end
 
     describe "with rack_test driver" do
       before do
-        capybara_mock.stub(:current_driver).and_return(:rack_test)
+        allow(capybara_mock).to receive(:current_driver).and_return(:rack_test)
       end
 
-      it 'should indicate that a screenshot could not be saved' do
+      it 'indicates that a screenshot could not be saved' do
         saver.save
-        expect(saver.screenshot_saved?).to be_falsey
+        expect(saver).to_not be_screenshot_saved
       end
     end
 
     describe "with mechanize driver" do
       before do
-        capybara_mock.stub(:current_driver).and_return(:mechanize)
+        allow(capybara_mock).to receive(:current_driver).and_return(:mechanize)
       end
 
-      it 'should indicate that a screenshot could not be saved' do
+      it 'indicates that a screenshot could not be saved' do
         saver.save
-        expect(saver.screenshot_saved?).to be_falsey
+        expect(saver).to_not be_screenshot_saved
       end
     end
   end

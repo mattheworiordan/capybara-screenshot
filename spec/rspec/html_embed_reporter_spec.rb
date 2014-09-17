@@ -9,10 +9,10 @@ describe Capybara::Screenshot::RSpec::HtmlEmbedReporter do
     end
 
     it 'embeds the image base64 encoded into the content' do
-      File.should_receive(:binread).with("path/to/image").and_return("image data")
+      expect(File).to receive(:binread).with("path/to/image").and_return("image data")
       encoded_image_data = Base64.encode64('image data')
       content_without_styles = @reporter.extra_failure_content(nil).gsub(/ ?style='.*?' ?/, "")
-      content_without_styles.should == "original content<img src='data:image/png;base64,#{encoded_image_data}'>"
+      expect(content_without_styles).to eql("original content<img src='data:image/png;base64,#{encoded_image_data}'>")
     end
   end
 end

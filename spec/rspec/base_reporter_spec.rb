@@ -17,9 +17,9 @@ describe Capybara::Screenshot::RSpec::BaseReporter do
         end
       end
 
-      klass.new.foo.should == :original
+      expect(klass.new.foo).to eql(:original)
       klass.send :include, reporter_module
-      klass.new.foo.should == [:original, :enhanced]
+      expect(klass.new.foo).to eql([:original, :enhanced])
     end
   end
 end

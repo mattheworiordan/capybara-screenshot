@@ -4,22 +4,22 @@ require 'capybara/dsl'
 module Capybara::Screenshot
 	describe Capybara do
 
-    it 'should add screen shot methods to the Capybara module' do
-      ::Capybara.should respond_to(:screenshot_and_save_page)
-      ::Capybara.should respond_to(:screenshot_and_open_image)
+    it 'adds screen shot methods to the Capybara module' do
+      expect(::Capybara).to respond_to(:screenshot_and_save_page)
+      expect(::Capybara).to respond_to(:screenshot_and_open_image)
     end
 
     context 'request type example', :type => :request do
-      it 'should have access to screen shot instance methods' do
-        self.should respond_to(:screenshot_and_save_page)
-        self.should respond_to(:screenshot_and_open_image)
+      it 'has access to screen shot instance methods' do
+        expect(subject).to respond_to(:screenshot_and_save_page)
+        expect(subject).to respond_to(:screenshot_and_open_image)
       end
     end
 
     describe 'using_session' do
       include Capybara::DSL
 
-      it 'should save the name of the final session' do
+      it 'saves the name of the final session' do
         expect(Capybara::Screenshot).to receive(:final_session_name=).with(:different_session)
         expect {
           using_session :different_session do
@@ -45,7 +45,7 @@ module Capybara::Screenshot
 
     describe 'when the final session name has not been set' do
       it 'returns the current session name' do
-        Capybara.stub(:session_name).and_return('my-current-session')
+        allow(Capybara).to receive(:session_name).and_return('my-current-session')
         expect(subject.final_session_name).to eq 'my-current-session'
       end
     end

@@ -13,8 +13,9 @@ describe Capybara::Screenshot::RSpec::TextMateLinkReporter do
       # Single quotes are handled differently by CGI.escape_html in Ruby 1.9 / Ruby 2, so to be
       # compatible with both versions we can't hard code the final escaped string.
       expected_onclick_handler = CGI.escape_html("TextMate.system('open file://path/to/a\\%20html\\%20file'); return false;")
-      content_without_styles.should == %{original content<p>} +
+      expect(content_without_styles).to eql(%{original content<p>} +
         %{Saved files: <a href="file://path/to/a%20html%20file" onclick="#{expected_onclick_handler}">HTML page</a></p>}
+      )
     end
   end
 
@@ -29,9 +30,10 @@ describe Capybara::Screenshot::RSpec::TextMateLinkReporter do
       # compatible with both versions we can't hard code the final escaped string.
       expected_onclick_handler_1 = CGI.escape_html("TextMate.system('open file://path/to/html'); return false;")
       expected_onclick_handler_2 = CGI.escape_html("TextMate.system('open file://path/to/an\\%20image'); return false;")
-      content_without_styles.should == %{original content<p>} +
+      expect(content_without_styles).to eql(%{original content<p>} +
         %{Saved files: <a href="file://path/to/html" onclick="#{expected_onclick_handler_1}">HTML page</a>} +
         %{<a href="file://path/to/an%20image" onclick="#{expected_onclick_handler_2}">Screenshot</a></p>}
+      )
     end
   end
 end
