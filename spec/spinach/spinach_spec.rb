@@ -2,23 +2,21 @@ require "spec_helper"
 
 describe "Using Capybara::Screenshot with Spinach" do
   include Aruba::Api
+  include CommonSetup
 
   before do
     clean_current_dir
   end
 
   def run_failing_case(failure_message, code)
-    gem_root = File.expand_path('../..', File.dirname(__FILE__))
-
     write_file('steps/failure.rb', <<-RUBY)
-      %w(lib spec).each do |include_folder|
-        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
-      end
+      #{ensure_load_paths_valid}
       require 'spinach/support/spinach_failure.rb'
+      #{setup_test_app}
     RUBY
 
     write_file('spinach.feature', code)
-    cmd = 'spinach -f .'
+    cmd = 'bundle exec spinach -f .'
     run_simple cmd, false
     expect(output_from(cmd)).to match failure_message
   end

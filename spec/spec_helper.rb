@@ -27,4 +27,3 @@ RSpec.configure do |config|
 end
 
 Capybara.app = lambda { |env| [200, {}, ["OK"]] }
-

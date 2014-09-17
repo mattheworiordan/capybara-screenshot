@@ -3,33 +3,26 @@ require 'spec_helper'
 describe Capybara::Screenshot::RSpec do
   describe "used with RSpec" do
     include Aruba::Api
+    include CommonSetup
 
     before do
       clean_current_dir
     end
 
     def run_failing_case(code, error_message)
-      gem_root = File.expand_path('../..', File.dirname(__FILE__))
-
       write_file('spec/test_failure.rb', <<-RUBY)
-        %w(lib spec).each do |include_folder|
-          $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
-        end
+        #{ensure_load_paths_valid}
         require 'rspec'
         require 'capybara'
         require 'capybara/rspec'
         require 'capybara-screenshot'
         require 'capybara-screenshot/rspec'
-        require 'support/test_app'
 
-        Capybara.app = TestApp
-        Capybara.save_and_open_page_path = 'tmp'
-        Capybara::Screenshot.append_timestamp = false
-
+        #{setup_test_app}
         #{code}
       RUBY
 
-      cmd = 'bundle exec rspec spec/test_failure.rb'
+      cmd = "bundle exec rspec spec/test_failure.rb"
       run_simple cmd, false
       expect(output_from(cmd)).to include(error_message)
     end

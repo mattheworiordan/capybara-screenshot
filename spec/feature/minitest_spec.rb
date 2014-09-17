@@ -2,28 +2,22 @@ require "spec_helper"
 
 describe "Using Capybara::Screenshot with MiniTest" do
   include Aruba::Api
+  include CommonSetup
 
   before do
     clean_current_dir
   end
 
   def run_failing_case(code)
-    gem_root = File.expand_path('../..', File.dirname(__FILE__))
-
     write_file('test_failure.rb', <<-RUBY)
-      %w(lib spec).each do |include_folder|
-        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
-      end
+      #{ensure_load_paths_valid}
       require 'minitest/autorun'
       require 'capybara'
       require 'capybara-screenshot'
       require 'capybara-screenshot/minitest'
-      require 'support/test_app'
 
-      Capybara.app = TestApp
-      Capybara.save_and_open_page_path = 'tmp'
-      Capybara::Screenshot.append_timestamp = false
-      Capybara::Screenshot.register_filename_prefix_formatter(:minitest) do | test_case |
+      #{setup_test_app}
+      Capybara::Screenshot.register_filename_prefix_formatter(:minitest) do |test_case|
         test_name = test_case.respond_to?(:name) ? test_case.name : test_case.__name__
         raise "expected fault" unless test_name.include? 'test_failure'
         'my_screenshot'
@@ -32,7 +26,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
       #{code}
     RUBY
 
-    cmd = 'ruby test_failure.rb'
+    cmd = 'bundle exec ruby test_failure.rb'
     run_simple cmd, false
     expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end

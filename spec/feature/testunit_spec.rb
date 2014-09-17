@@ -2,28 +2,22 @@ require "spec_helper"
 
 describe "Using Capybara::Screenshot with Test::Unit" do
   include Aruba::Api
+  include CommonSetup
 
   before do
     clean_current_dir
   end
 
   def run_failing_case(code, integration_path = '.')
-    gem_root = File.expand_path('../..', File.dirname(__FILE__))
-
     write_file("#{integration_path}/test_failure.rb", <<-RUBY)
-      %w(lib spec).each do |include_folder|
-        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
-      end
+      #{ensure_load_paths_valid}
       require 'test/unit'
       require 'capybara'
       require 'capybara/rspec'
       require 'capybara-screenshot'
       require 'capybara-screenshot/testunit'
-      require 'support/test_app'
 
-      Capybara.app = TestApp
-      Capybara.save_and_open_page_path = 'tmp'
-      Capybara::Screenshot.append_timestamp = false
+      #{setup_test_app}
       Capybara::Screenshot.register_filename_prefix_formatter(:testunit) do | fault |
         raise "expected fault" unless fault.exception.message.include? %q{Unable to find link or button "you'll never find me"}
         'my_screenshot'
@@ -38,7 +32,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
       end
     RUBY
 
-    cmd = "ruby #{integration_path}/test_failure.rb"
+    cmd = "bundle exec ruby #{integration_path}/test_failure.rb"
     run_simple cmd, false
     expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end

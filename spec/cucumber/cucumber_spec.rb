@@ -2,22 +2,17 @@ require "spec_helper"
 
 describe "Using Capybara::Screenshot with Cucumber" do
   include Aruba::Api
-
-  let(:gem_root) { File.expand_path('../..', File.dirname(__FILE__)) }
+  include CommonSetup
 
   before do
     clean_current_dir
-    if ENV['BUNDLE_GEMFILE'] && ENV['BUNDLE_GEMFILE'].match(/^\./)
-      ENV['BUNDLE_GEMFILE'] = File.expand_path(ENV['BUNDLE_GEMFILE'].gsub(/^\./, gem_root))
-    end
   end
 
   def run_failing_case(failure_message, code)
     write_file('features/support/env.rb', <<-RUBY)
-      %w(lib spec).each do |include_folder|
-        $LOAD_PATH.unshift(File.join('#{gem_root}', include_folder))
-      end
+      #{ensure_load_paths_valid}
       require 'cucumber/support/env.rb'
+      #{setup_test_app}
     RUBY
 
     write_file('features/step_definitions/step_definitions.rb', <<-RUBY)
