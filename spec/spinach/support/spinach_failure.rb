@@ -5,15 +5,17 @@ require 'capybara-screenshot/spinach'
 require 'spinach/capybara'
 require '../../spec/support/test_app'
 
-Spinach.config.failure_exceptions = [ Capybara::ElementNotFound ]
+Spinach.config.failure_exceptions = [Capybara::ElementNotFound]
 
 class Spinach::Features::Failure < Spinach::FeatureSteps
+  include ::Capybara::DSL
+
   before do
     ::Capybara.app = TestApp
     ::Capybara.save_and_open_page_path = 'tmp'
     ::Capybara::Screenshot.append_timestamp = false
-    ::Capybara::Screenshot.register_filename_prefix_formatter(:spinach) do | failed_step |
-      raise 'expected failing step' unless failed_step.name.include? @expected_failed_step
+    ::Capybara::Screenshot.register_filename_prefix_formatter(:spinach) do |failed_step|
+      raise 'expected failing step' if !@expected_failed_step.nil? && !failed_step.name.include?(@expected_failed_step)
       'my_screenshot'
     end
   end
