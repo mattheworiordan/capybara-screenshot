@@ -16,7 +16,7 @@ require 'aruba/jruby'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  if RSpec::Version::STRING.to_i == 2
+  if RSpec::Core::Version::STRING.to_i == 2
     config.treat_symbols_as_metadata_keys_with_true_values = true
   end
   config.run_all_when_everything_filtered = true

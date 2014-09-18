@@ -23,7 +23,7 @@ describe Capybara::Screenshot::RSpec do
       RUBY
 
       cmd = "bundle exec rspec #{"--format #{format} " if format}spec/test_failure.rb"
-      run_simple cmd, false
+      run_simple_with_retry cmd, false
 
       if error_message.kind_of?(Regexp)
         expect(output_from(cmd)).to match(error_message)
@@ -52,7 +52,7 @@ describe Capybara::Screenshot::RSpec do
     }
 
     # Textmate formatter is only included in RSpec 2
-    if RSpec::Version::STRING.to_i == 2
+    if RSpec::Core::Version::STRING.to_i == 2
       formatters[:textmate] = %r{TextMate\.system\(.*open file://\./tmp/screenshot.html}
     end
 

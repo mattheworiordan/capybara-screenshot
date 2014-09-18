@@ -6,7 +6,7 @@ module Capybara
       module TextReporter
         extend BaseReporter
 
-        if ::RSpec::Version::STRING.to_i <= 2
+        if ::RSpec::Core::Version::STRING.to_i <= 2
           enhance_with_screenshot :dump_failure_info
         else
           enhance_with_screenshot :example_failed

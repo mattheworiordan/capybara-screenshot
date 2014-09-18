@@ -34,7 +34,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
   end
 
   let(:example_failed_method) do
-    if ::RSpec::Version::STRING.to_i <= 2
+    if ::RSpec::Core::Version::STRING.to_i <= 2
       :dump_failure_info
     else
       :example_failed
@@ -43,7 +43,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
 
   def example_failed_method_argument_double(metadata = {})
     example = double("example", metadata: metadata)
-    if ::RSpec::Version::STRING.to_i <= 2
+    if ::RSpec::Core::Version::STRING.to_i <= 2
       example
     else
       double("notification").tap do |notification|
