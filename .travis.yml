@@ -1,10 +1,11 @@
 language: ruby
-script: "bundle exec rspec"
+script: "rake travis:ci"
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.1
-  - jruby-19mode # JRuby in 1.9 mode
+  - ruby-head
+  - jruby-19mode
+  - jruby-head
 gemfile:
   - gemfiles/cucumber.1.2.gemfile
   - gemfiles/cucumber.1.3.0.gemfile
@@ -14,23 +15,3 @@ gemfile:
   - gemfiles/rspec.3.0.gemfile
   - gemfiles/spinach.0.7.gemfile
   - gemfiles/spinach.0.8.0.gemfile
-  - gemfiles/spinach.0.7.jruby.gemfile
-  - gemfiles/spinach.0.8.0.jruby.gemfile
-matrix:
-  exclude:
-    - rvm: jruby-19mode
-      gemfile: gemfiles/spinach.0.7.gemfile
-    - rvm: jruby-19mode
-      gemfile: gemfiles/spinach.0.8.0.gemfile
-    - rvm: 1.9.3
-      gemfile: gemfiles/spinach.0.7.jruby.gemfile
-    - rvm: 1.9.3
-      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/spinach.0.7.jruby.gemfile
-    - rvm: 2.0.0
-      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
-    - rvm: 2.1.1
-      gemfile: gemfiles/spinach.0.7.jruby.gemfile
-    - rvm: 2.1.1
-      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
