@@ -1,3 +1,9 @@
+18 September 2014 - 1.0.0 -> 1.0.1
+-----------
+
+* Hot fix for RSpec version issue that assumed RSpec base library was always available, now uses `RSpec::Core::VERSION`
+* Improve Travis CI performance and stability
+
 18 September 2014 - 0.3.22 -> 1.0.0
 -----------
 
