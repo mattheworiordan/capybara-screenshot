@@ -24,7 +24,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
 
     write_file('features/cucumber.feature', code)
     cmd = 'bundle exec cucumber'
-    run_simple cmd, false
+    run_simple_with_retry cmd, false
     expect(output_from(cmd)).to match failure_message
   end
 

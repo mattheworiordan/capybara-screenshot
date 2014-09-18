@@ -24,5 +24,12 @@ module CommonSetup
         ENV['BUNDLE_GEMFILE'] = File.join(gem_root, ENV['BUNDLE_GEMFILE'])
       end
     end
+
+    def run_simple_with_retry(*args)
+      run_simple(*args)
+    rescue ChildProcess::TimeoutError => e
+      puts "run_simple(#{args.join(', ')}) failed. Will retry once. `#{e.message}`"
+      run_simple(*args)
+    end
   end
 end

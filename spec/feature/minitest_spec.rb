@@ -27,7 +27,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     RUBY
 
     cmd = 'bundle exec ruby test_failure.rb'
-    run_simple cmd, false
+    run_simple_with_retry cmd, false
     expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end
 
