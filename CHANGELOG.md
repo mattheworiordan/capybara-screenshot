@@ -1,3 +1,19 @@
+18 September 2014 - 0.3.22 -> 1.0.0
+-----------
+
+Because of the broad test coverage now across RSpec, Cucumber, Spinach, Minitest and TestUnit using [Aruba](https://github.com/cucumber/aruba), I feel that this gem is ready for its first major release.  New features and refactoring can now reliably be done  without the fear of regressions.
+
+The major changes in this 1.0 release are:
+
+* Acceptance test coverage for RSpec, Cucumber, Spinach, Minitest and TestUnit
+* Travis CI test coverage across a matrix of old and new versions of the aforementioned testing frameworks, see https://github.com/mattheworiordan/capybara-screenshot/blob/master/.travis.yml
+* Support for RSpec 3 using the custom formatters
+* Support for sessions using `using_session`, see https://github.com/mattheworiordan/capybara-screenshot/pull/91 for more info
+* Support for RSpec DocumentationFormatter
+* Considerable refactoring of the test suite
+
+Special thanks goes to [Andrew Brown](https://github.com/dontfidget) who has contributed a huge amount of the code that has helped enable this Gem to have its stable major version release.
+
 22 July 2014 - 0.3.21 -> 0.3.22
 -----------
 

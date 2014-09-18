@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    capybara-screenshot (0.3.22)
+    capybara-screenshot (1.0.0)
       capybara (>= 1.0, < 3)
       colored
       launchy
