@@ -14,3 +14,23 @@ gemfile:
   - gemfiles/rspec.3.0.gemfile
   - gemfiles/spinach.0.7.gemfile
   - gemfiles/spinach.0.8.0.gemfile
+  - gemfiles/spinach.0.7.jruby.gemfile
+  - gemfiles/spinach.0.8.0.jruby.gemfile
+matrix:
+  exclude:
+    - rvm: jruby-19mode
+      gemfile: gemfiles/spinach.0.7.gemfile
+    - rvm: jruby-19mode
+      gemfile: gemfiles/spinach.0.8.0.gemfile
+    - rvm: 1.9.3
+      gemfile: gemfiles/spinach.0.7.jruby.gemfile
+    - rvm: 1.9.3
+      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/spinach.0.7.jruby.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
+    - rvm: 2.1.1
+      gemfile: gemfiles/spinach.0.7.jruby.gemfile
+    - rvm: 2.1.1
+      gemfile: gemfiles/spinach.0.8.0.jruby.gemfile
