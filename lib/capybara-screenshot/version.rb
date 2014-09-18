@@ -1,5 +1,5 @@
 module Capybara
   module Screenshot
-    VERSION = "0.3.22"
+    VERSION = "1.0.0"
   end
 end

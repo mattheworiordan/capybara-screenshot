@@ -6,11 +6,13 @@ capybara-screenshot gem
 screenshot)
 [![Gem Version](https://badge.fury.io/rb/capybara-screenshot.svg)](http://badge.fury.io/rb/capybara-screenshot)
 
-Using this gem, whenever a [Capybara](https://github.com/jnicklas/capybara) test in [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or Minitest  fails, the HTML for the failed page and a screenshot (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into $APPLICATION_ROOT/tmp/capybara.
+#### Capture a screen shot for every test failure automatically!
 
-This is a huge help when trying to diagnose a problem in your failing steps as you can view the source code and potentially how the page looked at the time of the failure.
+`capybara-screenshot` used with [Capybara](https://github.com/jnicklas/capybara) and [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or [Minitest](https://github.com/seattlerb/minitest), will capture a screen shot for each failure in your test suite.  The HTML for the failed page, and a screenshot image (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into `$APPLICATION_ROOT/tmp/capybara`.
 
-_Please note that Ruby 1.9 is required to use this Gem.  For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
+Having screenshots readily available for each test failure is incredibly helpful when trying to quickly diagnose a problem in your failing steps.  You can view the source code, and have a screen shot of the page (when applicable), at the time of each failure.
+
+_Please note that Ruby 1.9+ is required to use this Gem.  For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
 
 Installation
 -----
@@ -44,6 +46,10 @@ For **Minitest**, typically in 'test/test_helper.rb', please add:
 For **Test::Unit**, typically in 'test/test_helper.rb', please add:
 
     require 'capybara-screenshot/testunit'
+
+By default, screenshots will be captured for `Test::Unit` tests in the path 'test/integration'.  You can add additional paths as:
+
+    Capybara::Screenshot.testunit_paths << 'test/feature'
 
 Manual screenshots
 ----
@@ -80,7 +86,7 @@ rendering, so it has a driver definition as a noop.
 
 Capybara-webkit defaults to a screenshot size of 1000px by 10px. To specify a custom size, use the following option:
 
-    Capybara::Screenshot.webkit_options = {width: 1024, height: 768}
+    Capybara::Screenshot.webkit_options = { width: 1024, height: 768 }
 
 If a driver is not found the default rendering will be used. If this doesn't work with your driver, then you can
 add another driver configuration like so
@@ -127,14 +133,6 @@ It’s also possible to directly embed the screenshot image in the output if you
 If you want to further customize the information added to RSpec’s output, just implement your own reporter class and customize `Capybara::Screenshot::RSpec::REPORTERS` accordingly. See [rspec.rb](lib/capybara-screenshot/rspec.rb) for more info.
 
 
-Example application
--------------------
-
-A simple Rails 3.1 example application has been set up at [https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1](https://github.com/mattheworiordan/capybara-screenshot-test-rails-3.1)
-Git clone the app, and then run Cucumber `rake cucumber`, RSpec `rake spec` and Minitest `rake test` and expect intentional failures.
-Now check the $APPLICATION_ROOT/tmp/capybara folder for the automatic screen shots generated from failed tests.
-
-
 Common problems
 ---------------
 
@@ -148,17 +146,25 @@ Also make sure that you're not calling `Capybara.reset_sessions!` before the scr
 
 [Raise an issue on the Capybara-Screenshot issue tracker](https://github.com/mattheworiordan/capybara-screenshot/issues) if you are still having problems.
 
-Repository
-----------
+Repository & Contributing to this Gem
+-------------------------------------
 
-Please fork, submit patches or feedback at [https://github.com/mattheworiordan/capybara-screenshot](https://github.com/mattheworiordan/capybara-screenshot)
+#### Bugs
+
+Please raise an issue at [https://github.com/mattheworiordan/capybara-screenshot/issues](https://github.com/mattheworiordan/capybara-screenshot/issues) and ensure you provide sufficient detail to replicate the problem.
+
+#### Contributions
+
+Contributions are welcome.  Please fork this gem, and submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal "bundle exec rspec && bundle exec cucumber"` locally to test your changes against all versions of testing framework gems supported.
+
+#### Rubygems
 
 The gem details on RubyGems.org can be found at [https://rubygems.org/gems/capybara-screenshot](https://rubygems.org/gems/capybara-screenshot)
 
 About
 -----
 
-This gem was written by **Matthew O'Riordan**
+This gem was written by **Matthew O'Riordan**, with contributions from [many kind people](https://github.com/mattheworiordan/capybara-screenshot/network/members).
 
  - [http://mattheworiordan.com](http://mattheworiordan.com)
  - [@mattheworiordan](http://twitter.com/#!/mattheworiordan)
@@ -167,4 +173,4 @@ This gem was written by **Matthew O'Riordan**
 License
 -------
 
-Copyright © 2012 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.
+Copyright © 2014 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.

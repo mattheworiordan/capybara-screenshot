@@ -10,11 +10,11 @@ describe Capybara::Screenshot do
       Capybara::Screenshot.registered_drivers = @original_drivers
     end
 
-    it 'should store driver with block' do
+    it 'stores driver with block' do
       block = lambda {}
       Capybara::Screenshot.register_driver :foo, &block
 
-      Capybara::Screenshot.registered_drivers[:foo].should eq block
+      expect(Capybara::Screenshot.registered_drivers[:foo]).to eql(block)
     end
   end
 
@@ -27,17 +27,17 @@ describe Capybara::Screenshot do
       Capybara::Screenshot.filename_prefix_formatters = @original_formatters
     end
 
-    it 'should store test type with block' do
+    it 'stores test type with block' do
       block = lambda { |arg| }
       Capybara::Screenshot.register_filename_prefix_formatter :foo, &block
 
-      Capybara::Screenshot.filename_prefix_formatters[:foo].should eq block
+      expect(Capybara::Screenshot.filename_prefix_formatters[:foo]).to eql(block)
     end
   end
 
   describe ".filename_prefix_for" do
-    it 'should return "screenshot" for undefined formatter' do
-      Capybara::Screenshot.filename_prefix_for(:foo, double('test')).should eq 'screenshot'
+    it 'returns "screenshot" for undefined formatter' do
+      expect(Capybara::Screenshot.filename_prefix_for(:foo, double('test'))).to eql('screenshot')
     end
   end
 
@@ -51,7 +51,7 @@ describe Capybara::Screenshot do
         }.to change {
           Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples
         }.from(true).to(false)
-        $stderr.string.should include("append_screenshot_path is deprecated")
+        expect($stderr.string).to include("append_screenshot_path is deprecated")
       ensure
         $stderr = original_stderr
       end

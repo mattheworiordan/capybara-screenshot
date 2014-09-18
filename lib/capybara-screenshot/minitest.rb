@@ -1,25 +1,24 @@
-method = if ActionDispatch::IntegrationTest.respond_to? :teardown
-  :teardown
-elsif ActionDispatch::IntegrationTest.respond_to? :add_tear_down_hook
-  :add_tear_down_hook
-end
+module Capybara::Screenshot::MiniTestPlugin
+  def before_setup
+    super
+    Capybara::Screenshot.final_session_name = nil
+  end
 
-unless method.nil?
-  begin
-    ActionDispatch::IntegrationTest.send method do |context|
-      # by adding the argument context, MiniTest passes the context of the test
-      # which has an instance variable @passed indicating success / failure
-      failed = !context.passed?
-
-      if Capybara::Screenshot.autosave_on_failure && failed
-        filename_prefix = Capybara::Screenshot.filename_prefix_for(:minitest, context)
+  def after_teardown
+    super
+    if self.class.ancestors.map(&:to_s).include?('ActionDispatch::IntegrationTest') &&
+      Capybara::Screenshot.autosave_on_failure && !passed?
+      Capybara.using_session(Capybara::Screenshot.final_session_name) do
+        filename_prefix = Capybara::Screenshot.filename_prefix_for(:minitest, self)
 
         saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
         saver.save
         saver.output_screenshot_path
       end
     end
-  rescue NoMethodError
-    # do nothing, teardown for minitest not available
   end
+end
+
+class MiniTest::Unit::TestCase
+  include Capybara::Screenshot::MiniTestPlugin
 end

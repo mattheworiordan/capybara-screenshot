@@ -23,8 +23,14 @@ Gem::Specification.new do |s|
   s.add_dependency 'launchy'
   s.add_dependency 'colored'
 
-  s.add_development_dependency 'rspec', '~> 2.9'
+  s.add_development_dependency 'rspec'
   s.add_development_dependency 'timecop'
+  s.add_development_dependency 'cucumber'
+  s.add_development_dependency 'aruba'
+  s.add_development_dependency 'sinatra'
+  s.add_development_dependency 'test-unit'
+  s.add_development_dependency 'spinach'
+  s.add_development_dependency 'minitest'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

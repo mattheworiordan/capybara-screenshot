@@ -22,7 +22,7 @@ shared_context 'html reporter' do
     end
 
     it 'doesnt change the original content of the reporter' do
-      @reporter.extra_failure_content(nil).should == "original content"
+      expect(@reporter.extra_failure_content(nil)).to eql("original content")
     end
   end
 end
