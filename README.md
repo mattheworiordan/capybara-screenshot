@@ -2,8 +2,7 @@ capybara-screenshot gem
 =======================
 
 [![Build Status](https://travis-ci.org/mattheworiordan/capybara-screenshot.png)](https://travis-ci.org/mattheworiordan/capybara-screenshot)
-[![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.png)](https://codeclimate.com/github/mattheworiordan/capybara-
-screenshot)
+[![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.png)](https://codeclimate.com/github/mattheworiordan/capybara-screenshot)
 [![Gem Version](https://badge.fury.io/rb/capybara-screenshot.svg)](http://badge.fury.io/rb/capybara-screenshot)
 
 #### Capture a screen shot for every test failure automatically!
@@ -17,39 +16,63 @@ _Please note that Ruby 1.9+ is required to use this Gem.  For Ruby 1.8 support, 
 Installation
 -----
 
-### Step 1
+### Step 1: install the gem
 
 Using Bundler, add the following to your Gemfile
 
-    gem 'capybara-screenshot', :group => :test
+```ruby
+gem 'capybara-screenshot', :group => :test
+```
 
 or install manually using Ruby Gems:
 
-    gem install capybara-screenshot
+```
+gem install capybara-screenshot
+```
 
-### Step 2
+### Step 2: load capybara-screenshot into your tests
 
-For **Cucumber**, in env.rb or a support file, please add:
+#### Cucumber
 
-    require 'capybara-screenshot/cucumber'
+In env.rb or a support file, please add:
 
+```ruby
+require 'capybara-screenshot/cucumber'
+```
 
+#### RSpec
 
 In rails_helper.rb, spec_helper.rb, or a support file, after the require for 'capybara/rspec', please add:
 
-    require 'capybara-screenshot/minitest'
 ```ruby
 # remember: you must require 'capybara/rspec' first
 require 'capybara-screenshot/rspec'
 ```
 
-For **Test::Unit**, typically in 'test/test_helper.rb', please add:
+*Note: As of RSpec Rails 3.0, it is recommended that all your Rails environment code is loaded into `rails_helper.rb` instead of `spec_helper.rb`, and as such, the capybara-screenshot require should be located in `rails_helper.rb`.  See the [RSpec Rails 3.0 upgrade notes](https://www.relishapp.com/rspec/rspec-rails/v/3-0/docs/upgrade) for more info.*
 
-    require 'capybara-screenshot/testunit'
+#### Minitest
+
+Typically in 'test/test_helper.rb', please add:
+
+```ruby
+require 'capybara-screenshot/minitest'
+```
+
+#### Test::Unit
+
+Typically in 'test/test_helper.rb', please add:
+
+```ruby
+require 'capybara-screenshot/testunit'
+```
 
 By default, screenshots will be captured for `Test::Unit` tests in the path 'test/integration'.  You can add additional paths as:
 
-    Capybara::Screenshot.testunit_paths << 'test/feature'
+```ruby
+Capybara::Screenshot.testunit_paths << 'test/feature'
+```
+
 
 Manual screenshots
 ----
@@ -58,20 +81,28 @@ If you require more control, you can generate the screenshot on demand rather th
 if the failure occurs at a point where the screen shot is not as useful for debugging a rendering problem. This
 can be more useful if you disable the auto-generate on failure feature with the following config
 
-	Capybara::Screenshot.autosave_on_failure = false
+```ruby
+Capybara::Screenshot.autosave_on_failure = false
+```
 
 Anywhere the Capybara DSL methods (visit, click etc.) are available so too are the screenshot methods.
 
-	screenshot_and_save_page
+```ruby
+screenshot_and_save_page
+```
 
 Or for screenshot only, which will automatically open the image.
 
-	screenshot_and_open_image
+```ruby
+screenshot_and_open_image
+```
 
 These are just calls on the main library methods.
 
-    Capybara::Screenshot.screenshot_and_save_page
-    Capybara::Screenshot.screenshot_and_open_image
+```ruby
+Capybara::Screenshot.screenshot_and_save_page
+Capybara::Screenshot.screenshot_and_open_image
+```
 
 
 Driver configuration
@@ -79,22 +110,28 @@ Driver configuration
 
 The gem supports the default rendering method for Capybara to generate the screenshot, which is:
 
-	page.driver.render(path)
+```ruby
+page.driver.render(path)
+```
 
 There are also some specific driver configurations for Selenium, Webkit, and Poltergeist. See [the definitions here](https://github.com/mattheworiordan/capybara-screenshot/blob/master/lib/capybara-screenshot.rb). The Rack::Test driver, Rails' default, does not allow
 rendering, so it has a driver definition as a noop.
 
 Capybara-webkit defaults to a screenshot size of 1000px by 10px. To specify a custom size, use the following option:
 
-    Capybara::Screenshot.webkit_options = { width: 1024, height: 768 }
+```ruby
+Capybara::Screenshot.webkit_options = { width: 1024, height: 768 }
+```
 
 If a driver is not found the default rendering will be used. If this doesn't work with your driver, then you can
 add another driver configuration like so
 
-	# The driver name should match the Capybara driver config name.
-	Capybara::Screenshot.register_driver(:exotic_browser_driver) do |driver, path|
-	  driver.super_dooper_render(path)
-	end
+```ruby
+# The driver name should match the Capybara driver config name.
+Capybara::Screenshot.register_driver(:exotic_browser_driver) do |driver, path|
+  driver.super_dooper_render(path)
+end
+```
 
 
 Custom screenshot filename
@@ -103,20 +140,26 @@ Custom screenshot filename
 If you want to control the screenshot filename for a specific test library, to inject the test name into it for example,
 you can override how the basename is generated for the file like so
 
-	  Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
-	    "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
-	  end
+```ruby
+Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
+  "screenshot_#{example.description.gsub(' ', '-').gsub(/^.*\/spec\//,'')}"
+end
+```
 
 By default capybara-screenshot will append a timestamp to the basename. If you want to disable this behavior set the following option:
 
-    Capybara::Screenshot.append_timestamp = false
+```ruby
+Capybara::Screenshot.append_timestamp = false
+```
 
 
 Custom screenshot directory
 --------------------------
 By default screenshots are saved to the current working directory. If you want to customize the location, override the file path as:
 
-    Capybara.save_and_open_page_path = "/file/path"
+```ruby
+Capybara.save_and_open_page_path = "/file/path"
+```
 
 
 Information about screenshots in RSpec output
@@ -124,11 +167,15 @@ Information about screenshots in RSpec output
 
 By default, capybara-screenshot extend RSpec’s formatters to include a link to the screenshot and/or saved html page for each failed spec. If you want to disable this feature completely (eg. to avoid problems with CI tools), use:
 
-    Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples = false
+```ruby
+Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples = false
+```
 
 It’s also possible to directly embed the screenshot image in the output if you’re using RSpec’s HtmlFormatter:
 
-    Capybara::Screenshot::RSpec::REPORTERS["RSpec::Core::Formatters::HtmlFormatter"] = Capybara::Screenshot::RSpec::HtmlEmbedReporter
+```ruby
+Capybara::Screenshot::RSpec::REPORTERS["RSpec::Core::Formatters::HtmlFormatter"] = Capybara::Screenshot::RSpec::HtmlEmbedReporter
+```
 
 If you want to further customize the information added to RSpec’s output, just implement your own reporter class and customize `Capybara::Screenshot::RSpec::REPORTERS` accordingly. See [rspec.rb](lib/capybara-screenshot/rspec.rb) for more info.
 
@@ -140,9 +187,11 @@ If you have recently upgraded from v0.2, or you find that screen shots are not a
 
 Also make sure that you're not calling `Capybara.reset_sessions!` before the screenshot hook runs. For RSpec you want to make sure that you're using `append_after` instead of `after`, for instance:
 
-    config.append_after(:each) do
-      Capybara.reset_sessions!
-    end
+```ruby
+config.append_after(:each) do
+  Capybara.reset_sessions!
+end
+```
 
 [Raise an issue on the Capybara-Screenshot issue tracker](https://github.com/mattheworiordan/capybara-screenshot/issues) if you are still having problems.
 
