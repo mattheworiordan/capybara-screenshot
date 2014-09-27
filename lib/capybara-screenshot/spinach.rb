@@ -1,3 +1,5 @@
+require "capybara-screenshot"
+
 Spinach.hooks.before_scenario do |scenario|
   Capybara::Screenshot.final_session_name = nil
 end

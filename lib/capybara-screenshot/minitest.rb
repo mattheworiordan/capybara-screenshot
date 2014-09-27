@@ -1,3 +1,5 @@
+require "capybara-screenshot"
+
 module Capybara::Screenshot::MiniTestPlugin
   def before_setup
     super

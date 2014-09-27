@@ -1,3 +1,5 @@
+require "capybara-screenshot"
+
 require "capybara-screenshot/rspec/text_reporter"
 require "capybara-screenshot/rspec/html_link_reporter"
 require "capybara-screenshot/rspec/html_embed_reporter"

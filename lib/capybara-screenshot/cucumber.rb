@@ -1,3 +1,5 @@
+require "capybara-screenshot"
+
 Before do |scenario|
   Capybara::Screenshot.final_session_name = nil
 end

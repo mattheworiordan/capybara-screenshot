@@ -1,3 +1,5 @@
+require "capybara-screenshot"
+
 module Capybara
   module DSL
     # Adds class methods to Capybara module and gets mixed into
