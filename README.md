@@ -33,10 +33,9 @@ For **Cucumber**, in env.rb or a support file, please add:
 
     require 'capybara-screenshot/cucumber'
 
-For **RSpec**, in spec_helper.rb or a support file, after the require for 'capybara/rspec', please add:
 
 
-For **Minitest**, typically in 'test/test_helper.rb', please add:
+In rails_helper.rb, spec_helper.rb, or a support file, after the require for 'capybara/rspec', please add:
 
     require 'capybara-screenshot/minitest'
 ```ruby
