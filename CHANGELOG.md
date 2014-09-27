@@ -1,3 +1,10 @@
+27 September 2014 - 1.0.1 -> 1.0.2
+-----------
+
+* Improved documentation to cover RSpec 3's new approach to using `rails_helper` in place of `spec_helper` for Rails tests
+* Updated documentation to use Ruby formatting in language blocks
+* Removed need to manually `require 'capybara-screenshot'` for RSpec
+
 18 September 2014 - 1.0.0 -> 1.0.1
 -----------
 
