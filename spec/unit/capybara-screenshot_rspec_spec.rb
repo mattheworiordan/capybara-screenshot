@@ -43,6 +43,23 @@ describe Capybara::Screenshot::RSpec do
           expect(example.metadata[:screenshot][:image]).to match("./screenshot")
         end
       end
+
+      context 'when prune strategy specified' do
+        context 'for pruner strategy:' do
+          [:keep_all, :keep_last_run, { keep: 3 }].each do |strategy|
+            context strategy.to_s do
+              it 'it calls Pruner with corresponding strategy' do
+                Capybara::Screenshot.prune_strategy = strategy
+                pruner = Capybara::Screenshot::Pruner
+
+                pruner.should_receive(:new).with(strategy).and_call_original
+                pruner.any_instance.should_receive(:prune_old_screenshots)
+                described_class.after_failed_example(example)
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
