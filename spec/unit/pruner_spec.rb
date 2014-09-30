@@ -2,87 +2,103 @@ require 'spec_helper'
 
 describe Capybara::Screenshot::Pruner do
   describe '#initialize' do
-    context 'should accept generic strategies:' do
-      [:keep_all, :keep_last_run].each do |strategy|
-        it ":#{strategy}" do
-          pruner = Capybara::Screenshot::Pruner.new(strategy)
-          expected_value = strategy.to_s.gsub('keep_', '').to_sym
-          expect(pruner.instance_variable_get('@keep')).to eq(expected_value)
+    let(:pruner) { Capybara::Screenshot::Pruner.new(strategy) }
+
+    context 'accepts generic strategies:' do
+      [:keep_all, :keep_last_run].each do |strategy_sym|
+        let(:strategy) { strategy_sym }
+
+        it ":#{strategy_sym}" do
+          expect(pruner.strategy).to eq(strategy)
         end
       end
     end
 
-    it 'should accept strategies with number of screens' do
-      screens_count = 50
-      pruner = Capybara::Screenshot::Pruner.new(keep: screens_count)
-      expect(pruner.instance_variable_get('@keep')).to eq(screens_count)
+    context 'keep:int' do
+      let(:strategy) { { keep: 50 } }
+
+      it 'is a suitable strategy' do
+        expect(pruner.strategy).to eq(strategy)
+      end
     end
 
-    it 'should raise error when trying to add invalid strategy' do
-      expect { Capybara::Screenshot::Pruner.new(:invalid_strategy) }.to raise_error
+    context 'invalid strategy' do
+      context 'symbol' do
+        let(:strategy) { :invalid_strategy }
+
+        it 'raises an error' do
+          expect { pruner }.to raise_error
+        end
+      end
+
+      context 'keep:sym' do
+        let(:strategy) { { keep: :symbol } }
+
+        it 'raises an error' do
+          expect { pruner }.to raise_error
+        end
+      end
     end
   end
 
   describe '#prune_old_screenshots' do
-    let(:capybara_root) { '/tmp/capybara-screenshoot' }
-    let(:timestamp) { '2012-06-07-08-09-10.000' }
-    let(:file_basename) { "screenshot_#{timestamp}" }
+    let(:capybara_root)   { Capybara::Screenshot.capybara_root }
+    let(:remaining_files) { Dir.glob(File.expand_path('*', capybara_root)).sort }
+    let(:files_created)   { [] }
+    let!(:pruner)         { Capybara::Screenshot::Pruner.new(strategy) }
 
     before do
-      Capybara::Screenshot.stub(:capybara_root).and_return(capybara_root)
-      Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10, 0))
+      allow(Capybara::Screenshot).to receive(:capybara_root).and_return(Dir.mktmpdir.to_s)
 
-      FileUtils.mkdir_p(Capybara::Screenshot.capybara_root)
-
-      @files = []
       8.times do |i|
-        f = FileUtils.touch("#{Capybara::Screenshot.capybara_root}/2012-06-07-08-09-10.00#{i}")
-        @files << f.first
+        files_created << FileUtils.touch("#{capybara_root}/#{i}").first
       end
+
+      pruner.prune_old_screenshots
     end
 
     after do
-      FileUtils.rm_rf(Capybara::Screenshot.capybara_root)
+      FileUtils.rm_rf capybara_root
     end
 
     context 'with :keep_all strategy' do
-      let!(:pruner) { Capybara::Screenshot::Pruner.new(:keep_all) }
+      let(:strategy) { :keep_all }
 
       it 'should not remove screens' do
-        pruner.prune_old_screenshots
-        filenames = @files.map { |f| f.split('/').last }
-        expect(Dir.entries(Capybara::Screenshot.capybara_root).sort_by { |e| e }).to eq(['.', '..'] + filenames)
+        expect(remaining_files).to eq(files_created)
       end
     end
 
     context 'with :keep_last_run strategy' do
-      let!(:pruner) { Capybara::Screenshot::Pruner.new(:keep_last_run) }
+      let(:strategy) { :keep_last_run }
 
       it 'should remove all screens' do
-        pruner.prune_old_screenshots
-        expect(Dir.entries(Capybara::Screenshot.capybara_root).sort_by { |e| e }).to eq(['.', '..'])
+        expect(remaining_files).to be_empty
       end
 
-      it 'should not raise error when dir is missing' do
-        FileUtils.rm_rf(Capybara::Screenshot.capybara_root)
-        expect { pruner.prune_old_screenshots }.to_not raise_error
+      context 'when dir is missing' do
+        before { FileUtils.rm_rf(Capybara::Screenshot.capybara_root) }
+
+        it 'should not raise error' do
+          expect { pruner.prune_old_screenshots }.to_not raise_error
+        end
       end
     end
 
     context 'with :keep strategy' do
       let(:keep_count) { 3 }
-
-      let!(:pruner) { Capybara::Screenshot::Pruner.new(keep: keep_count) }
+      let(:strategy) { { keep: keep_count } }
 
       it 'should keep specified number of screens' do
-        pruner.prune_old_screenshots
-        filenames = @files.last(keep_count).map { |f| f.split('/').last }
-        expect(Dir.entries(Capybara::Screenshot.capybara_root).sort_by { |e| e }).to eq(['.', '..'] + filenames)
+        expect(remaining_files).to eq(files_created.last(keep_count))
       end
 
-      it 'should not raise error when dir is missing' do
-        FileUtils.rm_rf(Capybara::Screenshot.capybara_root)
-        expect { pruner.prune_old_screenshots }.to_not raise_error
+      context 'when dir is missing' do
+        before { FileUtils.rm_rf(Capybara::Screenshot.capybara_root) }
+
+        it 'should not raise error when dir is missing' do
+          expect { pruner.prune_old_screenshots }.to_not raise_error
+        end
       end
     end
   end

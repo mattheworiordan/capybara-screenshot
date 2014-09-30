@@ -1,44 +1,46 @@
 module Capybara
   module Screenshot
     class Pruner
+      attr_reader :strategy
+
       def initialize(strategy)
-        @keep = if [:keep_all, :keep_last_run].include?(strategy)
-            strategy.to_s.gsub('keep_', '').to_sym
-          elsif strategy.instance_of?(Hash) &&
-                strategy[:keep].is_a?(Integer) &&
-                strategy[:keep] > 0
-            strategy[:keep]
-          else
-            fail 'Invalid prune strategy. Ex:' \
-            'Capybara::Screenshot.prune_strategy = keep: 10'
-          end
+        @strategy = strategy
+
+        @strategy_proc = case strategy
+        when :keep_all
+          -> { }
+        when :keep_last_run
+          -> { prune_with_last_run_strategy }
+        when Hash
+          raise ArgumentError, ":keep key is required" unless strategy[:keep]
+          raise ArgumentError, ":keep value must be number greater than zero" unless strategy[:keep].to_i > 0
+          -> { prune_with_numeric_strategy(strategy[:keep].to_i) }
+        else
+          fail "Invalid prune strategy #{strategy}. `:keep_all`or `{ keep: 10 }` are valid examples."
+        end
       end
 
       def prune_old_screenshots
-        case @keep
-        when :all
-          # do nothing.
-        when :last_run
-        FileUtils.rm_rf(Dir.glob(Screenshot.capybara_root + '/*'))
-        else
-          unless Dir[Capybara::Screenshot.capybara_root].empty?
-            prune_with_numeric_strategy(@keep)
-          end
-        end
+        strategy_proc.call
+      end
+
+      private
+      attr_reader :strategy_proc
+
+      def wildcard_path
+        File.expand_path('*', Screenshot.capybara_root)
+      end
+
+      def prune_with_last_run_strategy
+        FileUtils.rm_rf(Dir.glob(wildcard_path))
       end
 
       def prune_with_numeric_strategy(count)
-        total_files = Dir.entries(Capybara::Screenshot.capybara_root).
-                      sort_by { |e| e }
-        files_to_keep = total_files.last(count)
-
-        files = (total_files - files_to_keep).map do |f|
-          Capybara::Screenshot.capybara_root + '/' + f
+        files = Dir.glob(wildcard_path).sort_by do |file_name|
+          File.ctime(File.expand_path(file_name, Screenshot.capybara_root))
         end
 
-        # remove . and ..
-        files.shift(2)
-        FileUtils.rm_rf(files)
+        FileUtils.rm_rf(files[0...-count])
       end
     end
   end

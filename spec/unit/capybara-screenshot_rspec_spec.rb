@@ -47,7 +47,7 @@ describe Capybara::Screenshot::RSpec do
       context 'when prune strategy specified' do
         context 'for pruner strategy:' do
           [:keep_all, :keep_last_run, { keep: 3 }].each do |strategy|
-            context strategy.to_s do
+            context "#{strategy}" do
               it 'it calls Pruner with corresponding strategy' do
                 Capybara::Screenshot.prune_strategy = strategy
                 pruner = Capybara::Screenshot::Pruner
