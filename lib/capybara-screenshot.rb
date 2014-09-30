@@ -80,10 +80,14 @@ module Capybara
     # Prune screenshots based on prune_strategy
     # Will run only once unless force:true
     def self.prune(force: false)
-      if force || @pruned_previous_screenshots.nil?
-        Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots
-      end
+      reset_prune_history if force
+      Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots unless @pruned_previous_screenshots
       @pruned_previous_screenshots = true
+    end
+
+    # Reset prune history allowing further prunining on next failure
+    def self.reset_prune_history
+      @pruned_previous_screenshots = nil
     end
   end
 end
