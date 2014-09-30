@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe "Using Capybara::Screenshot with Spinach" do
-  include Aruba::Api
   include CommonSetup
 
   before do
@@ -49,5 +48,17 @@ describe "Using Capybara::Screenshot with Spinach" do
           And I click on a missing link on a different page in a different session
     GHERKIN
     check_file_content('tmp/my_screenshot.html', 'This is a different page', true)
+  end
+
+  it 'on failure it prunes previous screenshots when strategy is set' do
+    create_screenshot_for_pruning
+    configure_prune_strategy :last_run
+    run_failing_case(%q{Unable to find link or button "you'll never find me"}, <<-GHERKIN)
+      Feature: Failure
+        Scenario: Failure
+          Given I visit "/"
+          And I click on a missing link
+    GHERKIN
+    assert_screenshot_pruned
   end
 end

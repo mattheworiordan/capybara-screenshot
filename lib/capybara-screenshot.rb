@@ -76,6 +76,15 @@ module Capybara
     def self.final_session_name
       @final_session_name || Capybara.session_name || :default
     end
+
+    # Prune screenshots based on prune_strategy
+    # Will run only once unless force:true
+    def self.prune(force: false)
+      if force || @pruned_previous_screenshots.nil?
+        Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots
+      end
+      @pruned_previous_screenshots = true
+    end
   end
 end
 

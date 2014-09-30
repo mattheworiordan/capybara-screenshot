@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe "Using Capybara::Screenshot with MiniTest" do
-  include Aruba::Api
   include CommonSetup
 
   before do
@@ -47,7 +46,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
         end
       end
     RUBY
-    check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
+    check_file_content 'tmp/my_screenshot.html', 'This is the root page', true
   end
 
   it "does not save a screenshot for tests that don't inherit from ActionDispatch::IntegrationTest" do
@@ -85,6 +84,27 @@ describe "Using Capybara::Screenshot with MiniTest" do
         end
       end
     RUBY
-    check_file_content('tmp/my_screenshot.html', 'This is a different page', true)
+    check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
+  end
+
+  it "prunes screenshots on failure" do
+    create_screenshot_for_pruning
+    configure_prune_strategy :last_run
+    run_failing_case <<-RUBY
+      module ActionDispatch
+        class IntegrationTest < Minitest::Unit::TestCase; end
+      end
+
+      class TestFailure < ActionDispatch::IntegrationTest
+        include Capybara::DSL
+
+        def test_failure
+          visit '/'
+          assert(page.body.include?('This is the root page'))
+          click_on "you'll never find me"
+        end
+      end
+    RUBY
+    assert_screenshot_pruned
   end
 end

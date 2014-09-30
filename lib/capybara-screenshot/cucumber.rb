@@ -7,7 +7,6 @@ end
 After do |scenario|
   if Capybara::Screenshot.autosave_on_failure && scenario.failed?
     Capybara.using_session(Capybara::Screenshot.final_session_name) do
-      Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots
       filename_prefix = Capybara::Screenshot.filename_prefix_for(:cucumber, scenario)
 
       saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)

@@ -1,14 +1,13 @@
 require "spec_helper"
 
 describe "Using Capybara::Screenshot with Test::Unit" do
-  include Aruba::Api
   include CommonSetup
 
   before do
     clean_current_dir
   end
 
-  def run_failing_case(code, integration_path = '.')
+  def run_failing_case code, integration_path = '.'
     write_file("#{integration_path}/test_failure.rb", <<-RUBY)
       #{ensure_load_paths_valid}
       require 'test/unit'
@@ -38,16 +37,16 @@ describe "Using Capybara::Screenshot with Test::Unit" do
   end
 
   it "saves a screenshot on failure for any test in path 'test/integration'" do
-    run_failing_case(<<-RUBY, 'test/integration')
+    run_failing_case <<-RUBY, 'test/integration'
       visit '/'
       assert(page.body.include?('This is the root page'))
       click_on "you'll never find me"
     RUBY
-    check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
+    check_file_content 'tmp/my_screenshot.html', 'This is the root page', true
   end
 
   it "does not generate a screenshot for tests that are not in 'test/integration'" do
-    run_failing_case(<<-RUBY, 'test/something-else')
+    run_failing_case <<-RUBY, 'test/something-else'
       visit '/'
       assert(page.body.include?('This is the root page'))
       click_on "you'll never find me"
@@ -57,7 +56,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
   end
 
   it "saves a screenshot for the correct session for failures using_session" do
-    run_failing_case(<<-RUBY, 'test/integration')
+    run_failing_case <<-RUBY, 'test/integration'
       visit '/'
       assert(page.body.include?('This is the root page'))
       using_session :different_session do
@@ -66,6 +65,17 @@ describe "Using Capybara::Screenshot with Test::Unit" do
         click_on "you'll never find me"
       end
     RUBY
-    check_file_content('tmp/my_screenshot.html', 'This is a different page', true)
+    check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
+  end
+
+  it "prunes screenshots on failure" do
+    create_screenshot_for_pruning
+    configure_prune_strategy :last_run
+    run_failing_case <<-RUBY, 'test/integration'
+      visit '/'
+      assert(page.body.include?('This is the root page'))
+      click_on "you'll never find me"
+    RUBY
+    assert_screenshot_pruned
   end
 end
