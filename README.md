@@ -162,6 +162,19 @@ Capybara.save_and_open_page_path = "/file/path"
 ```
 
 
+Pruning old screenshots automatically
+--------------------------
+By default screenshots are saved indefinitely into `$APPLICATION_ROOT/tmp/capybara`.  If you want screenshots to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:
+
+```ruby
+# Keep only the screenshots generated from the last failing test suite
+Capybara::ScreenShot.prune_strategy = :keep_last_run
+
+# Keep up to the number of screenshots specified in the hash
+Capybara::ScreenShot.prune_strategy = { keep: 20 }
+```
+
+
 Information about screenshots in RSpec output
 ---------------------------------------------
 
