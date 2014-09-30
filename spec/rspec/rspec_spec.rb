@@ -8,7 +8,7 @@ describe Capybara::Screenshot::RSpec do
       clean_current_dir
     end
 
-    def run_failing_case(code, error_message, format=nil)\
+    def run_failing_case(code, error_message, format=nil)
       run_case code, format: format
 
       cmd = cmd_with_format(format)
@@ -19,7 +19,7 @@ describe Capybara::Screenshot::RSpec do
       end
     end
 
-    def run_case(code, format:nil, assert_all_passed: false)
+    def run_case(code, options = {})
       write_file('spec/test_failure.rb', <<-RUBY)
         #{ensure_load_paths_valid}
         require 'rspec'
@@ -32,10 +32,10 @@ describe Capybara::Screenshot::RSpec do
         #{code}
       RUBY
 
-      cmd = cmd_with_format(format)
+      cmd = cmd_with_format(options[:format])
       run_simple_with_retry cmd, false
 
-      expect(output_from(cmd)).to include('0 failures') if assert_all_passed
+      expect(output_from(cmd)).to include('0 failures') if options[:assert_all_passed]
     end
 
     def cmd_with_format(format)

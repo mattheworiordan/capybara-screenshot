@@ -14,7 +14,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
     expect(output_from(cmd)).to match(failure_message)
   end
 
-  def run_case(code, assert_all_passed: false)
+  def run_case(code, options = {})
     write_file('features/support/env.rb', <<-RUBY)
       #{ensure_load_paths_valid}
       require 'cucumber/support/env.rb'
@@ -32,7 +32,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
 
     run_simple_with_retry cmd, false
 
-    expect(output_from(cmd)).to_not include('failed)') if assert_all_passed
+    expect(output_from(cmd)).to_not include('failed)') if options[:assert_all_passed]
   end
 
   it 'saves a screenshot on failure' do

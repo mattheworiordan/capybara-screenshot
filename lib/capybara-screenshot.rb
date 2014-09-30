@@ -79,8 +79,8 @@ module Capybara
 
     # Prune screenshots based on prune_strategy
     # Will run only once unless force:true
-    def self.prune(force: false)
-      reset_prune_history if force
+    def self.prune(options = {})
+      reset_prune_history if options[:force]
       Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots unless @pruned_previous_screenshots
       @pruned_previous_screenshots = true
     end
