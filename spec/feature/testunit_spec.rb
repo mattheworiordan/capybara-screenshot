@@ -7,7 +7,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     clean_current_dir
   end
 
-  def run_failing_case code, integration_path = '.'
+  def run_failing_case(code, integration_path = '.')
     write_file("#{integration_path}/test_failure.rb", <<-RUBY)
       #{ensure_load_paths_valid}
       require 'test/unit'
@@ -55,7 +55,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     check_file_presence(%w{tmp/my_screenshot.html}, false)
   end
 
-  it "saves a screenshot for the correct session for failures using_session" do
+  it 'saves a screenshot for the correct session for failures using_session' do
     run_failing_case <<-RUBY, 'test/integration'
       visit '/'
       assert(page.body.include?('This is the root page'))
@@ -68,7 +68,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
   end
 
-  it "prunes screenshots on failure" do
+  it 'prunes screenshots on failure' do
     create_screenshot_for_pruning
     configure_prune_strategy :last_run
     run_failing_case <<-RUBY, 'test/integration'

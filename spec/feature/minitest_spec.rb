@@ -30,7 +30,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
   end
 
-  it "saves a screenshot on failure" do
+  it 'saves a screenshot on failure' do
     run_failing_case <<-RUBY
       module ActionDispatch
         class IntegrationTest < Minitest::Unit::TestCase; end
@@ -64,7 +64,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     check_file_presence(%w{tmp/my_screenshot.html}, false)
   end
 
-  it "saves a screenshot for the correct session for failures using_session" do
+  it 'saves a screenshot for the correct session for failures using_session' do
     run_failing_case <<-RUBY
       module ActionDispatch
         class IntegrationTest < Minitest::Unit::TestCase; end
@@ -87,7 +87,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
   end
 
-  it "prunes screenshots on failure" do
+  it 'prunes screenshots on failure' do
     create_screenshot_for_pruning
     configure_prune_strategy :last_run
     run_failing_case <<-RUBY
