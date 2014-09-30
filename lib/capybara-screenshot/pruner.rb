@@ -37,7 +37,7 @@ module Capybara
 
       def prune_with_numeric_strategy(count)
         files = Dir.glob(wildcard_path).sort_by do |file_name|
-          File.ctime(File.expand_path(file_name, Screenshot.capybara_root))
+          File.mtime(File.expand_path(file_name, Screenshot.capybara_root))
         end
 
         FileUtils.rm_rf(files[0...-count])
