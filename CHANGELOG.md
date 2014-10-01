@@ -1,3 +1,10 @@
+1 October 2014 - 1.0.2 -> 1.0.3
+-----------
+
+* Added ability to prune screenshots automatically, see https://github.com/mattheworiordan/capybara-screenshot/pull/100
+
+Thanks to [Anton Kolomiychuk](https://github.com/akolomiychuk) for his contribution.
+
 27 September 2014 - 1.0.1 -> 1.0.2
 -----------
 
