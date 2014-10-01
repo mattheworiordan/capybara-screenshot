@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Capybara::Screenshot::RSpec do
   describe "used with RSpec" do
-    include Aruba::Api
     include CommonSetup
 
     before do
@@ -10,6 +9,17 @@ describe Capybara::Screenshot::RSpec do
     end
 
     def run_failing_case(code, error_message, format=nil)
+      run_case code, format: format
+
+      cmd = cmd_with_format(format)
+      if error_message.kind_of?(Regexp)
+        expect(output_from(cmd)).to match(error_message)
+      else
+        expect(output_from(cmd)).to include(error_message)
+      end
+    end
+
+    def run_case(code, options = {})
       write_file('spec/test_failure.rb', <<-RUBY)
         #{ensure_load_paths_valid}
         require 'rspec'
@@ -22,17 +32,17 @@ describe Capybara::Screenshot::RSpec do
         #{code}
       RUBY
 
-      cmd = "bundle exec rspec #{"--format #{format} " if format}spec/test_failure.rb"
+      cmd = cmd_with_format(options[:format])
       run_simple_with_retry cmd, false
 
-      if error_message.kind_of?(Regexp)
-        expect(output_from(cmd)).to match(error_message)
-      else
-        expect(output_from(cmd)).to include(error_message)
-      end
+      expect(output_from(cmd)).to include('0 failures') if options[:assert_all_passed]
     end
 
-    it "saves a screenshot on failure" do
+    def cmd_with_format(format)
+      "bundle exec rspec #{"--format #{format} " if format}spec/test_failure.rb"
+    end
+
+    it 'saves a screenshot on failure' do
       run_failing_case <<-RUBY, %q{Unable to find link or button "you'll never find me"}
         feature 'screenshot with failure' do
           scenario 'click on a missing link' do
@@ -46,8 +56,8 @@ describe Capybara::Screenshot::RSpec do
     end
 
     formatters = {
-      progress:      "HTML screenshot:",
-      documentation: "HTML screenshot:",
+      progress:      'HTML screenshot:',
+      documentation: 'HTML screenshot:',
       html:          %r{<a href="file://\./tmp/screenshot\.html"[^>]*>HTML page</a>}
     }
 
@@ -81,7 +91,7 @@ describe Capybara::Screenshot::RSpec do
       check_file_presence(%w{tmp/screenshot.html}, false)
     end
 
-    it "saves a screenshot for the correct session for failures using_session" do
+    it 'saves a screenshot for the correct session for failures using_session' do
       run_failing_case <<-RUBY, %q{Unable to find link or button "you'll never find me"}
         feature 'screenshot with failure' do
           scenario 'click on a missing link' do
@@ -96,6 +106,54 @@ describe Capybara::Screenshot::RSpec do
         end
       RUBY
       check_file_content('tmp/screenshot.html', 'This is a different page', true)
+    end
+
+    context 'pruning' do
+      before do
+        create_screenshot_for_pruning
+        configure_prune_strategy :last_run
+      end
+
+      it 'on failure it prunes previous screenshots when strategy is set' do
+        run_failing_case <<-RUBY, 'HTML screenshot:', :progress
+          feature 'screenshot with failure' do
+            scenario 'click on a missing link' do
+              visit '/'
+              click_on "you'll never find me"
+            end
+          end
+        RUBY
+        assert_screenshot_pruned
+      end
+
+      it 'on success it never prunes' do
+        run_case <<-CUCUMBER, assert_all_passed: true
+          feature 'screenshot without failure' do
+            scenario 'click on a link' do
+              visit '/'
+            end
+          end
+        CUCUMBER
+        assert_screenshot_not_pruned
+      end
+    end
+
+    context 'no pruning by default' do
+      before do
+        create_screenshot_for_pruning
+      end
+
+      it 'on failure it leaves existing screenshots' do
+        run_failing_case <<-RUBY, 'HTML screenshot:', :progress
+          feature 'screenshot with failure' do
+            scenario 'click on a missing link' do
+              visit '/'
+              click_on "you'll never find me"
+            end
+          end
+        RUBY
+        assert_screenshot_not_pruned
+      end
     end
   end
 end

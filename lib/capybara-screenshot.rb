@@ -7,6 +7,7 @@ module Capybara
       attr_accessor :append_timestamp
       attr_accessor :webkit_options
       attr_writer   :final_session_name
+      attr_accessor :prune_strategy
     end
 
     self.autosave_on_failure = true
@@ -14,6 +15,7 @@ module Capybara
     self.filename_prefix_formatters = {}
     self.append_timestamp = true
     self.webkit_options = {}
+    self.prune_strategy = :keep_all
 
     def self.append_screenshot_path=(value)
       $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
@@ -74,6 +76,19 @@ module Capybara
     def self.final_session_name
       @final_session_name || Capybara.session_name || :default
     end
+
+    # Prune screenshots based on prune_strategy
+    # Will run only once unless force:true
+    def self.prune(options = {})
+      reset_prune_history if options[:force]
+      Capybara::Screenshot::Pruner.new(Capybara::Screenshot.prune_strategy).prune_old_screenshots unless @pruned_previous_screenshots
+      @pruned_previous_screenshots = true
+    end
+
+    # Reset prune history allowing further prunining on next failure
+    def self.reset_prune_history
+      @pruned_previous_screenshots = nil
+    end
   end
 end
 
@@ -133,5 +148,4 @@ require 'capybara/util/save_and_open_page' if Capybara::VERSION.match(/^\d+/)[0]
 
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
-
-
+require 'capybara-screenshot/pruner'
