@@ -168,10 +168,10 @@ By default screenshots are saved indefinitely into `$APPLICATION_ROOT/tmp/capyba
 
 ```ruby
 # Keep only the screenshots generated from the last failing test suite
-Capybara::ScreenShot.prune_strategy = :keep_last_run
+Capybara::Screenshot.prune_strategy = :keep_last_run
 
 # Keep up to the number of screenshots specified in the hash
-Capybara::ScreenShot.prune_strategy = { keep: 20 }
+Capybara::Screenshot.prune_strategy = { keep: 20 }
 ```
 
 
