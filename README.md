@@ -155,7 +155,7 @@ Capybara::Screenshot.append_timestamp = false
 
 Custom screenshot directory
 --------------------------
-By default screenshots are saved to the current working directory. If you want to customize the location, override the file path as:
+By default screenshots are saved into `$APPLICATION_ROOT/tmp/capybara`. If you want to customize the location, override the file path as:
 
 ```ruby
 Capybara.save_and_open_page_path = "/file/path"
@@ -164,7 +164,7 @@ Capybara.save_and_open_page_path = "/file/path"
 
 Pruning old screenshots automatically
 --------------------------
-By default screenshots are saved indefinitely into `$APPLICATION_ROOT/tmp/capybara`.  If you want screenshots to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:
+By default screenshots are saved indefinitely, if you want them to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:
 
 ```ruby
 # Keep only the screenshots generated from the last failing test suite
