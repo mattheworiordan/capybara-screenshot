@@ -20,7 +20,7 @@ After do |scenario|
         image = open(saver.screenshot_path, 'rb') {|io|io.read}
         encoded_img = Base64.encode64(image)
         #this will embed the image in the HTML report, embed() is defined in cucumber
-        embed("data:image/png;base64,#{encoded_img}", 'image/png', "Screenshot of the error")
+        embed(encoded_img, 'image/png;base64', "Screenshot of the error")
       end
     end
   end
