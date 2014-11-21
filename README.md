@@ -133,6 +133,8 @@ Capybara::Screenshot.register_driver(:exotic_browser_driver) do |driver, path|
 end
 ```
 
+If your driver is based on existing browser driver, like Firefox, instead of `.super_dooper_render` do `driver.browser.save_screenshot path`.
+
 
 Custom screenshot filename
 --------------------------
