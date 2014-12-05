@@ -4,11 +4,11 @@ describe Capybara::Screenshot::RSpec do
   describe '.after_failed_example' do
     context 'for a failed example in a feature that can be snapshotted' do
       before do
-        allow(Capybara.page).to receive(:save_page)
         allow(Capybara.page).to receive(:current_url).and_return("http://test.local")
         allow(Capybara::Screenshot::Saver).to receive(:new).and_return(mock_saver)
       end
-      let(:example) { double("example", exception: Exception.new, metadata: {}) }
+      let(:example_group) { Module.new.include(Capybara::DSL) }
+      let(:example) { double("example", exception: Exception.new, example_group: example_group, metadata: {}) }
       let(:mock_saver) do
         Capybara::Screenshot::Saver.new(Capybara, Capybara.page).tap do |saver|
           allow(saver).to receive(:save)
