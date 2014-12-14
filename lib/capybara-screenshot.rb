@@ -115,6 +115,10 @@ Capybara::Screenshot.class_eval do
     driver.render(path, :full => true)
   end
 
+  register_driver(:poltergeist_billy) do |driver, path|
+    driver.render(path, :full => true)
+  end
+
   register_driver(:webkit) do |driver, path|
     if driver.respond_to?(:save_screenshot)
       driver.save_screenshot(path, webkit_options)
