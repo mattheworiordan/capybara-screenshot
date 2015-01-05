@@ -1,3 +1,11 @@
+5 January 2014 - 1.0.3 -> 1.0.4
+-----------
+
+* Added support for Poltergeist Billy
+* Don't initialize a new Capybara::Session in after hook
+
+Thanks to [Neodude](https://github.com/neodude) and [Dominik Masur](https://github.com/dmasur)
+
 1 October 2014 - 1.0.2 -> 1.0.3
 -----------
 
