@@ -112,7 +112,7 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver(:poltergeist) do |driver, path|
-    driver.render(path, :full => true)
+    driver.render(path)
   end
 
   register_driver(:poltergeist_billy) do |driver, path|
