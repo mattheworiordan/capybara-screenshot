@@ -42,7 +42,8 @@ describe Capybara::Screenshot::RSpec::TextReporter do
   end
 
   def example_failed_method_argument_double(metadata = {})
-    example = double("example", metadata: metadata)
+    example_group = Module.new.include(Capybara::DSL)
+    example = double("example", metadata: metadata, example_group: example_group)
     if ::RSpec::Core::Version::STRING.to_i <= 2
       example
     else
