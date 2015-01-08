@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     s.add_dependency 'capybara', ['>= 1.0', '< 3']
   end
   s.add_dependency 'launchy'
-  s.add_dependency 'colored'
+  s.add_dependency 'colorize'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'timecop'

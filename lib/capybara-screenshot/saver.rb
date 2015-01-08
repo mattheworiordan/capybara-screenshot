@@ -5,7 +5,7 @@ if RUBY_PLATFORM =~ /win32/
     fail "win32console gem is required to output colorized messages, please add this to your Gemfile or install"
   end
 end
-require 'colored'
+require 'colorize'
 
 module Capybara
   module Screenshot
