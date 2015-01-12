@@ -5,6 +5,7 @@ module Capybara
       attr_accessor :registered_drivers
       attr_accessor :filename_prefix_formatters
       attr_accessor :append_timestamp
+      attr_accessor :append_random
       attr_accessor :webkit_options
       attr_writer   :final_session_name
       attr_accessor :prune_strategy
@@ -14,6 +15,7 @@ module Capybara
     self.registered_drivers = {}
     self.filename_prefix_formatters = {}
     self.append_timestamp = true
+    self.append_random = false
     self.webkit_options = {}
     self.prune_strategy = :keep_all
 
