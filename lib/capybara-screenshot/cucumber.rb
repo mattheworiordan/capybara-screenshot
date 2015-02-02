@@ -1,3 +1,5 @@
+require 'capybara-screenshot'
+
 After do |scenario|
   if Capybara::Screenshot.autosave_on_failure && scenario.failed?
     filename_prefix = Capybara::Screenshot.filename_prefix_for(:cucumber, scenario)
