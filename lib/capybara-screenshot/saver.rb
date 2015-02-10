@@ -15,9 +15,12 @@ module Capybara
         @capybara, @page, @html_save = capybara, page, html_save
         time_now = Time.now
         timestamp = "#{time_now.strftime('%Y-%m-%d-%H-%M-%S.')}#{'%03d' % (time_now.usec/1000).to_i}"
-        @file_base_name = filename_prefix
-        @file_base_name = "#{@file_base_name}_#{timestamp}" if Capybara::Screenshot.append_timestamp
-        @file_base_name = "#{@file_base_name}_#{SecureRandom.hex}" if Capybara::Screenshot.append_random
+
+        filename = [filename_prefix]
+        filename << timestamp if Capybara::Screenshot.append_timestamp
+        filename << SecureRandom.hex if Capybara::Screenshot.append_random
+
+        @file_base_name = filename.join('_')
 
         Capybara::Screenshot.prune
       end
