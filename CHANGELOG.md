@@ -1,4 +1,11 @@
-5 January 2014 - 1.0.3 -> 1.0.4
+10 Feburary 2015 - 1.04 -> 1.0.5
+-----------
+
+* Added support for appending a random string to the filename
+
+Thanks to [Brad Wedell](https://github.com/streetlogics)
+
+5 January 2015 - 1.0.3 -> 1.0.4
 -----------
 
 * Added support for Poltergeist Billy
