@@ -1,4 +1,5 @@
 require 'capybara-screenshot/rspec/base_reporter'
+require 'capybara-screenshot/helpers'
 
 module Capybara
   module Screenshot
@@ -25,8 +26,8 @@ module Capybara
         private
         def output_screenshot_info(example)
           return unless (screenshot = example.metadata[:screenshot])
-          output.puts(long_padding + "HTML screenshot: #{screenshot[:html]}".yellow) if screenshot[:html]
-          output.puts(long_padding + "Image screenshot: #{screenshot[:image]}".yellow) if screenshot[:image]
+          output.puts(long_padding + CapybaraScreenshot::Helpers.yellow("HTML screenshot: #{screenshot[:html]}")) if screenshot[:html]
+          output.puts(long_padding + CapybaraScreenshot::Helpers.yellow("Image screenshot: #{screenshot[:image]}")) if screenshot[:image]
         end
 
         def long_padding

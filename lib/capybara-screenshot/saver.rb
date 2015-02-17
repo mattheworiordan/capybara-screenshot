@@ -1,11 +1,4 @@
-if RUBY_PLATFORM =~ /win32/
-  begin
-    require 'Win32/Console/ANSI'
-  rescue LoadError => e
-    fail "win32console gem is required to output colorized messages, please add this to your Gemfile or install"
-  end
-end
-require 'colored'
+require 'capybara-screenshot/helpers'
 
 module Capybara
   module Screenshot
@@ -89,7 +82,7 @@ module Capybara
 
       private
       def output(message)
-        puts "    #{message.yellow}"
+        puts "    #{CapybaraScreenshot::Helpers.yellow(message)}"
       end
     end
   end
