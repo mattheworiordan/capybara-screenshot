@@ -1,3 +1,10 @@
+8 March 2015 - 1.0.5 -> 1.0.6
+-----------
+
+* Removed dependency on the colored gem
+
+Thanks to [François Bernier](https://github.com/fbernier)
+
 10 Feburary 2015 - 1.04 -> 1.0.5
 -----------
 
