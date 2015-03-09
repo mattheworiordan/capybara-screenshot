@@ -24,3 +24,7 @@ end
 Spinach.hooks.on_error_step do |*args|
   Capybara::Screenshot::Spinach.fail_with_screenshot(*args)
 end
+
+Spinach.hooks.after_run do |*args|
+  Capybara::Screenshot::S3.flush if Capybara::Screenshot.upload_to_s3?
+end

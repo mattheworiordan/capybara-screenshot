@@ -20,6 +20,11 @@ module Capybara::Screenshot::MiniTestPlugin
       end
     end
   end
+
+  def after_tests
+    super
+    Capybara::Screenshot::S3.flush if Capybara::Screenshot.upload_to_s3?
+  end
 end
 
 class MiniTest::Unit::TestCase

@@ -4,8 +4,9 @@ module Capybara
   module Screenshot
     class Saver
       attr_reader :capybara, :page, :file_base_name
-      def initialize(capybara, page, html_save=true, filename_prefix='screenshot')
-        @capybara, @page, @html_save = capybara, page, html_save
+      def initialize(capybara, page, html_save=true, filename_prefix='screenshot', upload_to_s3=nil)
+        @capybara, @page, @html_save, @upload_to_s3 = capybara, page, html_save, upload_to_s3
+
         time_now = Time.now
         timestamp = "#{time_now.strftime('%Y-%m-%d-%H-%M-%S.')}#{'%03d' % (time_now.usec/1000).to_i}"
 
@@ -36,6 +37,7 @@ module Capybara
           end
         end
         @html_saved = true
+        upload_or_enqueue(path) if upload_to_s3?
       end
 
       def save_screenshot
@@ -45,16 +47,34 @@ module Capybara
             warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
             Capybara::Screenshot.registered_drivers[:default]
           }.call(page.driver, path)
-          @screenshot_saved = result != :not_supported
+          if @screenshot_saved = result != :not_supported
+            upload_or_enqueue(path) if upload_to_s3?
+          end
         end
+      end
+
+      def html_location
+        upload_to_s3? ? html_url : html_path
       end
 
       def html_path
         File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.html")
       end
 
+      def html_url
+        Capybara::Screenshot::S3.url_for(html_path)
+      end
+
+      def screenshot_location
+        upload_to_s3? ? screenshot_url : screenshot_path
+      end
+
       def screenshot_path
         File.join(Capybara::Screenshot.capybara_root, "#{file_base_name}.png")
+      end
+
+      def screenshot_url
+        Capybara::Screenshot::S3.url_for(screenshot_path)
       end
 
       def html_saved?
@@ -76,13 +96,22 @@ module Capybara
       end
 
       def output_screenshot_path
-        output "HTML screenshot: #{html_path}" if html_saved?
-        output "Image screenshot: #{screenshot_path}" if screenshot_saved?
+        output "HTML screenshot: #{html_location}" if html_saved?
+        output "Image screenshot: #{screenshot_location}" if screenshot_saved?
       end
 
       private
+      def upload_to_s3?
+        @upload_to_s3.nil? ? Capybara::Screenshot.upload_to_s3? : @upload_to_s3
+      end
+
       def output(message)
         puts "    #{CapybaraScreenshot::Helpers.yellow(message)}"
+      end
+
+      def upload_or_enqueue(path)
+        method = @upload_inline ? :upload : :enqueue
+        Capybara::Screenshot::S3.send(method, path)
       end
     end
   end

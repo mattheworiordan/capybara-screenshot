@@ -58,6 +58,36 @@ describe Capybara::Screenshot do
     end
   end
 
+  describe '.screenshot_and_save_page' do
+    let(:html_location) { 'page.html' }
+    let(:screenshot_location) { 'screenshot.png' }
+
+    it 'saves the image and page and returns their locations' do
+      allow_any_instance_of(Capybara::Screenshot::Saver).to receive(:save)
+      allow_any_instance_of(Capybara::Screenshot::Saver).to receive(:html_location).and_return(html_location)
+      allow_any_instance_of(Capybara::Screenshot::Saver).to receive(:screenshot_location).and_return(screenshot_location)
+
+      expect(Capybara::Screenshot.screenshot_and_save_page).to eq({
+        html: html_location, image: screenshot_location
+      })
+    end
+  end
+
+  describe '.screenshot_and_open_image' do
+    require "launchy"
+    let(:screenshot_location) { 'screenshot.png' }
+
+    it 'saves the image and page and returns their locations' do
+      allow(Launchy).to receive(:open)
+      allow_any_instance_of(Capybara::Screenshot::Saver).to receive(:save)
+      allow_any_instance_of(Capybara::Screenshot::Saver).to receive(:screenshot_location).and_return(screenshot_location)
+
+      expect(Capybara::Screenshot.screenshot_and_open_image).to eq({
+        html: nil, image: screenshot_location
+      })
+    end
+  end
+
   describe '#prune' do
     before do
       Capybara::Screenshot.reset_prune_history

@@ -30,6 +30,7 @@ Test::Unit::TestResult.class_eval do
           saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
           saver.save
           saver.output_screenshot_path
+          Capybara::Screenshot::S3.flush if Capybara::Screenshot.upload_to_s3?
         end
       end
     end
