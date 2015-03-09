@@ -1,3 +1,9 @@
+9 March 2015 - 1.0.6 -> 1.0.7
+-----------
+
+* Fix capybara-webkit bug, see https://github.com/mattheworiordan/capybara-screenshot/issues/119
+* Fix Travis CI builds in Ruby < 2.1 and added Ruby 2.2 support
+
 8 March 2015 - 1.0.5 -> 1.0.6
 -----------
 
