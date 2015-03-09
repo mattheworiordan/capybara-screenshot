@@ -7,7 +7,7 @@ describe Capybara::Screenshot::RSpec do
         allow(Capybara.page).to receive(:current_url).and_return("http://test.local")
         allow(Capybara::Screenshot::Saver).to receive(:new).and_return(mock_saver)
       end
-      let(:example_group) { Module.new.include(Capybara::DSL) }
+      let(:example_group) { Module.new.send(:include, Capybara::DSL) }
       let(:example) { double("example", exception: Exception.new, example_group: example_group, metadata: {}) }
       let(:mock_saver) do
         Capybara::Screenshot::Saver.new(Capybara, Capybara.page).tap do |saver|
