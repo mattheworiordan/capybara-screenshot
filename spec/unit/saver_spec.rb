@@ -228,11 +228,40 @@ describe Capybara::Screenshot::Saver do
       allow(capybara_mock).to receive(:current_driver).and_return(:webkit_debug)
     end
 
-    it 'saves driver render' do
-      expect(driver_mock).to receive(:render).with(screenshot_path)
+    context 'has render method' do
+      before do
+        allow(driver_mock).to receive(:respond_to?).with(:'save_screenshot').and_return(false)
+      end
 
-      saver.save
-      expect(saver).to be_screenshot_saved
+      it 'saves driver render' do
+        expect(driver_mock).to receive(:render).with(screenshot_path)
+
+        saver.save
+        expect(saver).to be_screenshot_saved
+      end
+    end
+
+    context 'has save_screenshot method' do
+      let(:webkit_options){ {width: 800, height: 600} }
+
+      before do
+        allow(driver_mock).to receive(:respond_to?).with(:'save_screenshot').and_return(true)
+      end
+
+      it 'saves driver render' do
+        expect(driver_mock).to receive(:save_screenshot).with(screenshot_path, {})
+
+        saver.save
+        expect(saver).to be_screenshot_saved
+      end
+
+      it 'passes webkit_options to driver' do
+        allow(Capybara::Screenshot).to receive(:webkit_options).and_return( webkit_options )
+        expect(driver_mock).to receive(:save_screenshot).with(screenshot_path, webkit_options)
+
+        saver.save
+        expect(saver).to be_screenshot_saved
+      end
     end
   end
 

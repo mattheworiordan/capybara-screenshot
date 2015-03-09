@@ -121,7 +121,7 @@ Capybara::Screenshot.class_eval do
     driver.render(path, :full => true)
   end
 
-  register_driver(:webkit) do |driver, path|
+  webkit_block = proc do |driver, path|
     if driver.respond_to?(:save_screenshot)
       driver.save_screenshot(path, webkit_options)
     else
@@ -129,9 +129,8 @@ Capybara::Screenshot.class_eval do
     end
   end
 
-  register_driver(:webkit_debug) do |driver, path|
-    driver.render(path)
-  end
+  register_driver :webkit,       &webkit_block
+  register_driver :webkit_debug, &webkit_block
 
   register_driver(:terminus) do |driver, path|
     if driver.respond_to?(:save_screenshot)
