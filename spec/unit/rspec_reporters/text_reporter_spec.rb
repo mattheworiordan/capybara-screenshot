@@ -68,7 +68,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
 
     it 'appends the html file path to the original output' do
       @reporter.send(example_failed_method, example)
-      expect(@reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: path/to/html")}\n")
+      expect(@reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: file://path/to/html")}\n")
     end
   end
 
@@ -77,7 +77,7 @@ describe Capybara::Screenshot::RSpec::TextReporter do
 
     it 'appends the image path to the original output' do
       @reporter.send(example_failed_method, example)
-      expect(@reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: path/to/html")}\n  #{CapybaraScreenshot::Helpers.yellow("Image screenshot: path/to/image")}\n")
+      expect(@reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: file://path/to/html")}\n  #{CapybaraScreenshot::Helpers.yellow("Image screenshot: file://path/to/image")}\n")
     end
   end
 
@@ -93,6 +93,6 @@ describe Capybara::Screenshot::RSpec::TextReporter do
     old_reporter.singleton_class.send :include, described_class
     example = example_failed_method_argument_double(screenshot: { html: "path/to/html" })
     old_reporter.send(example_failed_method, example)
-    expect(old_reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: path/to/html")}\n")
+    expect(old_reporter.output.string).to eql("original failure info\n  #{CapybaraScreenshot::Helpers.yellow("HTML screenshot: file://path/to/html")}\n")
   end
 end
