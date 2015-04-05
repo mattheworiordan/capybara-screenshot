@@ -52,7 +52,7 @@ describe Capybara::Screenshot::Pruner do
       allow(Capybara::Screenshot).to receive(:capybara_root).and_return(Dir.mktmpdir.to_s)
 
       files_count.times do |i|
-        files_created << FileUtils.touch("#{capybara_root}/#{i}").first.tap do |file_name|
+        files_created << FileUtils.touch("#{capybara_root}/#{i}.#{i % 2 == 0 ? 'png' : 'html'}").first.tap do |file_name|
           File.utime(Time.now, Time.now - files_count + i, file_name)
         end
       end

@@ -28,7 +28,7 @@ module Capybara
       attr_reader :strategy_proc
 
       def wildcard_path
-        File.expand_path('*', Screenshot.capybara_root)
+        File.expand_path('*.{html,png}', Screenshot.capybara_root)
       end
 
       def prune_with_last_run_strategy
