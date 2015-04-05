@@ -1,3 +1,10 @@
+6 April 2015 - 1.0.8 -> 1.0.9
+-----------
+
+* [Improved file links within screenshot output](https://github.com/mattheworiordan/capybara-screenshot/pull/123)
+
+Thanks to [Jan Lelis](https://github.com/janlelis)
+
 6 April 2015 - 1.0.7 -> 1.0.8
 -----------
 
