@@ -119,6 +119,20 @@ describe Capybara::Screenshot::Saver do
     expect(saver).to_not be_html_saved
   end
 
+  context 'when saving a screenshot fails' do
+    it 'still restores the original value of Capybara.save_and_open_page_path' do
+      Capybara.save_and_open_page_path = 'tmp/bananas'
+
+      expect(capybara_mock).to receive(:save_page).and_raise
+
+      expect {
+        saver.save
+      }.to raise_error
+
+      expect(Capybara.save_and_open_page_path).to eq('tmp/bananas')
+    end
+  end
+
   describe '#output_screenshot_path' do
     let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
 

@@ -72,6 +72,7 @@ module Capybara
         old_path = Capybara.save_and_open_page_path
         Capybara.save_and_open_page_path = nil
         yield
+      ensure
         Capybara.save_and_open_page_path = old_path
       end
 
