@@ -12,6 +12,7 @@ After do |scenario|
       saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
       saver.save
       saver.output_screenshot_path
+      Capybara::Screenshot::S3.flush if Capybara::Screenshot.upload_to_s3?
 
       # Trying to embed the screenshot into our output."
       if File.exist?(saver.screenshot_path)

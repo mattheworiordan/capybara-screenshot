@@ -9,6 +9,7 @@ module Capybara
       attr_accessor :webkit_options
       attr_writer   :final_session_name
       attr_accessor :prune_strategy
+      attr_accessor :upload_to_s3
     end
 
     self.autosave_on_failure = true
@@ -18,6 +19,7 @@ module Capybara
     self.append_random = false
     self.webkit_options = {}
     self.prune_strategy = :keep_all
+    self.upload_to_s3 = false
 
     def self.append_screenshot_path=(value)
       $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
@@ -25,19 +27,19 @@ module Capybara
       RSpec.add_link_to_screenshot_for_failed_examples = value
     end
 
-    def self.screenshot_and_save_page
-      saver = Saver.new(Capybara, Capybara.page)
+    def self.screenshot_and_save_page(upload_to_s3 = false)
+      saver = Saver.new(Capybara, Capybara.page, true, nil, upload_to_s3)
       saver.save
-      {:html => saver.html_path, :image => saver.screenshot_path}
+      {:html => saver.html_location, :image => saver.screenshot_location}
     end
 
-    def self.screenshot_and_open_image
+    def self.screenshot_and_open_image(upload_to_s3 = false)
       require "launchy"
 
-      saver = Saver.new(Capybara, Capybara.page, false)
+      saver = Saver.new(Capybara, Capybara.page, false, nil, upload_to_s3)
       saver.save
-      Launchy.open saver.screenshot_path
-      {:html => nil, :image => saver.screenshot_path}
+      Launchy.open saver.screenshot_location
+      {:html => nil, :image => saver.screenshot_location}
     end
 
     class << self
@@ -90,6 +92,10 @@ module Capybara
     # Reset prune history allowing further prunining on next failure
     def self.reset_prune_history
       @pruned_previous_screenshots = nil
+    end
+
+    def self.upload_to_s3?
+      self.upload_to_s3
     end
   end
 end
@@ -151,6 +157,7 @@ end
 require 'capybara/dsl'
 require 'capybara/util/save_and_open_page' if Capybara::VERSION.match(/^\d+/)[0] == '1' # no longer needed in Capybara version 2
 
+require 'capybara-screenshot/s3'
 require 'capybara-screenshot/saver'
 require 'capybara-screenshot/capybara'
 require 'capybara-screenshot/pruner'

@@ -176,6 +176,30 @@ Capybara::Screenshot.prune_strategy = :keep_last_run
 Capybara::Screenshot.prune_strategy = { keep: 20 }
 ```
 
+Uploading to Amazon S3
+--------------------------
+
+Be default screenshots are stored on the local filesystem. If you want to store
+the assets on Amazon S3, you can configure that as follows:
+
+```ruby
+Capybara::Screenshot::S3.configure do |config|
+  config.access_key_id = "YOUR_ACCESS_KEY_ID"
+  config.secret_access_key = "YOUR_SECRET_ACCESS_KEY"
+
+  # bucket name - required. this can be a string or a Proc
+  config.bucket = "some-bucket"
+
+  # optionally, specify as folder in which to store the screenshots
+  # can be a string or a Proc
+  config.folder = ->{
+    if build_number = ENV["BUILD_NUMBER"]
+      "builds/#{build_number}"
+    end
+  }
+end
+```
+
 
 Information about screenshots in RSpec output
 ---------------------------------------------

@@ -135,22 +135,47 @@ describe Capybara::Screenshot::Saver do
 
   describe '#output_screenshot_path' do
     let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
+    let(:html_path) { 'page.html' }
+    let(:screenshot_path) { 'screenshot.png' }
 
     before do
-      allow(saver).to receive(:html_path) { 'page.html' }
-      allow(saver).to receive(:screenshot_path) { 'screenshot.png' }
+      allow(saver).to receive(:html_path) { html_path }
+      allow(saver).to receive(:screenshot_path) { screenshot_path }
     end
 
     it 'outputs the path for the HTML screenshot' do
       allow(saver).to receive(:html_saved?).and_return(true)
-      expect(saver).to receive(:output).with("HTML screenshot: page.html")
+      expect(saver).to receive(:output).with("HTML screenshot: #{html_path}")
       saver.output_screenshot_path
     end
 
     it 'outputs the path for the Image screenshot' do
       allow(saver).to receive(:screenshot_saved?).and_return(true)
-      expect(saver).to receive(:output).with("Image screenshot: screenshot.png")
+      expect(saver).to receive(:output).with("Image screenshot: #{screenshot_path}")
       saver.output_screenshot_path
+    end
+
+    context 'when S3 uploads are enabled' do
+      let(:html_url) { 's3_page.html' }
+      let(:screenshot_url) { 's3_screenshot.png' }
+
+      before do
+        allow(saver).to receive(:upload_to_s3?) { true }
+        allow(Capybara::Screenshot::S3).to receive(:url_for).with(html_path).and_return(html_url)
+        allow(Capybara::Screenshot::S3).to receive(:url_for).with(screenshot_path).and_return(screenshot_url)
+      end
+
+      it 'outputs the url for the HTML screenshot' do
+        allow(saver).to receive(:html_saved?).and_return(true)
+        expect(saver).to receive(:output).with("HTML screenshot: #{html_url}")
+        saver.output_screenshot_path
+      end
+
+      it 'outputs the url for the Image screenshot' do
+        allow(saver).to receive(:screenshot_saved?).and_return(true)
+        expect(saver).to receive(:output).with("Image screenshot: #{screenshot_url}")
+        saver.output_screenshot_path
+      end
     end
   end
 

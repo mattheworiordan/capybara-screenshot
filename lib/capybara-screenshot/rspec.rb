@@ -56,8 +56,8 @@ module Capybara
                 saver.save
 
                 example.metadata[:screenshot] = {}
-                example.metadata[:screenshot][:html]  = saver.html_path if saver.html_saved?
-                example.metadata[:screenshot][:image] = saver.screenshot_path if saver.screenshot_saved?
+                example.metadata[:screenshot][:html]  = saver.html_location if saver.html_saved?
+                example.metadata[:screenshot][:image] = saver.screenshot_location if saver.screenshot_saved?
               end
             end
           end
@@ -88,5 +88,9 @@ RSpec.configure do |config|
         formatter.singleton_class.send :include, reporter_module
       end
     end
+  end
+
+  config.after(:suite) do
+    Capybara::Screenshot::S3.flush if Capybara::Screenshot.upload_to_s3?
   end
 end
