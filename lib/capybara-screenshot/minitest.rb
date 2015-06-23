@@ -25,3 +25,7 @@ end
 class MiniTest::Unit::TestCase
   include Capybara::Screenshot::MiniTestPlugin
 end
+
+class Minitest::Test
+  include Capybara::Screenshot::MiniTestPlugin
+end
