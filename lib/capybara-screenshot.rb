@@ -52,11 +52,7 @@ module Capybara
     end
 
     def self.capybara_root
-      return @capybara_root if defined?(@capybara_root)
-      #If the path isn't set, default to the current directory
-      capybara_tmp_path = Capybara.save_and_open_page_path || '.'
-
-      @capybara_root = if defined?(::Rails)
+      @capybara_root ||= if defined?(::Rails)
         ::Rails.root.join capybara_tmp_path
       elsif defined?(Padrino)
         Padrino.root capybara_tmp_path
@@ -90,6 +86,13 @@ module Capybara
     # Reset prune history allowing further prunining on next failure
     def self.reset_prune_history
       @pruned_previous_screenshots = nil
+    end
+
+    private
+
+    # If the path isn't set, default to the current directory
+    def self.capybara_tmp_path
+      Capybara.save_and_open_page_path || '.'
     end
   end
 end
