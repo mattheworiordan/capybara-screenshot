@@ -40,7 +40,8 @@ module Capybara
         "RSpec::Core::Formatters::DocumentationFormatter" => Capybara::Screenshot::RSpec::TextReporter,
         "RSpec::Core::Formatters::HtmlFormatter"          => Capybara::Screenshot::RSpec::HtmlLinkReporter,
         "RSpec::Core::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter, # RSpec 2
-        "RSpec::Mate::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter  # RSpec 3
+        "RSpec::Mate::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter,  # RSpec 3
+        "Fuubar"                                          => Capybara::Screenshot::RSpec::TextReporter
       }
 
       class << self
