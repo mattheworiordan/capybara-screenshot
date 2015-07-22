@@ -1,3 +1,9 @@
+22 July 2015 - 1.0.10 -> 1.0.111
+
+* [Support for Fuubar reporter](https://github.com/mattheworiordan/capybara-screenshot/pull/137)
+
+Thanks to [Kai Schlichting](https://github.com/lacco)
+
 29 June 2015 - 1.0.9 -> 1.0.10
 
 * [Small fix to memoization](https://github.com/mattheworiordan/capybara-screenshot/pull/134) plus [mini refactor](https://github.com/mattheworiordan/capybara-screenshot/commit/1db950bc53c729b26b8881d058a8781d6e7611b8)
