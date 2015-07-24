@@ -27,7 +27,7 @@ Test::Unit::TestResult.class_eval do
         Capybara.using_session(Capybara::Screenshot.final_session_name) do
           filename_prefix = Capybara::Screenshot.filename_prefix_for(:testunit, fault)
 
-          saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
+          saver = Capybara::Screenshot.new_saver(Capybara, Capybara.page, true, filename_prefix)
           saver.save
           saver.output_screenshot_path
         end

@@ -65,6 +65,32 @@ describe Capybara::Screenshot do
     end
   end
 
+  describe '.new_saver' do
+    it 'passes through to get a new Saver if the user has not configured s3' do
+      saver_double = double('saver')
+      args = double('args')
+      expect(Capybara::Screenshot::Saver).to receive(:new).with(args).and_return(saver_double)
+
+      expect(Capybara::Screenshot.new_saver(args)).to eq(saver_double)
+    end
+
+    it 'wraps the returned saver in an S3 saver if it has been configured' do
+      require 'capybara-screenshot/s3_saver'
+
+      saver_double = double('saver')
+      args = double('args')
+      s3_saver_double = double('s3_saver')
+      s3_configuration = { hello: 'world' }
+
+      Capybara::Screenshot.s3_configuration = s3_configuration
+
+      expect(Capybara::Screenshot::Saver).to receive(:new).with(args).and_return(saver_double)
+      expect(Capybara::Screenshot::S3Saver).to receive(:new_with_configuration).with(saver_double, s3_configuration).and_return(s3_saver_double)
+
+      expect(Capybara::Screenshot.new_saver(args)).to eq(s3_saver_double)
+    end
+  end
+
   describe '#prune' do
     before do
       Capybara::Screenshot.reset_prune_history
