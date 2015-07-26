@@ -22,6 +22,15 @@ module Capybara::Screenshot::MiniTestPlugin
   end
 end
 
-class MiniTest::Unit::TestCase
-  include Capybara::Screenshot::MiniTestPlugin
+begin
+  Minitest.const_get('Test')
+  class Minitest::Test
+    include Capybara::Screenshot::MiniTestPlugin
+  end
+rescue NameError => e
+  class MiniTest::Unit::TestCase
+    include Capybara::Screenshot::MiniTestPlugin
+  end
 end
+
+
