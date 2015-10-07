@@ -50,7 +50,8 @@ module Capybara
         def after_failed_example(example)
           if example.example_group.include?(Capybara::DSL) # Capybara DSL method has been included for a feature we can snapshot
             Capybara.using_session(Capybara::Screenshot.final_session_name) do
-              if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
+              browser_initialized = Capybara.page.driver.browser_initialized? rescue false
+              if browser_initialized && Capybara::Screenshot.autosave_on_failure && example.exception
                 filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
 
                 saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)

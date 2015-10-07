@@ -5,7 +5,8 @@ Before do |scenario|
 end
 
 After do |scenario|
-  if Capybara::Screenshot.autosave_on_failure && scenario.failed?
+  browser_initialized = Capybara.page.driver.browser_initialized? rescue false
+  if browser_initialized && Capybara::Screenshot.autosave_on_failure && scenario.failed?
     Capybara.using_session(Capybara::Screenshot.final_session_name) do
       filename_prefix = Capybara::Screenshot.filename_prefix_for(:cucumber, scenario)
 
