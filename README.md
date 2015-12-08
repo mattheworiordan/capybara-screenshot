@@ -59,6 +59,15 @@ Typically in 'test/test_helper.rb', please add:
 require 'capybara-screenshot/minitest'
 ```
 
+Also, consider adding `include Capybara::Screenshot::MiniTestPlugin` to any test classes that fail. For example, to capture screenshots for all failing integration tests in minitest-rails, try something like:
+
+```ruby
+class ActionDispatch::IntegrationTest
+  include Capybara::Screenshot::MiniTestPlugin
+  # ...
+end
+```
+
 #### Test::Unit
 
 Typically in 'test/test_helper.rb', please add:
