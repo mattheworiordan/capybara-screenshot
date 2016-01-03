@@ -166,7 +166,8 @@ Capybara::Screenshot.append_timestamp = false
 
 Custom screenshot directory
 --------------------------
-By default screenshots are saved into `$APPLICATION_ROOT/tmp/capybara`. If you want to customize the location, override the file path as:
+By default, when running under Rails, Sinatra, and Padrino, screenshots are saved into `$APPLICATION_ROOT/tmp/capybara`. Otherwise, they're saved under `Dir.pwd`.
+If you want to customize the location, override the file path as:
 
 ```ruby
 Capybara.save_and_open_page_path = "/file/path"
