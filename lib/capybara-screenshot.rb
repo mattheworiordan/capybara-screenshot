@@ -55,7 +55,7 @@ module Capybara
       @capybara_root ||= if defined?(::Rails)
         ::Rails.root.join capybara_tmp_path
       elsif defined?(Padrino)
-        Padrino.root capybara_tmp_path
+        File.expand_path(capybara_tmp_path, Padrino.root)
       elsif defined?(Sinatra)
         File.join(Sinatra::Application.root, capybara_tmp_path)
       else
