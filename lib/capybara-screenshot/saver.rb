@@ -81,9 +81,33 @@ module Capybara
         output "Image screenshot: #{screenshot_path}" if screenshot_saved?
       end
 
+      # Print image to screen, if imgcat is available
+      def display_image
+        system("#{imgcat} #{screenshot_path}") if ! imgcat.nil?
+      end
+
       private
+
       def output(message)
         puts "    #{CapybaraScreenshot::Helpers.yellow(message)}"
+      end
+
+      def imgcat
+        @imgcat ||= which('imgcat')
+      end
+
+      # Cross-platform way of finding an executable in the $PATH.
+      #
+      #   which('ruby') #=> /usr/bin/ruby
+      def which(cmd)
+        exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+        ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+          exts.each { |ext|
+            exe = File.join(path, "#{cmd}#{ext}")
+            return exe if File.executable?(exe) && !File.directory?(exe)
+          }
+        end
+        return nil
       end
     end
   end
