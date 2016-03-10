@@ -1,21 +1,20 @@
 require 'spec_helper'
 
-describe Capybara::Screenshot::RSpec do
+describe Capybara::Screenshot::RSpec, :type => :aruba do
   describe "used with RSpec" do
     include CommonSetup
 
     before do
-      clean_current_dir
+      setup_aruba
+      Capybara.save_and_open_page_path = expand_path('tmp')
     end
 
     def run_failing_case(code, error_message, format=nil)
       run_case code, format: format
-
-      cmd = cmd_with_format(format)
       if error_message.kind_of?(Regexp)
-        expect(output_from(cmd)).to match(error_message)
+        expect(last_command_started.output).to match(error_message)
       else
-        expect(output_from(cmd)).to include(error_message)
+        expect(last_command_started.output).to include(error_message)
       end
     end
 
@@ -35,11 +34,11 @@ describe Capybara::Screenshot::RSpec do
       cmd = cmd_with_format(options[:format])
       run_simple_with_retry cmd, false
 
-      expect(output_from(cmd)).to include('0 failures') if options[:assert_all_passed]
+      expect(last_command_started.output).to match('0 failures') if options[:assert_all_passed]
     end
 
     def cmd_with_format(format)
-      "bundle exec rspec #{"--format #{format} " if format}spec/test_failure.rb"
+      "rspec #{"--format #{format} " if format}#{expand_path('spec/test_failure.rb')}"
     end
 
     it 'saves a screenshot on failure' do
@@ -52,7 +51,7 @@ describe Capybara::Screenshot::RSpec do
           end
         end
       RUBY
-      check_file_content('tmp/screenshot.html', 'This is the root page', true)
+      expect(expand_path('tmp/screenshot.html')).to_not have_file_content('This is the root page')
     end
 
     formatters = {
@@ -76,7 +75,7 @@ describe Capybara::Screenshot::RSpec do
             end
           end
         RUBY
-        check_file_content('tmp/screenshot.html', 'This is the root page', true)
+        expect('tmp/screenshot.html').to have_file_content('This is the root page')
       end
     end
 
@@ -88,7 +87,7 @@ describe Capybara::Screenshot::RSpec do
           end
         end
       RUBY
-      check_file_presence(%w{tmp/screenshot.html}, false)
+      expect('tmp/screenshot.html').to_not be_an_existing_file
     end
 
     it 'saves a screenshot for the correct session for failures using_session' do
@@ -105,7 +104,7 @@ describe Capybara::Screenshot::RSpec do
           end
         end
       RUBY
-      check_file_content('tmp/screenshot.html', 'This is a different page', true)
+      expect('tmp/screenshot.html').to have_file_content(/is/)
     end
 
     context 'pruning' do
