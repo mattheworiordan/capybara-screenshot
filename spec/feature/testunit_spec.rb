@@ -4,7 +4,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
   include CommonSetup
 
   before do
-    clean_current_dir
+    setup_aruba
   end
 
   def run_failing_case(code, integration_path = '.')
@@ -33,7 +33,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
 
     cmd = "bundle exec ruby #{integration_path}/test_failure.rb"
     run_simple_with_retry cmd, false
-    expect(output_from(cmd)).to include %q{Unable to find link or button "you'll never find me"}
+    expect(last_command_started.output).to include %q{Unable to find link or button "you'll never find me"}
   end
 
   it "saves a screenshot on failure for any test in path 'test/integration'" do
@@ -42,7 +42,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
       assert(page.body.include?('This is the root page'))
       click_on "you'll never find me"
     RUBY
-    check_file_content 'tmp/my_screenshot.html', 'This is the root page', true
+    expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
   it "does not generate a screenshot for tests that are not in 'test/integration'" do
@@ -52,7 +52,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
       click_on "you'll never find me"
     RUBY
 
-    check_file_presence(%w{tmp/my_screenshot.html}, false)
+    expect('tmp/my_screenshot.html').to_not be_an_existing_file
   end
 
   it 'saves a screenshot for the correct session for failures using_session' do
@@ -65,7 +65,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
         click_on "you'll never find me"
       end
     RUBY
-    check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
+    expect('tmp/my_screenshot.html').to have_file_content('This is a different page')
   end
 
   it 'prunes screenshots on failure' do
