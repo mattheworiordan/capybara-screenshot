@@ -33,6 +33,13 @@ describe Capybara::Screenshot do
 
       expect(Capybara::Screenshot.filename_prefix_formatters[:foo]).to eql(block)
     end
+
+    describe '.filename_prefix_for' do
+      it 'returns "configured formatter" for specified formatter' do
+        Capybara::Screenshot.register_filename_prefix_formatter(:foo) { |arg| 'custom_path' }
+        expect(Capybara::Screenshot.filename_prefix_for(:foo, double('test'))).to eql('custom_path')
+      end
+    end
   end
 
   describe '.filename_prefix_for' do
