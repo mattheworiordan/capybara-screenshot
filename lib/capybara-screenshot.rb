@@ -52,7 +52,7 @@ module Capybara
     end
 
     def self.capybara_root
-      @capybara_root ||= if defined?(::Rails)
+      @capybara_root ||= if defined?(::Rails) && Rails.root.present?
         ::Rails.root.join capybara_tmp_path
       elsif defined?(Padrino)
         File.expand_path(capybara_tmp_path, Padrino.root)
