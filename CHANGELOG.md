@@ -1,4 +1,13 @@
-22 July 2015 - 1.0.10 -> 1.0.111
+29 March 2016 - 1.0.11 -> 1.0.12
+
+* [Aruba upgrade - passing CI](https://github.com/mattheworiordan/capybara-screenshot/pull/156)
+* [imgcat support](https://github.com/mattheworiordan/capybara-screenshot/pull/153)
+* [Fix for capaybara root when Rails not defined](https://github.com/mattheworiordan/capybara-screenshot/pull/139)
+* [Fix using_session_with_screenshot](https://github.com/mattheworiordan/capybara-screenshot/pull/132)
+* [Skip screenshot on skipped test](https://github.com/mattheworiordan/capybara-screenshot/pull/131)
+* [Don't output screenshot paths if not saved](https://github.com/mattheworiordan/capybara-screenshot/pull/128)
+
+22 July 2015 - 1.0.10 -> 1.0.11
 
 * [Support for Fuubar reporter](https://github.com/mattheworiordan/capybara-screenshot/pull/137)
 
