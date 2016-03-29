@@ -27,17 +27,19 @@ module Capybara
 
     def self.screenshot_and_save_page
       saver = Saver.new(Capybara, Capybara.page)
-      saver.save
-      {:html => saver.html_path, :image => saver.screenshot_path}
+      if saver.save
+        {:html => saver.html_path, :image => saver.screenshot_path}
+      end
     end
 
     def self.screenshot_and_open_image
       require "launchy"
 
       saver = Saver.new(Capybara, Capybara.page, false)
-      saver.save
-      Launchy.open saver.screenshot_path
-      {:html => nil, :image => saver.screenshot_path}
+      if saver.save
+        Launchy.open saver.screenshot_path
+        {:html => nil, :image => saver.screenshot_path}
+      end
     end
 
     class << self
