@@ -127,7 +127,7 @@ describe Capybara::Screenshot::Saver do
 
       expect {
         saver.save
-      }.to raise_error
+      }.to raise_error(RuntimeError)
 
       expect(Capybara.save_and_open_page_path).to eq('tmp/bananas')
     end

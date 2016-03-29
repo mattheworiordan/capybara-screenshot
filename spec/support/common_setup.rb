@@ -49,11 +49,11 @@ module CommonSetup
     end
 
     def assert_screenshot_pruned
-      check_file_presence Array(screenshot_for_pruning_path), false
+      expect(screenshot_for_pruning_path).to_not be_an_existing_file
     end
 
     def assert_screenshot_not_pruned
-      check_file_presence Array(screenshot_for_pruning_path), true
+      expect(screenshot_for_pruning_path).to be_an_existing_file
     end
   end
 end

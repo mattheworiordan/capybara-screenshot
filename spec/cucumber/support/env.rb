@@ -2,7 +2,7 @@ require 'capybara/cucumber'
 require 'capybara-screenshot'
 require 'capybara-screenshot/cucumber'
 require 'aruba/cucumber'
-require 'aruba/jruby'
+require 'aruba/config/jruby'
 
 Capybara::Screenshot.register_filename_prefix_formatter(:cucumber) do |fault|
   'my_screenshot'

@@ -5,3 +5,4 @@ gemspec
 
 gem 'rake'
 gem 'appraisal'
+gem 'aruba', '~> 0.14.0'

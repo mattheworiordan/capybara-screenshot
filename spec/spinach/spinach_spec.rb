@@ -4,7 +4,7 @@ describe "Using Capybara::Screenshot with Spinach" do
   include CommonSetup
 
   before do
-    clean_current_dir
+    setup_aruba
   end
 
   def run_failing_case(failure_message, code)
@@ -17,7 +17,7 @@ describe "Using Capybara::Screenshot with Spinach" do
     write_file('spinach.feature', code)
     cmd = 'bundle exec spinach -f .'
     run_simple_with_retry cmd, false
-    expect(output_from(cmd)).to match failure_message
+    expect(last_command_started.output).to match(failure_message)
   end
 
   it "saves a screenshot on failure" do
@@ -27,7 +27,7 @@ describe "Using Capybara::Screenshot with Spinach" do
           Given I visit "/"
           And I click on a missing link
     GHERKIN
-    check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
+    expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
   it "saves a screenshot on an error" do
@@ -37,7 +37,7 @@ describe "Using Capybara::Screenshot with Spinach" do
           Given I visit "/"
           And I trigger an unhandled exception
     GHERKIN
-    check_file_content('tmp/my_screenshot.html', 'This is the root page', true)
+    expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
   it "saves a screenshot for the correct session for failures using_session" do
@@ -47,7 +47,7 @@ describe "Using Capybara::Screenshot with Spinach" do
           Given I visit "/"
           And I click on a missing link on a different page in a different session
     GHERKIN
-    check_file_content('tmp/my_screenshot.html', 'This is a different page', true)
+    expect('tmp/my_screenshot.html').to have_file_content('This is a different page')
   end
 
   it 'on failure it prunes previous screenshots when strategy is set' do

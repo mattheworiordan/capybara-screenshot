@@ -10,10 +10,6 @@ require 'rspec'
 require 'capybara-screenshot'
 require 'capybara-screenshot/rspec'
 require 'timecop'
-require 'aruba/api'
-require 'aruba/jruby'
-
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   if RSpec::Core::Version::STRING.to_i == 2
@@ -27,3 +23,12 @@ RSpec.configure do |config|
 end
 
 Capybara.app = lambda { |env| [200, {}, ["OK"]] }
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+
+if RUBY_VERSION < '1.9.3'
+  ::Dir.glob(::File.expand_path('../support/*.rb', __FILE__)).each { |f| require File.join(File.dirname(f), File.basename(f, '.rb')) }
+  ::Dir.glob(::File.expand_path('../support/**/*.rb', __FILE__)).each { |f| require File.join(File.dirname(f), File.basename(f, '.rb')) }
+else
+  ::Dir.glob(::File.expand_path('../support/*.rb', __FILE__)).each { |f| require_relative f }
+  ::Dir.glob(::File.expand_path('../support/**/*.rb', __FILE__)).each { |f| require_relative f }
+end

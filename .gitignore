@@ -5,3 +5,5 @@ gemfiles/*.lock
 pkg/*
 .rvmrc
 bin
+tmp
+.ruby-version

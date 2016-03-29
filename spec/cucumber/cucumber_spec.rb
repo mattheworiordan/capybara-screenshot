@@ -4,14 +4,14 @@ describe "Using Capybara::Screenshot with Cucumber" do
   include CommonSetup
 
   before do
-    clean_current_dir
+    setup_aruba
   end
 
-  let(:cmd) { 'bundle exec cucumber' }
+  let(:cmd) { 'cucumber' }
 
   def run_failing_case(failure_message, code)
     run_case code
-    expect(output_from(cmd)).to match(failure_message)
+    expect(last_command_started.output).to match(failure_message)
   end
 
   def run_case(code, options = {})
@@ -32,7 +32,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
 
     run_simple_with_retry cmd, false
 
-    expect(output_from(cmd)).to_not include('failed)') if options[:assert_all_passed]
+    expect(last_command_started.output).to_not match(/failed|failure/i) if options[:assert_all_passed]
   end
 
   it 'saves a screenshot on failure' do
@@ -42,7 +42,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
           Given I visit "/"
           And I click on a missing link
     CUCUMBER
-    check_file_content 'tmp/my_screenshot.html', 'This is the root page', true
+    expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
   it 'saves a screenshot on an error' do
@@ -52,7 +52,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
           Given I visit "/"
           And I trigger an unhandled exception
     CUCUMBER
-    check_file_content 'tmp/my_screenshot.html', 'This is the root page', true
+    expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
   it 'saves a screenshot for the correct session for failures using_session' do
@@ -62,7 +62,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
           Given I visit "/"
           And I click on a missing link on a different page in a different session
     CUCUMBER
-    check_file_content 'tmp/my_screenshot.html', 'This is a different page', true
+    expect('tmp/my_screenshot.html').to have_file_content('This is a different page')
   end
 
   context 'pruning' do
