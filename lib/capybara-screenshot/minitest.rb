@@ -6,7 +6,7 @@ module Capybara::Screenshot::MiniTestPlugin
     Capybara::Screenshot.final_session_name = nil
   end
 
-  def after_teardown
+  def before_teardown
     super
     if self.class.ancestors.map(&:to_s).include?('ActionDispatch::IntegrationTest')
       if Capybara::Screenshot.autosave_on_failure && !passed? && !skipped?
