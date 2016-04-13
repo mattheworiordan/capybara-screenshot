@@ -57,7 +57,8 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
     formatters = {
       progress:      'HTML screenshot:',
       documentation: 'HTML screenshot:',
-      html:          %r{<a href="file://\./tmp/screenshot\.html"[^>]*>HTML page</a>}
+      html:          %r{<a href="file://\./tmp/screenshot\.html"[^>]*>HTML page</a>},
+      json:          '"screenshot":{"'
     }
 
     # Textmate formatter is only included in RSpec 2
