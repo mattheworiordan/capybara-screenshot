@@ -174,6 +174,31 @@ Capybara.save_and_open_page_path = "/file/path"
 ```
 
 
+Uploading screenshots to S3
+--------------------------
+You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket. 
+
+First, install the `aws-sdk` gem or add it to your Gemfile
+
+```ruby
+gem 'capybara-screenshot', :group => :test
+gem 'aws-sdk', :group => :test
+```
+
+Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`). 
+
+```ruby
+Capybara::Screenshot.s3_configuration = {
+  s3_client_credentials: {
+    access_key_id: "my_access_key_id",
+    secret_access_key: "my_secret_access_key",
+    region: "eu-central-1"
+  },
+  bucket_name: "my_screenshots"
+}
+```
+
+
 Pruning old screenshots automatically
 --------------------------
 By default screenshots are saved indefinitely, if you want them to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:

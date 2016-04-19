@@ -9,6 +9,7 @@ module Capybara
       attr_accessor :webkit_options
       attr_writer   :final_session_name
       attr_accessor :prune_strategy
+      attr_accessor :s3_configuration
     end
 
     self.autosave_on_failure = true
@@ -18,6 +19,7 @@ module Capybara
     self.append_random = false
     self.webkit_options = {}
     self.prune_strategy = :keep_all
+    self.s3_configuration = {}
 
     def self.append_screenshot_path=(value)
       $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
@@ -26,7 +28,7 @@ module Capybara
     end
 
     def self.screenshot_and_save_page
-      saver = Saver.new(Capybara, Capybara.page)
+      saver = new_saver(Capybara, Capybara.page)
       if saver.save
         {:html => saver.html_path, :image => saver.screenshot_path}
       end
@@ -35,7 +37,7 @@ module Capybara
     def self.screenshot_and_open_image
       require "launchy"
 
-      saver = Saver.new(Capybara, Capybara.page, false)
+      saver = new_saver(Capybara, Capybara.page, false)
       if saver.save
         Launchy.open saver.screenshot_path
         {:html => nil, :image => saver.screenshot_path}
@@ -88,6 +90,17 @@ module Capybara
     # Reset prune history allowing further prunining on next failure
     def self.reset_prune_history
       @pruned_previous_screenshots = nil
+    end
+
+    def self.new_saver(*args)
+      saver = Saver.new(*args)
+
+      unless s3_configuration.empty?
+        require 'capybara-screenshot/s3_saver'
+        saver = S3Saver.new_with_configuration(saver, s3_configuration)
+      end
+
+      return saver
     end
 
     private

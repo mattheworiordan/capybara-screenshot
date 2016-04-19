@@ -53,7 +53,7 @@ module Capybara
               if Capybara.page.current_url != '' && Capybara::Screenshot.autosave_on_failure && example.exception
                 filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
 
-                saver = Capybara::Screenshot::Saver.new(Capybara, Capybara.page, true, filename_prefix)
+                saver = Capybara::Screenshot.new_saver(Capybara, Capybara.page, true, filename_prefix)
                 saver.save
 
                 example.metadata[:screenshot] = {}
