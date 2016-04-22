@@ -211,6 +211,30 @@ Capybara::Screenshot.prune_strategy = :keep_last_run
 Capybara::Screenshot.prune_strategy = { keep: 20 }
 ```
 
+Callbacks
+---------
+
+You can hook your own logic into callbacks after the html/screenshot has been saved.
+
+```ruby
+# after Saver#save_html
+Capybara::Screenshot.after_save_html do |path|
+  mail = Mail.new do
+    delivery_method :sendmail
+    from     'capybara-screenshot@example.com'
+    to       'dev@example.com'
+    subject  'Capybara Screenshot'
+    add_file File.read path
+  end
+  mail.delivery_method :sendmail
+  mail.deliver
+end
+
+# after Saver#save_screenshot
+Capybara::Screenhot.after_save_screenshot do |path|
+  # ...
+end
+```
 
 Information about screenshots in RSpec output
 ---------------------------------------------

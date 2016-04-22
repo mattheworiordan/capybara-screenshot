@@ -161,6 +161,40 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
+  describe 'callbacks' do
+    let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
+
+    before do
+      allow(saver).to receive(:html_path) { 'page.html' }
+      allow(saver).to receive(:screenshot_path) { 'screenshot.png' }
+    end
+
+    before :all do
+      Capybara::Screenshot.after_save_html do |path|
+        puts "after_save_html ran with #{path}"
+      end
+      Capybara::Screenshot.after_save_screenshot do |path|
+        puts "after_save_screenshot ran with #{path}"
+      end
+    end
+
+    after :all do
+      Capybara::Screenshot::Saver.instance_eval { @callbacks = nil }
+    end
+
+    it 'runs after_save_html callbacks' do
+      expect do
+        saver.save
+      end.to output(/after_save_html ran with page\.html/).to_stdout
+    end
+
+    it 'runs after_save_screenshot callbacks' do
+      expect do
+        saver.save
+      end.to output(/after_save_screenshot ran with screenshot\.png/).to_stdout
+    end
+  end
+
   describe "with selenium driver" do
     before do
       allow(capybara_mock).to receive(:current_driver).and_return(:selenium)

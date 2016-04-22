@@ -1,9 +1,16 @@
 require 'capybara-screenshot/helpers'
+require 'capybara-screenshot/callbacks'
 
 module Capybara
   module Screenshot
     class Saver
+      include Capybara::Screenshot::Callbacks
+
+      define_callback :after_save_html
+      define_callback :after_save_screenshot
+
       attr_reader :capybara, :page, :file_base_name
+
       def initialize(capybara, page, html_save=true, filename_prefix='screenshot')
         @capybara, @page, @html_save = capybara, page, html_save
         time_now = Time.now
@@ -36,6 +43,7 @@ module Capybara
           end
         end
         @html_saved = true
+        run_callbacks :after_save_html, html_path if html_saved?
       end
 
       def save_screenshot
@@ -47,6 +55,7 @@ module Capybara
           }.call(page.driver, path)
           @screenshot_saved = result != :not_supported
         end
+        run_callbacks :after_save_screenshot, screenshot_path if screenshot_saved?
       end
 
       def html_path
