@@ -32,11 +32,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
 
   it 'saves a screenshot on failure' do
     run_failing_case <<-RUBY
-      module ActionDispatch
-        class IntegrationTest < Minitest::Unit::TestCase; end
-      end
-
-      class TestFailure < ActionDispatch::IntegrationTest
+      class TestFailure < MiniTest::Unit::TestCase
         include Capybara::DSL
 
         def test_failure
@@ -49,28 +45,9 @@ describe "Using Capybara::Screenshot with MiniTest" do
     expect('tmp/my_screenshot.html').to have_file_content('This is the root page')
   end
 
-  it "does not save a screenshot for tests that don't inherit from ActionDispatch::IntegrationTest" do
-    run_failing_case <<-RUBY
-      class TestFailure < MiniTest::Unit::TestCase
-        include Capybara::DSL
-
-        def test_failure
-          visit '/'
-          assert(page.body.include?('This is the root page'))
-          click_on "you'll never find me"
-        end
-      end
-    RUBY
-    expect('tmp/my_screenshot.html').to_not be_an_existing_file
-  end
-
   it 'saves a screenshot for the correct session for failures using_session' do
     run_failing_case <<-RUBY
-      module ActionDispatch
-        class IntegrationTest < Minitest::Unit::TestCase; end
-      end
-
-      class TestFailure < ActionDispatch::IntegrationTest
+      class TestFailure < Minitest::Unit::TestCase
         include Capybara::DSL
 
         def test_failure
@@ -91,11 +68,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     create_screenshot_for_pruning
     configure_prune_strategy :last_run
     run_failing_case <<-RUBY
-      module ActionDispatch
-        class IntegrationTest < Minitest::Unit::TestCase; end
-      end
-
-      class TestFailure < ActionDispatch::IntegrationTest
+      class TestFailure < Minitest::Unit::TestCase
         include Capybara::DSL
 
         def test_failure
