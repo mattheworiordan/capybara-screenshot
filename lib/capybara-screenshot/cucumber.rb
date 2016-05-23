@@ -1,5 +1,4 @@
 require "capybara-screenshot"
-require 'mkmf'
 
 Before do |scenario|
   Capybara::Screenshot.final_session_name = nil
