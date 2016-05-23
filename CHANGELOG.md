@@ -1,3 +1,8 @@
+23 May 2016 - 1.0.12 -> 1.0.13
+
+* Fixes [mkmf bug 162](https://github.com/mattheworiordan/capybara-screenshot/issues/162) and [mkmf bug 174](https://github.com/mattheworiordan/capybara-screenshot/issues/174)
+* Fix for `Capybara.save_path` method existence assumption
+
 29 March 2016 - 1.0.11 -> 1.0.12
 
 * [Aruba upgrade - passing CI](https://github.com/mattheworiordan/capybara-screenshot/pull/156)
