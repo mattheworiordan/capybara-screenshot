@@ -107,8 +107,13 @@ module Capybara
 
     # If the path isn't set, default to the current directory
     def self.capybara_tmp_path
-      # `#save_and_open_page_path` is now deprecated
-      Capybara.save_path || Capybara.save_and_open_page_path || '.'
+      # `#save_and_open_page_path` is deprecated
+      # https://github.com/jnicklas/capybara/blob/48ab1ede946dec2250a2d1d8cbb3313f25096456/History.md#L37
+      if Capybara.respond_to?(:save_path)
+        Capybara.save_path
+      else
+        Capybara.save_and_open_page_path
+      end || '.'
     end
   end
 end
