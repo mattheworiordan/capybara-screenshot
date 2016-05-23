@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Using Capybara::Screenshot with MiniTest" do
   include CommonSetup
 
-  before do
-    setup_aruba
-  end
-
   def run_failing_case(code)
     write_file('test_failure.rb', <<-RUBY)
       #{ensure_load_paths_valid}

@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Using Capybara::Screenshot with Cucumber" do
   include CommonSetup
 
-  before do
-    setup_aruba
-  end
-
   let(:cmd) { 'cucumber' }
 
   def run_failing_case(failure_message, code)
