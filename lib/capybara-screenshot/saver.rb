@@ -20,7 +20,7 @@ module Capybara
 
       def save
         # if current_path empty then nothing to screen shot as browser has not loaded any URL
-        return if capybara.current_path.to_s.empty?
+        return if page.current_path.to_s.empty?
 
         save_html if @html_save
         save_screenshot
