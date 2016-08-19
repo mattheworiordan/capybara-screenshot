@@ -170,7 +170,7 @@ By default, when running under Rails, Sinatra, and Padrino, screenshots are save
 If you want to customize the location, override the file path as:
 
 ```ruby
-Capybara.save_and_open_page_path = "/file/path"
+Capybara.save_path = "/file/path"
 ```
 
 
