@@ -43,7 +43,8 @@ module Capybara
         "RSpec::Core::Formatters::JsonFormatter"          => Capybara::Screenshot::RSpec::JsonReporter,
         "RSpec::Core::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter, # RSpec 2
         "RSpec::Mate::Formatters::TextMateFormatter"      => Capybara::Screenshot::RSpec::TextMateLinkReporter,  # RSpec 3
-        "Fuubar"                                          => Capybara::Screenshot::RSpec::TextReporter
+        "Fuubar"                                          => Capybara::Screenshot::RSpec::TextReporter,
+        "Spec::Runner::Formatter::TeamcityFormatter"      => Capybara::Screenshot::RSpec::TextReporter
       }
 
       class << self
