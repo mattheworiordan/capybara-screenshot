@@ -6,7 +6,7 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
 
     before do
       setup_aruba
-      Capybara.save_and_open_page_path = expand_path('tmp')
+      Capybara::Screenshot.capybara_tmp_path = expand_path('tmp')
     end
 
     def run_failing_case(code, error_message, format=nil)

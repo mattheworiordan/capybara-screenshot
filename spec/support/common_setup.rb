@@ -20,7 +20,7 @@ module CommonSetup
     target.let(:setup_test_app) do
       <<-RUBY
         require 'support/test_app'
-        Capybara.save_and_open_page_path = '#{screenshot_path}'
+        Capybara::Screenshot.capybara_tmp_path = '#{screenshot_path}'
         Capybara.app = TestApp
         Capybara::Screenshot.append_timestamp = false
         #{@additional_setup_steps}

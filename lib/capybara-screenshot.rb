@@ -115,6 +115,19 @@ module Capybara
         Capybara.save_and_open_page_path
       end || '.'
     end
+
+    # Configure the path unless '.'
+    def self.capybara_tmp_path=(path)
+      return if path == '.'
+
+      # `#save_and_open_page_path` is deprecated
+      # https://github.com/jnicklas/capybara/blob/48ab1ede946dec2250a2d1d8cbb3313f25096456/History.md#L37
+      if Capybara.respond_to?(:save_path)
+        Capybara.save_path = path
+      else
+        Capybara.save_and_open_page_path = path
+      end
+    end
   end
 end
 
