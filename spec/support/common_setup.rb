@@ -33,6 +33,14 @@ module CommonSetup
       end
     end
 
+    target.after(:each) do |example|
+      if example.exception
+        puts "Output from failed Aruba test:"
+        puts all_output.split(/\n/).map { |line| "   #{line}"}
+        puts ""
+      end
+    end
+
     def run_simple_with_retry(*args)
       run_simple(*args)
     rescue ChildProcess::TimeoutError => e
