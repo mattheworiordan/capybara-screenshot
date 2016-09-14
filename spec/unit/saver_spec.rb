@@ -21,11 +21,14 @@ describe Capybara::Screenshot::Saver do
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
 
   let(:driver_mock) { double('Capybara driver').as_null_object }
-  let(:page_mock) { double('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object }
+  let(:page_mock) {
+    double('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object.tap do |m|
+      allow(m).to receive(:current_path).and_return('/')
+    end
+  }
   let(:capybara_mock) {
     double(Capybara).as_null_object.tap do |m|
       allow(m).to receive(:current_driver).and_return(:default)
-      allow(m).to receive(:current_path).and_return('/')
     end
   }
 
@@ -110,7 +113,7 @@ describe Capybara::Screenshot::Saver do
   end
 
   it 'does not save if current_path is empty' do
-    allow(capybara_mock).to receive(:current_path).and_return(nil)
+    allow(page_mock).to receive(:current_path).and_return(nil)
     expect(capybara_mock).to_not receive(:save_page)
     expect(driver_mock).to_not receive(:render)
 
