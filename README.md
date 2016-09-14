@@ -176,7 +176,7 @@ Capybara.save_path = "/file/path"
 
 Uploading screenshots to S3
 --------------------------
-You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket. 
+You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket.
 
 First, install the `aws-sdk` gem or add it to your Gemfile
 
@@ -185,7 +185,7 @@ gem 'capybara-screenshot', :group => :test
 gem 'aws-sdk', :group => :test
 ```
 
-Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`). 
+Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`).
 
 ```ruby
 Capybara::Screenshot.s3_configuration = {
@@ -254,7 +254,7 @@ Please raise an issue at [https://github.com/mattheworiordan/capybara-screenshot
 
 #### Contributions
 
-Contributions are welcome.  Please fork this gem, and submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal "bundle exec rspec && bundle exec cucumber"` locally to test your changes against all versions of testing framework gems supported.
+Contributions are welcome.  Please fork this gem, and submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal` to set up the your Gems. then `appraisal "rake travis:ci"` locally to test your changes against all versions of testing framework gems supported.
 
 #### Rubygems
 
@@ -272,4 +272,4 @@ This gem was written by **Matthew O'Riordan**, with contributions from [many kin
 License
 -------
 
-Copyright © 2014 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.
+Copyright © 2016 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.

@@ -1,29 +1,17 @@
-appraise "rspec.2.14" do
-  gem "rspec", "2.14"
-end
-
-appraise "rspec.2.99" do
-  gem "rspec", "2.99"
-end
-
 appraise "rspec.3.0" do
   gem "rspec", "3.0"
 end
 
-appraise "cucumber.1.2" do
-  gem "cucumber", "1.2"
+appraise "cucumber.1.3" do
+  gem "cucumber", "~>1.3.0"
 end
 
-appraise "cucumber.1.3.0" do
-  gem "cucumber", "1.3.0"
+appraise "cucumber.2.4" do
+  gem "cucumber", "~>2.4.0"
 end
 
-appraise "spinach.0.7" do
-  gem "spinach", "0.7"
-end
-
-appraise "spinach.0.8.0" do
-  gem "spinach", "0.8.0"
+appraise "spinach.0.8" do
+  gem "spinach", "~>0.8.0"
 end
 
 appraise "latest" do
