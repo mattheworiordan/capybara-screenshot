@@ -27,7 +27,7 @@ describe Capybara::Screenshot::Pruner do
         let(:strategy) { :invalid_strategy }
 
         it 'raises an error' do
-          expect { pruner }.to raise_error
+          expect { pruner }.to raise_error(/Invalid prune strategy/)
         end
       end
 
@@ -35,7 +35,7 @@ describe Capybara::Screenshot::Pruner do
         let(:strategy) { { keep: :symbol } }
 
         it 'raises an error' do
-          expect { pruner }.to raise_error
+          expect { pruner }.to raise_error(/must be a Integer/)
         end
       end
     end

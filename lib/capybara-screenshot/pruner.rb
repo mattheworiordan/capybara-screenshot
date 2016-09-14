@@ -13,6 +13,7 @@ module Capybara
           lambda { prune_with_last_run_strategy }
         when Hash
           raise ArgumentError, ":keep key is required" unless strategy[:keep]
+          raise ArgumentError, ":keep must be a Integer" unless strategy[:keep].kind_of?(Integer)
           raise ArgumentError, ":keep value must be number greater than zero" unless strategy[:keep].to_i > 0
           lambda { prune_with_numeric_strategy(strategy[:keep].to_i) }
         else
