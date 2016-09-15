@@ -1,3 +1,10 @@
+15 Sep 2016 - 1.0.13 -> 1.0.14
+
+* CI stable again - dropped CI support for older versions of Ruby and JRuby.  It is just too painful and there is no evidence that our users need this or that Capybara Screenshot is indeed broken.  It is better to have a reliable build system so that PRs can get merged in reliably and easily.
+* Fixed an inconsistency in the use of `save_and_open_page_path`
+* Improved debugging of Aruba tests so that contributors can easily understand why their builds break
+* Path fixes thanks to [Ryan McGarvey](https://github.com/ryanmcgarvey)
+
 23 May 2016 - 1.0.12 -> 1.0.13
 
 * Fixes [mkmf bug 162](https://github.com/mattheworiordan/capybara-screenshot/issues/162) and [mkmf bug 174](https://github.com/mattheworiordan/capybara-screenshot/issues/174)
