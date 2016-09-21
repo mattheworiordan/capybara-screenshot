@@ -103,6 +103,14 @@ module Capybara
       return saver
     end
 
+    def self.after_save_html &block
+      Saver.after_save_html &block
+    end
+
+    def self.after_save_screenshot &block
+      Saver.after_save_screenshot &block
+    end
+
     private
 
     # If the path isn't set, default to the current directory
