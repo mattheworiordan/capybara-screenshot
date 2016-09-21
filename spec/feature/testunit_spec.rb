@@ -3,10 +3,6 @@ require "spec_helper"
 describe "Using Capybara::Screenshot with Test::Unit" do
   include CommonSetup
 
-  before do
-    setup_aruba
-  end
-
   def run_failing_case(code, integration_path = '.')
     write_file("#{integration_path}/test_failure.rb", <<-RUBY)
       #{ensure_load_paths_valid}

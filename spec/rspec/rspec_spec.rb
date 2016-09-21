@@ -5,7 +5,6 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
     include CommonSetup
 
     before do
-      setup_aruba
       Capybara::Screenshot.capybara_tmp_path = expand_path('tmp')
     end
 
