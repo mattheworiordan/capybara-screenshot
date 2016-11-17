@@ -113,6 +113,22 @@ Capybara::Screenshot.screenshot_and_save_page
 Capybara::Screenshot.screenshot_and_open_image
 ```
 
+Better looking HTML screenshots
+-------------------------------
+
+By the default, HTML screenshots will not look very good when opened in a browser.  This happens because the browser can't correctly resolve relative paths like `<link href="/assets/...." />`, which stops CSS, images, etc... from beind loaded.  To get a nicer looking page, configure Capybara with:
+
+```ruby
+Capybara.asset_host = 'http://localhost:3000'
+```
+
+This will cause Capybara to add `<base>http://localhost:3000</base>` to the HTML file, which gives the browser enough information to resolve relative paths.  Next, start a rails server in development mode, on port 3000, to respond to requests for assets:
+
+```bash
+rails s -p 3000
+```
+
+Now when you open the page, you should have something that looks much better.  You can leave this setup in place and use the default HTML pages when you don't care about the presentation, or start the rails server when you need something better looking.  
 
 Driver configuration
 --------------------
