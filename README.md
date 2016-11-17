@@ -231,7 +231,7 @@ Capybara::Screenshot.after_save_html do |path|
 end
 
 # after Saver#save_screenshot
-Capybara::Screenhot.after_save_screenshot do |path|
+Capybara::Screenshot.after_save_screenshot do |path|
   # ...
 end
 ```
