@@ -44,6 +44,13 @@ module Capybara
       end
     end
 
+    def self.screenshot(filename_prefix = nil)
+      saver = new_saver(Capybara, Capybara.page, false, filename_prefix)
+      if saver.save
+        {:html => nil, :image => saver.screenshot_path}
+      end
+    end
+
     class << self
       alias screen_shot_and_save_page screenshot_and_save_page
       alias screen_shot_and_open_image screenshot_and_open_image

@@ -5,12 +5,14 @@ describe Capybara do
   it 'adds screen shot methods to the Capybara module' do
     expect(::Capybara).to respond_to(:screenshot_and_save_page)
     expect(::Capybara).to respond_to(:screenshot_and_open_image)
+    expect(::Capybara).to respond_to(:screenshot)
   end
 
   context 'request type example', :type => :request do
     it 'has access to screen shot instance methods' do
       expect(subject).to respond_to(:screenshot_and_save_page)
       expect(subject).to respond_to(:screenshot_and_open_image)
+      expect(subject).to respond_to(:screenshot)
     end
   end
 

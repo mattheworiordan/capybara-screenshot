@@ -13,6 +13,10 @@ module Capybara
       Capybara::Screenshot.screenshot_and_open_image
     end
 
+    def screenshot(filename_prefix = nil)
+      Capybara::Screenshot.screenshot(filename_prefix)
+    end
+
     def using_session_with_screenshot(name,&blk)
       original_session_name = Capybara.session_name
       Capybara::Screenshot.final_session_name = name
