@@ -223,6 +223,14 @@ Capybara::Screenshot.s3_object_configuration = {
 }
 ```
 
+You may optionally specify a `:key_prefix` when generating the S3 keys, which can be used to create virtual [folders](http://docs.aws.amazon.com/AmazonS3/latest/UG/FolderOperations.html) in S3, e.g.:
+
+```ruby
+Capybara::Screenshot.s3_configuration = {
+  ... # other config here
+  key_prefix: "some/folder/"
+}
+```
 
 Pruning old screenshots automatically
 --------------------------
