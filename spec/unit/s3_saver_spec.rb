@@ -6,8 +6,10 @@ describe Capybara::Screenshot::S3Saver do
   let(:bucket_name) { double('bucket_name') }
   let(:s3_object_configuration) { {} }
   let(:s3_client) { double('s3_client') }
+  let(:key_prefix){ "some/path/" }
 
-  let(:s3_saver) { Capybara::Screenshot::S3Saver.new(saver, s3_client, bucket_name, s3_object_configuration) }
+  let(:s3_saver) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration) }
+  let(:s3_saver_with_key_prefix) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration, key_prefix: key_prefix) }
 
   describe '.new_with_configuration' do
     let(:access_key_id) { double('access_key_id') }
@@ -24,26 +26,25 @@ describe Capybara::Screenshot::S3Saver do
       s3_client_credentials_using_defaults.merge(region: region)
     }
 
-    it 'destructures the configuration into its components' do
+    before do
       allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-      allow(Capybara::Screenshot::S3Saver).to receive(:new)
+      allow(described_class).to receive(:new)
+    end
 
-      Capybara::Screenshot::S3Saver.new_with_configuration(saver, {
+    it 'destructures the configuration into its components' do
+      described_class.new_with_configuration(saver, {
         s3_client_credentials: s3_client_credentials,
         bucket_name: bucket_name
       }, s3_object_configuration)
 
       expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
-      expect(Capybara::Screenshot::S3Saver).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
     end
 
     it 'defaults the region to us-east-1' do
       default_region = 'us-east-1'
 
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-      allow(Capybara::Screenshot::S3Saver).to receive(:new)
-
-      Capybara::Screenshot::S3Saver.new_with_configuration(saver, {
+      described_class.new_with_configuration(saver, {
           s3_client_credentials: s3_client_credentials_using_defaults,
           bucket_name: bucket_name
       }, s3_object_configuration)
@@ -52,23 +53,31 @@ describe Capybara::Screenshot::S3Saver do
         s3_client_credentials.merge(region: default_region)
       )
 
-      expect(Capybara::Screenshot::S3Saver).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
     end
 
     it 'stores the object configuration when passed' do
       s3_object_configuration = { acl: 'public-read' }
       Capybara::Screenshot.s3_object_configuration = { acl: 'public-read' }
 
-      allow(Aws::S3::Client).to receive(:new).and_return(s3_client)
-      allow(Capybara::Screenshot::S3Saver).to receive(:new)
-
-      Capybara::Screenshot::S3Saver.new_with_configuration(saver, {
+      described_class.new_with_configuration(saver, {
         s3_client_credentials: s3_client_credentials,
         bucket_name: bucket_name
       }, s3_object_configuration)
 
       expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
-      expect(Capybara::Screenshot::S3Saver).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
+    end
+
+    it 'passes key_prefix option if specified' do
+      described_class.new_with_configuration(saver, {
+        s3_client_credentials: s3_client_credentials,
+        bucket_name: bucket_name,
+        key_prefix: key_prefix,
+      }, s3_object_configuration)
+
+      expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, key_prefix: key_prefix)
     end
   end
 
@@ -121,9 +130,9 @@ describe Capybara::Screenshot::S3Saver do
       s3_saver.save
     end
 
-    describe 'save to s3 with object configuration' do
+    context 'with object configuration' do
       let(:s3_object_configuration) { { acl: 'public-read' } }
-      let(:s3_saver) { Capybara::Screenshot::S3Saver.new(saver, s3_client, bucket_name, s3_object_configuration) }
+      let(:s3_saver) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration) }
 
       it 'uploads the html' do
         html_path = '/foo/bar.html'
@@ -161,6 +170,86 @@ describe Capybara::Screenshot::S3Saver do
         )
 
         s3_saver.save
+      end
+    end
+
+    context 'with key_prefix specified' do
+      it 'uploads the html with key prefix' do
+        html_path = '/foo/bar.html'
+        expect(saver).to receive(:html_path).and_return(html_path)
+        expect(saver).to receive(:html_saved?).and_return(true)
+
+        html_file = double('html_file')
+
+        expect(File).to receive(:open).with(html_path).and_yield(html_file)
+
+        expect(s3_client).to receive(:put_object).with(
+          bucket: bucket_name,
+          key: 'some/path/bar.html',
+          body: html_file
+        )
+
+        s3_saver_with_key_prefix.save
+      end
+
+      it 'uploads the screenshot with key prefix' do
+        screenshot_path = '/baz/bim.jpg'
+        expect(saver).to receive(:screenshot_path).and_return(screenshot_path)
+        expect(saver).to receive(:screenshot_saved?).and_return(true)
+
+        screenshot_file = double('screenshot_file')
+
+        expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
+
+        expect(s3_client).to receive(:put_object).with(
+          bucket: bucket_name,
+          key: 'some/path/bim.jpg',
+          body: screenshot_file
+        )
+
+        s3_saver_with_key_prefix.save
+      end
+
+      context 'with object configuration' do
+        let(:s3_object_configuration) { { acl: 'public-read' } }
+
+        it 'uploads the html' do
+          html_path = '/foo/bar.html'
+          expect(saver).to receive(:html_path).and_return(html_path)
+          expect(saver).to receive(:html_saved?).and_return(true)
+
+          html_file = double('html_file')
+
+          expect(File).to receive(:open).with(html_path).and_yield(html_file)
+
+          expect(s3_client).to receive(:put_object).with(
+            bucket: bucket_name,
+            key: 'some/path/bar.html',
+            body: html_file,
+            acl: 'public-read'
+          )
+
+          s3_saver_with_key_prefix.save
+        end
+
+        it 'uploads the screenshot' do
+          screenshot_path = '/baz/bim.jpg'
+          expect(saver).to receive(:screenshot_path).and_return(screenshot_path)
+          expect(saver).to receive(:screenshot_saved?).and_return(true)
+
+          screenshot_file = double('screenshot_file')
+
+          expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
+
+          expect(s3_client).to receive(:put_object).with(
+            bucket: bucket_name,
+            key: 'some/path/bim.jpg',
+            body: screenshot_file,
+            acl: 'public-read'
+          )
+
+          s3_saver_with_key_prefix.save
+        end
       end
     end
   end
