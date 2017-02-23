@@ -1,5 +1,5 @@
 language: ruby
-script: "rake travis:ci"
+script: "bundle exec rake travis:ci"
 rvm:
   - 2.1.10
   - 2.2.6
