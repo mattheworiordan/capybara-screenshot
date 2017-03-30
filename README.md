@@ -214,6 +214,15 @@ Capybara::Screenshot.s3_configuration = {
 }
 ```
 
+It is also possible to specify the object parameters such as acl.
+Configure the capybara-screenshot with these options in this way:
+
+```ruby
+Capybara::Screenshot.s3_object_configuration = {
+  acl: 'public-read'
+}
+```
+
 
 Pruning old screenshots automatically
 --------------------------
