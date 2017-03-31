@@ -88,6 +88,7 @@ RSpec.configure do |config|
     if Capybara::Screenshot::RSpec.add_link_to_screenshot_for_failed_examples
       RSpec.configuration.formatters.each do |formatter|
         next unless (reporter_module = Capybara::Screenshot::RSpec::REPORTERS[formatter.class.to_s])
+        next if formatter.singleton_class.included_modules.include?(reporter_module)
         formatter.singleton_class.send :include, reporter_module
       end
     end
