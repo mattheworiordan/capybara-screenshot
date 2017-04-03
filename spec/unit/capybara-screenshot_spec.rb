@@ -81,11 +81,12 @@ describe Capybara::Screenshot do
       args = double('args')
       s3_saver_double = double('s3_saver')
       s3_configuration = { hello: 'world' }
+      s3_object_configuration = {}
 
       Capybara::Screenshot.s3_configuration = s3_configuration
 
       expect(Capybara::Screenshot::Saver).to receive(:new).with(args).and_return(saver_double)
-      expect(Capybara::Screenshot::S3Saver).to receive(:new_with_configuration).with(saver_double, s3_configuration).and_return(s3_saver_double)
+      expect(Capybara::Screenshot::S3Saver).to receive(:new_with_configuration).with(saver_double, s3_configuration, s3_object_configuration).and_return(s3_saver_double)
 
       expect(Capybara::Screenshot.new_saver(args)).to eq(s3_saver_double)
     end
