@@ -38,7 +38,18 @@ describe Capybara::Screenshot::S3Saver do
       }, s3_object_configuration)
 
       expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
-      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, hash_including({}))
+    end
+
+    it 'passes key_prefix option if specified' do
+      described_class.new_with_configuration(saver, {
+        s3_client_credentials: s3_client_credentials,
+        bucket_name: bucket_name,
+        key_prefix: key_prefix,
+      }, s3_object_configuration)
+
+      expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, hash_including(key_prefix: key_prefix))
     end
 
     it 'defaults the region to us-east-1' do
@@ -53,7 +64,7 @@ describe Capybara::Screenshot::S3Saver do
         s3_client_credentials.merge(region: default_region)
       )
 
-      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, hash_including({}))
     end
 
     it 'stores the object configuration when passed' do
@@ -66,7 +77,7 @@ describe Capybara::Screenshot::S3Saver do
       }, s3_object_configuration)
 
       expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
-      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, {})
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, hash_including({}))
     end
 
     it 'passes key_prefix option if specified' do
@@ -77,7 +88,7 @@ describe Capybara::Screenshot::S3Saver do
       }, s3_object_configuration)
 
       expect(Aws::S3::Client).to have_received(:new).with(s3_client_credentials)
-      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, key_prefix: key_prefix)
+      expect(described_class).to have_received(:new).with(saver, s3_client, bucket_name, s3_object_configuration, hash_including(key_prefix: key_prefix))
     end
   end
 
