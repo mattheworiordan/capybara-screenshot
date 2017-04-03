@@ -19,11 +19,11 @@ module Capybara
         }
 
         s3_client_credentials = default_s3_client_credentials.merge(
-          configuration.delete(:s3_client_credentials)
+          configuration.fetch(:s3_client_credentials)
         )
 
         s3_client = Aws::S3::Client.new(s3_client_credentials)
-        bucket_name = configuration.delete(:bucket_name)
+        bucket_name = configuration.fetch(:bucket_name)
 
         new(saver, s3_client, bucket_name, object_configuration, configuration)
       rescue KeyError
