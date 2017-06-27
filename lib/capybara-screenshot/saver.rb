@@ -27,12 +27,13 @@ module Capybara
 
       def save
         begin
-        # the current_path may raise error with selenium
-          if !capybara.current_path.to_s.empty?
+          # the current_path may raise error with selenium
+          if !page.current_path.to_s.empty?
             save_html if @html_save
             save_screenshot
           end
-        rescue StandardError
+        rescue StandardError => e
+          p e
         end
       end
 

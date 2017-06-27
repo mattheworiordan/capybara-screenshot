@@ -123,14 +123,20 @@ describe Capybara::Screenshot::Saver do
   end
 
   context 'when saving a screenshot fails' do
+    it 'does not raise' do
+      expect(capybara_mock).to receive(:save_page).and_raise
+
+      expect {
+        saver.save
+      }.not_to raise_error(RuntimeError)
+    end
+
     it 'still restores the original value of Capybara.save_and_open_page_path' do
       Capybara::Screenshot.capybara_tmp_path = 'tmp/bananas'
 
       expect(capybara_mock).to receive(:save_page).and_raise
 
-      expect {
-        saver.save
-      }.to raise_error(RuntimeError)
+      saver.save
 
       if Capybara.respond_to?(:save_path)
         expect(Capybara.save_path).to eq('tmp/bananas')
