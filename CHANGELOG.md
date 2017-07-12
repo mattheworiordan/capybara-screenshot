@@ -1,3 +1,7 @@
+12 July 2017 - 1.0.15 -> 1.0.16
+
+* [Support s3 key name prefixes](https://github.com/mattheworiordan/capybara-screenshot/pull/202)
+
 12 July 2017 - 1.0.14 -> 1.0.15
 
 * [SVG badges added](https://github.com/mattheworiordan/capybara-screenshot/pull/207)
