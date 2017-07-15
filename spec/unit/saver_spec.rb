@@ -128,7 +128,7 @@ describe Capybara::Screenshot::Saver do
 
     it 'prints a warning' do
       expect(saver).to receive(:warn).with(
-        'WARN: Screenshot could not be saved. `page.current_path` is empty',
+        'WARN: Screenshot could not be saved. `page.current_path` is empty.',
       )
       saver.save
     end
@@ -182,6 +182,10 @@ describe Capybara::Screenshot::Saver do
       saver.save
     end
 
+    it 'does not print extra warning message' do
+      expect(saver).not_to receive(:warn).with(/is empty/)
+      saver.save
+    end
 
     it 'still restores the original value of Capybara.save_and_open_page_path' do
       Capybara::Screenshot.capybara_tmp_path = 'tmp/bananas'
