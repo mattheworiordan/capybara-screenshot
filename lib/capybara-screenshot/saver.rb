@@ -28,8 +28,17 @@ module Capybara
       def save
         current_path do |path|
           if !path.empty?
-            save_html if @html_save
-            save_screenshot
+            begin
+              save_html if @html_save
+            rescue StandardError => e
+              warn "WARN: HTML source could not be saved. An exception is raised: #{e.inspect}."
+            end
+
+            begin
+              save_screenshot
+            rescue StandardError => e
+              warn "WARN: Screenshot could not be saved. An exception is raised: #{e.inspect}."
+            end
           else
             warn 'WARN: Screenshot could not be saved. `page.current_path` is empty'
           end
@@ -105,7 +114,7 @@ module Capybara
         begin
           path = page.current_path.to_s
         rescue StandardError => e
-          warn "WARN: Screenshot could not be saved. `page.current_path` raised exception: #{e}."
+          warn "WARN: Screenshot could not be saved. `page.current_path` raised exception: #{e.inspect}."
         end
         yield path if path
       end
