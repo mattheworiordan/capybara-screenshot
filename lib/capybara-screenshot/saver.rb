@@ -26,14 +26,10 @@ module Capybara
       end
 
       def save
-        begin
-          # the current_path may raise error with selenium
-          if !page.current_path.to_s.empty?
-            save_html if @html_save
-            save_screenshot
-          end
-        rescue StandardError => e
-          p e
+        # the current_path may raise error with selenium
+        if !current_path.empty?
+          save_html if @html_save
+          save_screenshot
         end
       end
 
@@ -100,6 +96,15 @@ module Capybara
       end
 
       private
+
+      def current_path
+        begin
+          page.current_path.to_s
+        rescue StandardError => e
+          warn "WARN: Screenshot could not be saved. `page.current_path` raised exception: #{e}."
+          ''
+        end
+      end
 
       def output(message)
         puts "    #{CapybaraScreenshot::Helpers.yellow(message)}"
