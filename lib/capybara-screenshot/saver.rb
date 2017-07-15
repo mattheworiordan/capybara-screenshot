@@ -40,7 +40,7 @@ module Capybara
               warn "WARN: Screenshot could not be saved. An exception is raised: #{e.inspect}."
             end
           else
-            warn 'WARN: Screenshot could not be saved. `page.current_path` is empty'
+            warn 'WARN: Screenshot could not be saved. `page.current_path` is empty.'
           end
         end
       end
