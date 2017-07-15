@@ -112,14 +112,26 @@ describe Capybara::Screenshot::Saver do
     expect(saver).to_not be_html_saved
   end
 
-  it 'does not save if current_path is empty' do
-    allow(page_mock).to receive(:current_path).and_return(nil)
-    expect(capybara_mock).to_not receive(:save_page)
-    expect(driver_mock).to_not receive(:render)
+  context 'the current_path is empty' do
+    before(:each) do
+      allow(page_mock).to receive(:current_path).and_return(nil)
+    end
 
-    saver.save
-    expect(saver).to_not be_screenshot_saved
-    expect(saver).to_not be_html_saved
+    it 'does not save' do
+      expect(capybara_mock).to_not receive(:save_page)
+      expect(driver_mock).to_not receive(:render)
+
+      saver.save
+      expect(saver).to_not be_screenshot_saved
+      expect(saver).to_not be_html_saved
+    end
+
+    it 'prints a warning' do
+      expect(saver).to receive(:warn).with(
+        'WARN: Screenshot could not be saved. `page.current_path` is empty',
+      )
+      saver.save
+    end
   end
 
   context 'when save_page raises' do
