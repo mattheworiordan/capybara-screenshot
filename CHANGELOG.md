@@ -1,3 +1,7 @@
+17 July 2017 - 1.0.16 -> 1.0.17
+
+* [Better handling of `page.current_path` exceptions for Spinach](https://github.com/mattheworiordan/capybara-screenshot/pull/208)
+
 12 July 2017 - 1.0.15 -> 1.0.16
 
 * [Support s3 key name prefixes](https://github.com/mattheworiordan/capybara-screenshot/pull/202)
