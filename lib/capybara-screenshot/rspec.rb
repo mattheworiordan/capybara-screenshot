@@ -53,7 +53,7 @@ module Capybara
         def after_failed_example(example)
           if example.example_group.include?(Capybara::DSL) # Capybara DSL method has been included for a feature we can snapshot
             Capybara.using_session(Capybara::Screenshot.final_session_name) do
-              if Capybara::Screenshot.autosave_on_failure && example.exception && Capybara.page.current_url != ''
+              if Capybara::Screenshot.autosave_on_failure && failed?(example) && Capybara.page.current_url != ''
                 filename_prefix = Capybara::Screenshot.filename_prefix_for(:rspec, example)
 
                 saver = Capybara::Screenshot.new_saver(Capybara, Capybara.page, true, filename_prefix)
@@ -65,6 +65,18 @@ module Capybara
               end
             end
           end
+        end
+
+        private
+
+        def failed?(example)
+          return true if example.exception
+          return false unless defined?(::RSpec::Expectations::FailureAggregator)
+
+          failure_notifier = ::RSpec::Support.failure_notifier
+          return false unless failure_notifier.is_a?(::RSpec::Expectations::FailureAggregator)
+
+          failure_notifier.failures.any? || failure_notifier.other_errors.any?
         end
       end
 
