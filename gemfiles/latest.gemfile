@@ -6,5 +6,6 @@ gem "rack", "~> 1.0"
 gem "rake", "~> 10.0"
 gem "appraisal", "~> 2.0"
 gem "aruba", "~> 0.14.0"
+gem "nokogiri", "< 1.7.0", platform: :ruby_20
 
 gemspec :path => "../"
