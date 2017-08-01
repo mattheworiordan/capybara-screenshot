@@ -3,6 +3,11 @@ appraise "rspec.3.0" do
   gem 'nokogiri', '< 1.7.0', platform: :ruby_20
 end
 
+appraise "rspec.3.3" do
+  gem "rspec", "~> 3.3.0"
+  gem 'nokogiri', '< 1.7.0', platform: :ruby_20
+end
+
 appraise "cucumber.1.3" do
   gem "cucumber", "~>1.3.0"
   gem 'nokogiri', '< 1.7.0', platform: :ruby_20

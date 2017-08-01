@@ -11,4 +11,5 @@ gemfile:
   - gemfiles/cucumber.2.4.gemfile
   - gemfiles/latest.gemfile
   - gemfiles/rspec.3.0.gemfile
+  - gemfiles/rspec.3.3.gemfile
   - gemfiles/spinach.0.8.gemfile
