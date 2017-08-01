@@ -40,13 +40,25 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
       "rspec #{"--format #{format} " if format}#{expand_path('spec/test_failure.rb')}"
     end
 
-    it 'saves a screenshot on failure' do
+    it 'saves a screenshot when browser action fails' do
       run_failing_case <<-RUBY, %q{Unable to find link or button "you'll never find me"}
         feature 'screenshot with failure' do
           scenario 'click on a missing link' do
             visit '/'
             expect(page.body).to include('This is the root page')
             click_on "you'll never find me"
+          end
+        end
+      RUBY
+      expect('tmp/screenshot.html').to have_file_content('This is the root page')
+    end
+
+    it 'saves a screenshot when expectation fails when using :aggregate_failures' do
+      run_failing_case <<-RUBY, %q{expected "This is the root page" to include "you'll never find me"}
+        feature 'screenshot with failure', :aggregate_failures do
+          scenario 'expect a missing link' do
+            visit '/'
+            expect(page.body).to include("you'll never find me")
           end
         end
       RUBY
