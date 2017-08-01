@@ -50,7 +50,7 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
           end
         end
       RUBY
-      expect(expand_path('tmp/screenshot.html')).to_not have_file_content('This is the root page')
+      expect('tmp/screenshot.html').to have_file_content('This is the root page')
     end
 
     formatters = {
