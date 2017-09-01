@@ -194,11 +194,11 @@ Uploading screenshots to S3
 --------------------------
 You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket.
 
-First, install the `aws-sdk` gem or add it to your Gemfile
+First, install the `aws-sdk-s3` gem or add it to your Gemfile
 
 ```ruby
-gem 'capybara-screenshot', :group => :test
-gem 'aws-sdk', :group => :test
+gem 'aws-sdk-s3', group: :test
+gem 'capybara-screenshot', group: :test
 ```
 
 Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`).

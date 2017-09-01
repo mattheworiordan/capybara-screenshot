@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'test-unit'
   s.add_development_dependency 'spinach'
   s.add_development_dependency 'minitest'
-  s.add_development_dependency 'aws-sdk'
+  s.add_development_dependency 'aws-sdk-s3'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
