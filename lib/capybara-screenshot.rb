@@ -156,9 +156,13 @@ Capybara::Screenshot.class_eval do
     :not_supported
   end
 
-  register_driver(:selenium) do |driver, path|
+  selenium_block = proc do |driver, path|
     driver.browser.save_screenshot(path)
   end
+
+  register_driver :selenium, &selenium_block
+  register_driver :selenium_chrome, &selenium_block
+  register_driver :selenium_chrome_headless, &selenium_block
 
   register_driver(:poltergeist) do |driver, path|
     driver.render(path, :full => true)
