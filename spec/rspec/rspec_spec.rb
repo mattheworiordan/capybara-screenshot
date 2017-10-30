@@ -53,6 +53,19 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
       expect(expand_path('tmp/screenshot.html')).to_not have_file_content('This is the root page')
     end
 
+    it 'saves a screenshot on failure for aggregate_failure tests' do
+      run_failing_case <<-RUBY, %q{Unable to find link or button "you'll never find me"}
+        feature 'screenshot with failure' do
+          scenario 'click on a missing link', aggregate_failures: true do
+            visit '/'
+            expect(page.body).to include('This is the root page')
+            click_on "you'll never find me"
+          end
+        end
+      RUBY
+      expect(expand_path('tmp/screenshot.html')).to_not have_file_content('This is the root page')
+    end
+
     formatters = {
       progress:      'HTML screenshot:',
       documentation: 'HTML screenshot:',
