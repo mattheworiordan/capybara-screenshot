@@ -5,6 +5,8 @@ module Capybara
     class S3Saver
       DEFAULT_REGION = 'us-east-1'
 
+      attr_accessor :html_path, :screenshot_path
+
       def initialize(saver, s3_client, bucket_name, object_configuration, options={})
         @saver = saver
         @s3_client = s3_client
@@ -31,11 +33,13 @@ module Capybara
       end
 
       def save_and_upload_screenshot
-        save_and do |local_file_path|
+        save_and do |type, local_file_path|
           File.open(local_file_path) do |file|
+            s3_upload_path = "#{@key_prefix}#{File.basename(local_file_path)}"
+
             object_payload = {
               bucket: bucket_name,
-              key: "#{@key_prefix}#{File.basename(local_file_path)}",
+              key: s3_upload_path,
               body: file
             }
 
@@ -44,6 +48,10 @@ module Capybara
             s3_client.put_object(
                 object_payload
             )
+
+            s3_region = s3_client.get_bucket_location(bucket: bucket_name).location_constraint
+
+            send("#{type}_path=", "https://#{bucket_name}.s3-#{s3_region}.amazonaws.com/#{s3_upload_path}")
           end
         end
       end
@@ -66,8 +74,8 @@ module Capybara
       def save_and
         saver.save
 
-        yield(saver.html_path) if block_given? && saver.html_saved?
-        yield(saver.screenshot_path) if block_given? && saver.screenshot_saved?
+        yield(:html, saver.html_path) if block_given? && saver.html_saved?
+        yield(:screenshot, saver.screenshot_path) if block_given? && saver.screenshot_saved?
       end
     end
   end

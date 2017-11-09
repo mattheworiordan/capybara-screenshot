@@ -11,6 +11,12 @@ describe Capybara::Screenshot::S3Saver do
   let(:s3_saver) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration) }
   let(:s3_saver_with_key_prefix) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration, key_prefix: key_prefix) }
 
+  let(:region) { double('region') }
+
+  before do
+    allow(s3_client).to receive(:get_bucket_location).and_return(double(:bucket_location_response, location_constraint: region))
+  end
+
   describe '.new_with_configuration' do
     let(:access_key_id) { double('access_key_id') }
     let(:secret_access_key) { double('secret_access_key') }
@@ -21,7 +27,6 @@ describe Capybara::Screenshot::S3Saver do
       }
     }
 
-    let(:region) { double('region') }
     let(:s3_client_credentials) {
       s3_client_credentials_using_defaults.merge(region: region)
     }
