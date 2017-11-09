@@ -3,7 +3,7 @@ module Capybara
     module RSpec
       module BaseReporter
 
-        # Automatically set up method aliases (very much like ActiveSupport's `alias_method_chain`) 
+        # Automatically set up method aliases (very much like ActiveSupport's `alias_method_chain`)
         # when the module gets included.
         def enhance_with_screenshot(method)
           with_method, without_method = "#{method}_with_screenshot", "#{method}_without_screenshot"
@@ -14,7 +14,6 @@ module Capybara
             end
           end
         end
-
       end
     end
   end
