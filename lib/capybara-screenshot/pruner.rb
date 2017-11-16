@@ -29,19 +29,32 @@ module Capybara
       attr_reader :strategy_proc
 
       def wildcard_path
-        File.expand_path('*.{html,png}', Screenshot.capybara_root)
+        File.expand_path('**/*', Screenshot.capybara_root)
+      end
+
+      def wildcard_screenshot_path
+        "#{wildcard_path}.{html,png}"
       end
 
       def prune_with_last_run_strategy
-        FileUtils.rm_rf(Dir.glob(wildcard_path))
+        FileUtils.rm_rf(Dir.glob(wildcard_screenshot_path))
+        prune_empty_directories
       end
 
       def prune_with_numeric_strategy(count)
-        files = Dir.glob(wildcard_path).sort_by do |file_name|
+        files = Dir.glob(wildcard_screenshot_path).sort_by do |file_name|
           File.mtime(File.expand_path(file_name, Screenshot.capybara_root))
         end
 
         FileUtils.rm_rf(files[0...-count])
+        prune_empty_directories
+      end
+
+      def prune_empty_directories
+        Dir.glob(wildcard_path)
+          .select { |path| File.directory?(path) }
+          .sort.reverse
+          .each { |directory| Dir.rmdir(directory) if (Dir.entries(directory) - %w(. ..)).empty? }
       end
     end
   end
