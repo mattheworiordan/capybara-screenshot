@@ -43,16 +43,17 @@ describe Capybara::Screenshot::Pruner do
 
   describe '#prune_old_screenshots' do
     let(:capybara_root)   { Capybara::Screenshot.capybara_root }
-    let(:remaining_files) { Dir.glob(File.expand_path('*', capybara_root)).sort }
+    let(:remaining_files) { Dir.glob(File.expand_path('**/*', capybara_root)).sort.reject { |path| File.directory?(path) } }
     let(:files_created)   { [] }
     let(:files_count)     { 8 }
     let(:pruner)         { Capybara::Screenshot::Pruner.new(strategy) }
 
     before do
       allow(Capybara::Screenshot).to receive(:capybara_root).and_return(Dir.mktmpdir.to_s)
+      FileUtils.mkdir_p("#{capybara_root}/path/to")
 
       files_count.times do |i|
-        files_created << FileUtils.touch("#{capybara_root}/#{i}.#{i % 2 == 0 ? 'png' : 'html'}").first.tap do |file_name|
+        files_created << FileUtils.touch("#{capybara_root}/path/to/#{i}.#{i % 2 == 0 ? 'png' : 'html'}").first.tap do |file_name|
           File.utime(Time.now, Time.now - files_count + i, file_name)
         end
       end
