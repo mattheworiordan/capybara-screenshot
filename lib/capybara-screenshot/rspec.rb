@@ -90,7 +90,7 @@ RSpec.configure do |config|
     Capybara::Screenshot.final_session_name = nil
   end
 
-  config.after do |example_from_block_arg|
+  config.after(type: :feature) do |example_from_block_arg|
     # RSpec 3 no longer defines `example`, but passes the example as block argument instead
     example = config.respond_to?(:expose_current_running_example_as) ? example_from_block_arg : self.example
 
