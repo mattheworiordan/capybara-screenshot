@@ -189,6 +189,17 @@ If you want to customize the location, override the file path as:
 Capybara.save_path = "/file/path"
 ```
 
+Usage with multiple Capybara sessions
+-------------------------------------
+
+To make screenshots work with multiple Capybara sessions, replace `Capybara.using_session` with `Capybara.using_session_with_screenshot`:
+
+```ruby
+Cabybara.using_session_with_screenshot('User 1') do
+  # screenshots will work and use the correct session
+end
+```
+
 
 Uploading screenshots to S3
 --------------------------
