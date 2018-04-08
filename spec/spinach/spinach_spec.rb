@@ -17,7 +17,7 @@ describe "Using Capybara::Screenshot with Spinach" do
   end
 
   it "saves a screenshot on failure" do
-    run_failing_case(%q{Unable to find link or button "you'll never find me"}, <<-GHERKIN)
+    run_failing_case(%q{Unable to find visible link or button "you'll never find me"}, <<-GHERKIN)
       Feature: Failure
         Scenario: Failure
           Given I visit "/"
@@ -37,7 +37,7 @@ describe "Using Capybara::Screenshot with Spinach" do
   end
 
   it "saves a screenshot for the correct session for failures using_session" do
-    run_failing_case(%q{Unable to find link or button "you'll never find me"}, <<-GHERKIN)
+    run_failing_case(%q{Unable to find visible link or button "you'll never find me"}, <<-GHERKIN)
       Feature: Failure
         Scenario: Failure in different session
           Given I visit "/"
@@ -49,7 +49,7 @@ describe "Using Capybara::Screenshot with Spinach" do
   it 'on failure it prunes previous screenshots when strategy is set' do
     create_screenshot_for_pruning
     configure_prune_strategy :last_run
-    run_failing_case(%q{Unable to find link or button "you'll never find me"}, <<-GHERKIN)
+    run_failing_case(%q{Unable to find visible link or button "you'll never find me"}, <<-GHERKIN)
       Feature: Failure
         Scenario: Failure
           Given I visit "/"
