@@ -36,7 +36,7 @@ module CommonSetup
     target.after(:each) do |example|
       if example.exception
         puts "Output from failed Aruba test:"
-        puts all_output.split(/\n/).map { |line| "   #{line}"}
+        puts all_commands.map { |c| c.output }.map { |line| "   #{line}"}
         puts ""
       end
     end
