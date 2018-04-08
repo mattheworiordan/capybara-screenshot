@@ -32,7 +32,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
   end
 
   it 'saves a screenshot on failure' do
-    run_failing_case %q{Unable to find link or button "you'll never find me"}, <<-CUCUMBER
+    run_failing_case %q{Unable to find visible link or button "you'll never find me"}, <<-CUCUMBER
       Feature: Failure
         Scenario: Failure
           Given I visit "/"
@@ -52,7 +52,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
   end
 
   it 'saves a screenshot for the correct session for failures using_session' do
-    run_failing_case(%q{Unable to find link or button "you'll never find me"}, <<-CUCUMBER)
+    run_failing_case(%q{Unable to find visible link or button "you'll never find me"}, <<-CUCUMBER)
       Feature: Failure
         Scenario: Failure in different session
           Given I visit "/"
@@ -68,7 +68,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
     end
 
     it 'on failure it prunes previous screenshots when strategy is set' do
-      run_failing_case %q{Unable to find link or button "you'll never find me"}, <<-CUCUMBER
+      run_failing_case %q{Unable to find visible link or button "you'll never find me"}, <<-CUCUMBER
         Feature: Prune
           Scenario: Screenshots are pruned if strategy is set
             Given I visit "/"
