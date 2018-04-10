@@ -1,3 +1,7 @@
+10 April 2018 - 1.0.18 -> 1.0.19
+
+* Big thanks for [Geremia Taglialatela](https://github.com/tagliala) for [padding Capybara 3 support and fixing the builds](https://github.com/mattheworiordan/capybara-screenshot/pull/230)
+
 2 November 2017 - 1.0.17 -> 1.0.18
 
 * [RSpec 3.3 support](https://github.com/mattheworiordan/capybara-screenshot/pull/213)
