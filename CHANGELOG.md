@@ -1,3 +1,7 @@
+03 May 2018 - 1.0.20 -> 1.0.21
+
+* [Bug fix: Fix Ruby version compares in Gemspec](https://github.com/mattheworiordan/capybara-screenshot/pull/231)
+
 03 May 2018 - 1.0.19 -> 1.0.20
 
 * [Bug fix: Only take screenshots for feature tests](https://github.com/mattheworiordan/capybara-screenshot/pull/223)
