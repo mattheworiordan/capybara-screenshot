@@ -1,3 +1,7 @@
+03 May 2018 - 1.0.19 -> 1.0.20
+
+* [Bug fix: Only take screenshots for feature tests](https://github.com/mattheworiordan/capybara-screenshot/pull/223)
+
 10 April 2018 - 1.0.18 -> 1.0.19
 
 * Big thanks for [Geremia Taglialatela](https://github.com/tagliala) for [padding Capybara 3 support and fixing the builds](https://github.com/mattheworiordan/capybara-screenshot/pull/230)
