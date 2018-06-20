@@ -26,7 +26,10 @@ module Capybara
       end
 
       private
-      attr_reader :strategy_proc
+      
+      def strategy_proc
+        @strategy_proc
+      end
 
       def wildcard_path
         File.expand_path('*.{html,png}', Screenshot.capybara_root)

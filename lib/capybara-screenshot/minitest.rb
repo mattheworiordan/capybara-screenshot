@@ -27,7 +27,7 @@ begin
   class Minitest::Test
     include Capybara::Screenshot::MiniTestPlugin
   end
-rescue NameError => e
+rescue NameError
   class MiniTest::Unit::TestCase
     include Capybara::Screenshot::MiniTestPlugin
   end
