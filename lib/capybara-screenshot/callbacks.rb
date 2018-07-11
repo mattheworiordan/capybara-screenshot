@@ -4,7 +4,7 @@ module Capybara
       class CallbackSet < Array
         def call *args
           each do |callback|
-            callback.call( *args )
+            callback.call(*args)
           end
         end
       end
@@ -24,7 +24,7 @@ module Capybara
 
         def run_callbacks name, *args
           if cb_set = callbacks[name]
-            cb_set.call( *args )
+            cb_set.call(*args)
           end
         end
       end
