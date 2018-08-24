@@ -41,7 +41,7 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
     end
 
     it 'saves a screenshot when browser action fails' do
-      run_failing_case <<-RUBY, %q{Unable to find visible link or button "you'll never find me"}
+      run_failing_case <<-RUBY, %r{Unable to find (visible )?link or button "you'll never find me"}
         feature 'screenshot with failure' do
           scenario 'click on a missing link' do
             visit '/'
@@ -103,7 +103,7 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
     end
 
     it 'saves a screenshot for the correct session for failures using_session' do
-      run_failing_case <<-RUBY, %q{Unable to find visible link or button "you'll never find me"}
+      run_failing_case <<-RUBY, %r{Unable to find (visible )?link or button "you'll never find me"}
         feature 'screenshot with failure' do
           scenario 'click on a missing link' do
             visit '/'
