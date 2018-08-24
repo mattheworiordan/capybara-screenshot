@@ -14,7 +14,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
 
       #{setup_test_app}
       Capybara::Screenshot.register_filename_prefix_formatter(:testunit) do | fault |
-        raise "expected fault" unless fault.exception.message.include? %q{Unable to find visible link or button "you'll never find me"}
+        raise "expected fault" unless fault.exception.message.match %r{Unable to find (visible )?link or button "you'll never find me"}
         'my_screenshot'
       end
 
@@ -29,7 +29,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
 
     cmd = "bundle exec ruby #{integration_path}/test_failure.rb"
     run_simple_with_retry cmd, false
-    expect(last_command_started.output).to include %q{Unable to find visible link or button "you'll never find me"}
+    expect(last_command_started.output).to match %r{Unable to find (visible )?link or button "you'll never find me"}
   end
 
   it "saves a screenshot on failure for any test in path 'test/integration'" do
