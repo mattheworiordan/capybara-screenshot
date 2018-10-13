@@ -203,10 +203,12 @@ end
 ```
 
 
-Uploading screenshots to S3
+Uploading screenshots to AWS S3 or Google Cloud Storage
 --------------------------
-You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket.
+You can configure capybara-screenshot to automatically save your screenshots to either AWS S3
+or Google Cloud Storage bucket but noth both.
 
+### AWS S3
 First, install the `aws-sdk-s3` gem or add it to your Gemfile:
 
 ```ruby
@@ -244,6 +246,36 @@ Capybara::Screenshot.s3_configuration = {
   key_prefix: "some/folder/"
 }
 ```
+
+### GCS
+
+Google Cloud Storage configuration is very simiar to that of S3.
+Install the `google-cloud-storage` gem or add it to your Gemfile.
+
+Next, configure capybara-screenshot with your GCS credentials either stored in a
+[JSON file](https://cloud.google.com/iam/docs/creating-managing-service-account-keys)
+or as a Hash, and the bucket to save to.
+Note that one may use [environment variables to set up credentials](https://googleapis.github.io/google-cloud-ruby/docs/google-cloud-storage/latest/file.AUTHENTICATION) as well.
+
+```ruby
+Capybara::Screenshot.gcs_configuration = {
+  credentials: 'path-to-credentials.json',
+  bucket_name: 'my_screenshots',
+  key_prefix: "some/folder/"
+}
+```
+
+It is also possible to specify object metadata.
+If gzip content encoding is specified, uploaded files will be compressed for you to save on storage space.
+Configure the capybara-screenshot with these options in this way:
+
+```ruby
+Capybara::Screenshot.gcs_object_configuration = {
+  content_encoding: 'gzip',
+  acl: 'public_read'
+}
+```
+
 
 Pruning old screenshots automatically
 --------------------------
