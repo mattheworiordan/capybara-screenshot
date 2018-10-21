@@ -1,3 +1,9 @@
+21 Oct 2018 - 1.0.21 -> 1.0.22
+
+* [Support for S3 URL in HTML screenshots](https://github.com/mattheworiordan/capybara-screenshot/pull/239)
+* [Fix for partial Rails environments](https://github.com/mattheworiordan/capybara-screenshot/pull/238)
+* [Capybara 3 support in CI](https://github.com/mattheworiordan/capybara-screenshot/pull/236)
+
 03 May 2018 - 1.0.20 -> 1.0.21
 
 * [Bug fix: Fix Ruby version compares in Gemspec](https://github.com/mattheworiordan/capybara-screenshot/pull/231)
