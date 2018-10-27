@@ -5,26 +5,27 @@ capybara-screenshot gem
 [![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.svg)](https://codeclimate.com/github/mattheworiordan/capybara-screenshot)
 [![Gem Version](https://badge.fury.io/rb/capybara-screenshot.svg)](http://badge.fury.io/rb/capybara-screenshot)
 
-#### Capture a screen shot for every test failure automatically!
+#### Capture a screenshot for every test failure automatically!
 
-`capybara-screenshot` used with [Capybara](https://github.com/jnicklas/capybara) and [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or [Minitest](https://github.com/seattlerb/minitest), will capture a screen shot for each failure in your test suite.  The HTML for the failed page, and a screenshot image (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into `$APPLICATION_ROOT/tmp/capybara`.
+`capybara-screenshot` used with [Capybara](https://github.com/jnicklas/capybara) alongside [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or [Minitest](https://github.com/seattlerb/minitest), will capture a screenshot for each failure in your test suite. Associated screenshot and HTML file
+of the failed page (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into `$APPLICATION_ROOT/tmp/capybara`.
 
-Having screenshots readily available for each test failure is incredibly helpful when trying to quickly diagnose a problem in your failing steps.  You can view the source code, and have a screen shot of the page (when applicable), at the time of each failure.
+Available screenshots for each test failure is incredibly helpful for diagnosing problems quickly in your failing steps. You have the ability to view screenshots (when applicable) and source code at the time of each failure.
 
-_Please note that Ruby 1.9+ is required to use this Gem.  For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
+_Please note that Ruby 1.9+ is required to use this Gem. For Ruby 1.8 support, please see the [capybara-screenshot Ruby 1.8 branch](https://github.com/mattheworiordan/capybara-screenshot/tree/ruby-1.8-support)_
 
 Installation
 -----
 
 ### Step 1: install the gem
 
-Using Bundler, add the following to your Gemfile
+Using Bundler, add the following to your Gemfile:
 
 ```ruby
 gem 'capybara-screenshot', :group => :test
 ```
 
-or install manually using Ruby Gems:
+Alternatively, manually install using Ruby Gems:
 
 ```
 gem install capybara-screenshot
@@ -76,7 +77,7 @@ Typically in 'test/test_helper.rb', please add:
 require 'capybara-screenshot/testunit'
 ```
 
-By default, screenshots will be captured for `Test::Unit` tests in the path 'test/integration'.  You can add additional paths as:
+By default, screenshots will be captured for `Test::Unit` tests in the path 'test/integration'.  You can add additional paths:
 
 ```ruby
 Capybara::Screenshot.testunit_paths << 'test/feature'
@@ -86,27 +87,28 @@ Capybara::Screenshot.testunit_paths << 'test/feature'
 Manual screenshots
 ----
 
-If you require more control, you can generate the screenshot on demand rather than on failure. This is useful
-if the failure occurs at a point where the screen shot is not as useful for debugging a rendering problem. This
-can be more useful if you disable the auto-generate on failure feature with the following config
+If you require more control, screenshots can be generated on demand rather than on failure. This is useful
+when screenshots produced at the time of failure are not as useful for debugging a rendering problem.
+Differentiating between manual and failure screenshots can be improved by disabling the auto-generate on
+failure feature:
 
 ```ruby
 Capybara::Screenshot.autosave_on_failure = false
 ```
 
-Anywhere the Capybara DSL methods (visit, click etc.) are available so too are the screenshot methods.
+Anywhere the Capybara DSL methods (visit, click etc.) are available so too are the screenshot methods:
 
 ```ruby
 screenshot_and_save_page
 ```
 
-Or for screenshot only, which will automatically open the image.
+Or for screenshot only, which will automatically open the image:
 
 ```ruby
 screenshot_and_open_image
 ```
 
-These are just calls on the main library methods.
+These are just calls on the main library methods:
 
 ```ruby
 Capybara::Screenshot.screenshot_and_save_page
@@ -165,7 +167,7 @@ Custom screenshot filename
 --------------------------
 
 If you want to control the screenshot filename for a specific test library, to inject the test name into it for example,
-you can override how the basename is generated for the file like so
+you can override how the basename is generated for the file:
 
 ```ruby
 Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
@@ -173,7 +175,7 @@ Capybara::Screenshot.register_filename_prefix_formatter(:rspec) do |example|
 end
 ```
 
-By default capybara-screenshot will append a timestamp to the basename. If you want to disable this behavior set the following option:
+By default capybara-screenshot will append a timestamp to the basename. If you want to disable this behavior, set the following option:
 
 ```ruby
 Capybara::Screenshot.append_timestamp = false
@@ -183,7 +185,7 @@ Capybara::Screenshot.append_timestamp = false
 Custom screenshot directory
 --------------------------
 By default, when running under Rails, Sinatra, and Padrino, screenshots are saved into `$APPLICATION_ROOT/tmp/capybara`. Otherwise, they're saved under `Dir.pwd`.
-If you want to customize the location, override the file path as:
+If you want to customize the location, override the file path:
 
 ```ruby
 Capybara.save_path = "/file/path"
@@ -205,14 +207,14 @@ Uploading screenshots to S3
 --------------------------
 You can configure capybara-screenshot to automatically save your screenshots to an AWS S3 bucket.
 
-First, install the `aws-sdk-s3` gem or add it to your Gemfile
+First, install the `aws-sdk-s3` gem or add it to your Gemfile:
 
 ```ruby
 gem 'aws-sdk-s3', group: :test
 gem 'capybara-screenshot', group: :test
 ```
 
-Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`).
+Next, configure capybara-screenshot with your S3 credentials, the bucket to save to, and an optional region (default: `us-east-1`):
 
 ```ruby
 Capybara::Screenshot.s3_configuration = {
@@ -245,7 +247,7 @@ Capybara::Screenshot.s3_configuration = {
 
 Pruning old screenshots automatically
 --------------------------
-By default screenshots are saved indefinitely, if you want them to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:
+By default, screenshots are saved indefinitely. If you want them to be automatically pruned on a new failure, then you can specify one of the following prune strategies as follows:
 
 ```ruby
 # Keep only the screenshots generated from the last failing test suite
@@ -258,7 +260,7 @@ Capybara::Screenshot.prune_strategy = { keep: 20 }
 Callbacks
 ---------
 
-You can hook your own logic into callbacks after the html/screenshot has been saved.
+You can hook your own logic into callbacks after the html/screenshot has been saved:
 
 ```ruby
 # after Saver#save_html
@@ -322,7 +324,7 @@ Please raise an issue at [https://github.com/mattheworiordan/capybara-screenshot
 
 #### Contributions
 
-Contributions are welcome.  Please fork this gem, and submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal` to set up the your Gems. then `appraisal "rake travis:ci"` locally to test your changes against all versions of testing framework gems supported.
+Contributions are welcome.  Please fork this gem and then submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal` to set up the your Gems. then `appraisal "rake travis:ci"` locally to test your changes against all versions of testing framework gems supported.
 
 #### Rubygems
 
