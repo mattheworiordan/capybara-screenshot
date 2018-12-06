@@ -27,4 +27,14 @@ module Capybara
       Capybara::Screenshot.screenshot_and_open_image
     end
   end
+
+  class Session
+    def within_window(window_or_handle)
+      super
+    rescue Exception
+      Capybara::Screenshot.offending_window = window_or_handle
+
+      raise
+    end
+  end
 end
