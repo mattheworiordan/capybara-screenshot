@@ -21,4 +21,14 @@ module Capybara
     alias_method :using_session_without_screenshot, :using_session
     alias_method :using_session, :using_session_with_screenshot
   end
+
+  class Session
+    def within_window(window_or_handle)
+      super
+    rescue Exception
+      Capybara::Screenshot.offending_window = window_or_handle
+
+      raise
+    end
+  end
 end
