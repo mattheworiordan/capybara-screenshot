@@ -116,7 +116,7 @@ Capybara::Screenshot.screenshot_and_open_image
 Better looking HTML screenshots
 -------------------------------
 
-By the default, HTML screenshots will not look very good when opened in a browser.  This happens because the browser can't correctly resolve relative paths like `<link href="/assets/...." />`, which stops CSS, images, etc... from beind loaded.  To get a nicer looking page, configure Capybara with:
+By the default, HTML screenshots will not look very good when opened in a browser.  This happens because the browser can't correctly resolve relative paths like `<link href="/assets/...." />`, which stops CSS, images, etc... from being loaded.  To get a nicer looking page, configure Capybara with:
 
 ```ruby
 Capybara.asset_host = 'http://localhost:3000'
