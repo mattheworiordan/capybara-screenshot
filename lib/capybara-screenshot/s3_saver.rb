@@ -51,7 +51,7 @@ module Capybara
 
             s3_region = s3_client.get_bucket_location(bucket: bucket_name).location_constraint
 
-            send("#{type}_path=", "https://#{bucket_name}.s3-#{s3_region}.amazonaws.com/#{s3_upload_path}")
+            send("#{type}_path=", "https://#{bucket_name}.s3.amazonaws.com/#{s3_upload_path}")
           end
         end
       end
