@@ -5,10 +5,11 @@ describe Capybara::Screenshot::S3Saver do
   let(:saver) { double('saver') }
   let(:bucket_name) { double('bucket_name') }
   let(:s3_object_configuration) { {} }
+  let(:options) { {} }
   let(:s3_client) { double('s3_client') }
   let(:key_prefix){ "some/path/" }
 
-  let(:s3_saver) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration) }
+  let(:s3_saver) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration, options) }
   let(:s3_saver_with_key_prefix) { described_class.new(saver, s3_client, bucket_name, s3_object_configuration, key_prefix: key_prefix) }
 
   let(:region) { double('region') }
@@ -104,6 +105,20 @@ describe Capybara::Screenshot::S3Saver do
       allow(saver).to receive(:save)
     end
 
+    context 'providing a bucket_location' do
+      let(:options) { { bucket_location: 'some other location' } }
+  
+      it 'does not request the bucket location' do
+        screenshot_path = '/baz/bim.jpg'
+  
+        screenshot_file = double('screenshot_file')
+  
+        expect(s3_saver).not_to receive(:determine_bucket_location)
+  
+        s3_saver.save
+      end
+    end
+
     it 'calls save on the underlying saver' do
       expect(saver).to receive(:save)
 
@@ -124,6 +139,8 @@ describe Capybara::Screenshot::S3Saver do
         key: 'bar.html',
         body: html_file
       )
+
+      expect(s3_saver).to receive(:determine_bucket_location).and_call_original
 
       s3_saver.save
     end
