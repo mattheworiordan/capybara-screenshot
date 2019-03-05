@@ -12,7 +12,7 @@ describe "Using Capybara::Screenshot with Spinach" do
 
     write_file('spinach.feature', code)
     cmd = 'bundle exec spinach -f .'
-    run_simple_with_retry cmd, false
+    run_simple_with_retry cmd
     expect(last_command_started.output).to match(failure_message)
   end
 

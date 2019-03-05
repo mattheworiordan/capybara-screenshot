@@ -31,7 +31,7 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
       RUBY
 
       cmd = cmd_with_format(options[:format])
-      run_simple_with_retry cmd, false
+      run_simple_with_retry cmd
 
       expect(last_command_started.output).to match('0 failures') if options[:assert_all_passed]
     end

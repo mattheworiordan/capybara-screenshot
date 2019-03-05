@@ -41,11 +41,11 @@ module CommonSetup
       end
     end
 
-    def run_simple_with_retry(*args)
-      run_simple(*args)
+    def run_simple_with_retry(cmd, fail_on_error: false)
+      run_command_and_stop(cmd, fail_on_error: fail_on_error)
     rescue ChildProcess::TimeoutError => e
-      puts "run_simple(#{args.join(', ')}) failed. Will retry once. `#{e.message}`"
-      run_simple(*args)
+      puts "run_command_and_stop(#{cmd}, fail_on_error: #{fail_on_error}) failed. Will retry once. `#{e.message}`"
+      run_command_and_stop(cmd, fail_on_error: fail_on_error)
     end
 
     def configure_prune_strategy(strategy)

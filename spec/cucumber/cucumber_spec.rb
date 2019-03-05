@@ -26,7 +26,7 @@ describe "Using Capybara::Screenshot with Cucumber" do
 
     write_file('features/cucumber.feature', code)
 
-    run_simple_with_retry cmd, false
+    run_simple_with_retry cmd
 
     expect(last_command_started.output).to_not match(/failed|failure/i) if options[:assert_all_passed]
   end
