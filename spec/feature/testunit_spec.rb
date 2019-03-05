@@ -28,7 +28,7 @@ describe "Using Capybara::Screenshot with Test::Unit" do
     RUBY
 
     cmd = "bundle exec ruby #{integration_path}/test_failure.rb"
-    run_simple_with_retry cmd, false
+    run_simple_with_retry cmd
     expect(last_command_started.output).to match %r{Unable to find (visible )?link or button "you'll never find me"}
   end
 
