@@ -11,7 +11,7 @@ module Capybara
         @saver = saver
         @s3_client = s3_client
         @bucket_name = bucket_name
-        @bucket_location = options[:bucket_location]
+        @bucket_host = options[:bucket_host]
         @key_prefix = options[:key_prefix]
         @object_configuration = object_configuration
       end
@@ -50,9 +50,9 @@ module Capybara
                 object_payload
             )
 
-            s3_region = bucket_location || determine_bucket_location
+            host = bucket_host || determine_bucket_host
 
-            send("#{type}_path=", "https://#{bucket_name}.s3-#{s3_region}.amazonaws.com/#{s3_upload_path}")
+            send("#{type}_path=", "https://#{host}/#{s3_upload_path}")
           end
         end
       end
@@ -69,15 +69,16 @@ module Capybara
       attr_reader :saver,
                   :s3_client,
                   :bucket_name,
-                  :bucket_location,
+                  :bucket_host,
                   :object_configuration
                   :key_prefix
 
       ##
       # Reads the bucket location using a S3 get_bucket_location request.
       # Requires the +s3:GetBucketLocation+ policy.
-      def determine_bucket_location
-        s3_client.get_bucket_location(bucket: bucket_name).location_constraint
+      def determine_bucket_host
+        s3_region = s3_client.get_bucket_location(bucket: bucket_name).location_constraint
+        "#{bucket_name}.s3-#{s3_region}.amazonaws.com"
       end
 
       def save_and

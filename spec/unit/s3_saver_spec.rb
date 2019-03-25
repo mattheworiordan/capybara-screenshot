@@ -105,16 +105,16 @@ describe Capybara::Screenshot::S3Saver do
       allow(saver).to receive(:save)
     end
 
-    context 'providing a bucket_location' do
-      let(:options) { { bucket_location: 'some other location' } }
+    context 'providing a bucket_host' do
+      let(:options) { { bucket_host: 'some other location' } }
   
       it 'does not request the bucket location' do
         screenshot_path = '/baz/bim.jpg'
-  
+
         screenshot_file = double('screenshot_file')
-  
-        expect(s3_saver).not_to receive(:determine_bucket_location)
-  
+
+        expect(s3_saver).not_to receive(:determine_bucket_host)
+
         s3_saver.save
       end
     end
@@ -140,7 +140,7 @@ describe Capybara::Screenshot::S3Saver do
         body: html_file
       )
 
-      expect(s3_saver).to receive(:determine_bucket_location).and_call_original
+      expect(s3_saver).to receive(:determine_bucket_host).and_call_original
 
       s3_saver.save
     end
