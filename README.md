@@ -224,14 +224,14 @@ Capybara::Screenshot.s3_configuration = {
     region: "eu-central-1"
   },
   bucket_name: "my_screenshots",
-  # Optionally: Specify the bucket location to save a request
-  bucket_location: "eu-central-1"
+  # Optionally: Specify the host used to access the uploaded screenshots
+  bucket_host: "my_screenshots.s3-eu-central-1.amazonaws.com",
 }
 ```
 
 The access key used for S3 uploads need to have at least the `s3:PutObject` permission.
 
-**Note**: If you do not provide the `bucket_location` configuration option, additionally the `s3:GetBucketLocation` permission is required on the bucket for uploads to succeed.
+**Note**: If you do not provide the `bucket_host` configuration option, additionally the `s3:GetBucketLocation` permission is required on the bucket for uploads to succeed.
 
 It is also possible to specify the object parameters such as acl.
 Configure the capybara-screenshot with these options in this way:
