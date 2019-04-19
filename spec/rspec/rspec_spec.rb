@@ -116,7 +116,24 @@ describe Capybara::Screenshot::RSpec, :type => :aruba do
           end
         end
       RUBY
-      expect('tmp/screenshot.html').to have_file_content(/is/)
+      expect('tmp/screenshot.html').to have_file_content(/This is a different page/)
+    end
+
+    it 'saves a screenshot for the correct session for failures Capybara.using_session' do
+      run_failing_case <<-RUBY, %r{Unable to find (visible )?link or button "you'll never find me"}
+        feature 'screenshot with failure' do
+          scenario 'click on a missing link' do
+            visit '/'
+            expect(page.body).to include('This is the root page')
+            Capybara.using_session :different_session do
+              visit '/different_page'
+              expect(page.body).to include('This is a different page')
+              click_on "you'll never find me"
+            end
+          end
+        end
+      RUBY
+      expect('tmp/screenshot.html').to have_file_content(/This is a different page/)
     end
 
     context 'pruning' do
