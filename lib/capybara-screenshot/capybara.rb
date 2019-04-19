@@ -1,4 +1,20 @@
 module Capybara
+  class << self
+    module ScreenshotOverrides
+      def using_session(name, &block)
+        original_session_name = Capybara.session_name
+        Capybara::Screenshot.final_session_name = name
+        super(name, &block)
+        Capybara::Screenshot.final_session_name = original_session_name
+      end
+
+      # No longer needed. Kept for backwards compatibility only.
+      alias_method :using_session_with_screenshot, :using_session
+    end
+
+    prepend ScreenshotOverrides
+  end
+
   module DSL
     # Adds class methods to Capybara module and gets mixed into
     # the current scope during Cucumber and RSpec tests
@@ -10,15 +26,5 @@ module Capybara
     def screenshot_and_open_image
       Capybara::Screenshot.screenshot_and_open_image
     end
-
-    def using_session_with_screenshot(name,&blk)
-      original_session_name = Capybara.session_name
-      Capybara::Screenshot.final_session_name = name
-      using_session_without_screenshot(name,&blk)
-      Capybara::Screenshot.final_session_name = original_session_name
-    end
-
-    alias_method :using_session_without_screenshot, :using_session
-    alias_method :using_session, :using_session_with_screenshot
   end
 end

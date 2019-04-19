@@ -26,6 +26,19 @@ describe Capybara do
       }.to raise_exception ::RSpec::Expectations::ExpectationNotMetError
     end
   end
+
+  describe 'Capybara.using_session' do
+    include Capybara::DSL
+
+    it 'saves the name of the final session' do
+      expect(Capybara::Screenshot).to receive(:final_session_name=).with(:different_session)
+      expect {
+        Capybara.using_session :different_session do
+          expect(0).to eq 1
+        end
+      }.to raise_exception ::RSpec::Expectations::ExpectationNotMetError
+    end
+  end
 end
 
 describe 'final_session_name' do
