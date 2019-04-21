@@ -61,6 +61,26 @@ describe "Using Capybara::Screenshot with Cucumber" do
     expect('tmp/my_screenshot.html').to have_file_content('This is a different page')
   end
 
+  it 'saves a screenshot with custom prefix' do
+    run_case(<<-CUCUMBER)
+      Feature: Custom prefix
+        Scenario: Screenshot with custom prefix
+          Given I visit "/"
+          And I save the page with a custom prefix
+    CUCUMBER
+    expect('tmp/custom_prefix.html').to have_file_content('This is the root page')
+  end
+
+  it 'displays a warning when a screenshot without HTML is asked but not saved' do
+    run_case(<<-CUCUMBER)
+      Feature: Custom prefix
+        Scenario: Empty screenshot
+          Given I visit "/different_page"
+          And I take a screenshot which is not saved
+    CUCUMBER
+    expect(last_command_started.output).to include('WARN: no screenshot has been saved.')
+  end
+
   context 'pruning' do
     before do
       create_screenshot_for_pruning
