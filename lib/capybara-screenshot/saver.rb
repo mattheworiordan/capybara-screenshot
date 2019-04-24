@@ -27,7 +27,9 @@ module Capybara
 
       def save
         current_path do |path|
-          if !path.empty?
+          if path.empty?
+            warn 'WARN: Screenshot could not be saved. `page.current_path` is empty.'
+          else
             begin
               save_html if @html_save
             rescue StandardError => e
@@ -39,8 +41,6 @@ module Capybara
             rescue StandardError => e
               warn "WARN: Screenshot could not be saved. An exception is raised: #{e.inspect}."
             end
-          else
-            warn 'WARN: Screenshot could not be saved. `page.current_path` is empty.'
           end
         end
       end
@@ -49,9 +49,9 @@ module Capybara
         path = html_path
         clear_save_path do
           if Capybara::VERSION.match(/^\d+/)[0] == '1'
-            capybara.save_page(page.body, "#{path}")
+            capybara.save_page(page.body, path.to_s)
           else
-            capybara.save_page("#{path}")
+            capybara.save_page(path.to_s)
           end
         end
         @html_saved = true
@@ -132,13 +132,15 @@ module Capybara
       #   which('ruby') #=> /usr/bin/ruby
       def which(cmd)
         exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+
         ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
           exts.each { |ext|
             exe = File.join(path, "#{cmd}#{ext}")
             return exe if File.executable?(exe) && !File.directory?(exe)
           }
         end
-        return nil
+
+        nil
       end
     end
   end
