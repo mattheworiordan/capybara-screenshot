@@ -1,3 +1,8 @@
+10 Jun 2019 - 1.0.22 -> 1.0.23
+
+* [Support for Capybara sessions implicitly](https://github.com/mattheworiordan/capybara-screenshot/pull/255). Thanks https://github.com/TylerRick
+* [Support for S3 bucket host configuration](https://github.com/mattheworiordan/capybara-screenshot/pull/252). Thanks https://github.com/machty
+
 21 Oct 2018 - 1.0.21 -> 1.0.22
 
 * [Support for S3 URL in HTML screenshots](https://github.com/mattheworiordan/capybara-screenshot/pull/239)
