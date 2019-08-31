@@ -90,6 +90,14 @@ RSpec.configure do |config|
     Capybara::Screenshot.final_session_name = nil
   end
 
+  # TODO: DRY refactor into a method?
+  # Add support for Rails system specs (previously only worked with feature specs)
+  config.after(type: :system) do |example_from_block_arg|
+    # RSpec 3 no longer defines `example`, but passes the example as block argument instead
+    example = config.respond_to?(:expose_current_running_example_as) ? example_from_block_arg : self.example
+
+    Capybara::Screenshot::RSpec.after_failed_example(example)
+  end
   config.after(type: :feature) do |example_from_block_arg|
     # RSpec 3 no longer defines `example`, but passes the example as block argument instead
     example = config.respond_to?(:expose_current_running_example_as) ? example_from_block_arg : self.example
