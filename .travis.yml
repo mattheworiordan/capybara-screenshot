@@ -5,9 +5,9 @@ rvm:
   - 2.1.10
   - 2.2.10
   - 2.3.8
-  - 2.4.6
-  - 2.5.5
-  - 2.6.3
+  - 2.4.9
+  - 2.5.7
+  - 2.6.5
 gemfile:
   - gemfiles/cucumber.1.3.gemfile
   - gemfiles/cucumber.2.4.gemfile
