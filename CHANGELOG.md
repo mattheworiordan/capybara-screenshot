@@ -1,3 +1,7 @@
+24 Nov 2019 - 1.0.23 -> 1.0.24
+
+* [Support Apparition driver](https://github.com/mattheworiordan/capybara-screenshot/commit/273317b241d1d1d8600b32fad998742894424f3b)
+
 10 Jun 2019 - 1.0.22 -> 1.0.23
 
 * [Support for Capybara sessions implicitly](https://github.com/mattheworiordan/capybara-screenshot/pull/255). Thanks https://github.com/TylerRick
