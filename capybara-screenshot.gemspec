@@ -12,6 +12,12 @@ Gem::Specification.new do |s|
   s.summary     = %q{Automatically create snapshots when Cucumber steps fail with Capybara and Rails}
   s.description = %q{When a Cucumber step fails, it is useful to create a screenshot image and HTML file of the current page}
   s.license     = 'MIT'
+  s.metadata    = {
+    "bug_tracker_uri"   => "https://github.com/mattheworiordan/capybara-screenshot/issues",
+    "changelog_uri"     => "https://github.com/mattheworiordan/capybara-screenshot/blob/master/CHANGELOG.md",
+    "documentation_uri" => "https://www.rubydoc.info/gems/capybara-screenshot/#{s.version}",
+    "source_code_uri"   => "https://github.com/mattheworiordan/capybara-screenshot/tree/v#{s.version}",
+  }
 
   s.rubyforge_project = "capybara-screenshot"
 
