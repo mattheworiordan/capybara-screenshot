@@ -190,9 +190,13 @@ Capybara::Screenshot.class_eval do
       :not_supported
     end
   end
-  
+
   register_driver(:apparition) do |driver, path|
     driver.save_screenshot(path)
+  end
+
+  register_driver(:cuprite) do |driver, path|
+    driver.render(path, :full => true)
   end
 end
 

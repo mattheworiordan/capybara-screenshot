@@ -298,6 +298,19 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
+  describe "with cuprite driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:cuprite)
+    end
+
+    it 'saves driver render with :full => true' do
+      expect(driver_mock).to receive(:render).with(screenshot_path, {:full => true})
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
   describe "with webkit driver" do
     before do
       allow(capybara_mock).to receive(:current_driver).and_return(:webkit)

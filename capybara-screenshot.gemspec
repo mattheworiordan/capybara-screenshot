@@ -19,8 +19,6 @@ Gem::Specification.new do |s|
     "source_code_uri"   => "https://github.com/mattheworiordan/capybara-screenshot/tree/v#{s.version}",
   }
 
-  s.rubyforge_project = "capybara-screenshot"
-
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("1.9")
     s.add_dependency 'capybara', ['>= 1.0', '< 2']
   elsif Gem::Version.new(RUBY_VERSION) <= Gem::Version.new("2.2.2")
