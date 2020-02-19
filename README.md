@@ -8,7 +8,7 @@ capybara-screenshot gem
 #### Capture a screenshot for every test failure automatically!
 
 `capybara-screenshot` used with [Capybara](https://github.com/jnicklas/capybara) alongside [Cucumber](http://cukes.info/), [Rspec](https://www.relishapp.com/rspec) or [Minitest](https://github.com/seattlerb/minitest), will capture a screenshot for each failure in your test suite. Associated screenshot and HTML file
-of the failed page (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/) or [poltergeist](https://github.com/jonleighton/poltergeist)) is saved into `$APPLICATION_ROOT/tmp/capybara`.
+of the failed page (when using [capybara-webkit](https://github.com/thoughtbot/capybara-webkit), [Selenium](http://seleniumhq.org/), [poltergeist](https://github.com/jonleighton/poltergeist) or [cuprite](https://github.com/machinio/cuprite)) is saved into `$APPLICATION_ROOT/tmp/capybara`.
 
 Available screenshots for each test failure is incredibly helpful for diagnosing problems quickly in your failing steps. You have the ability to view screenshots (when applicable) and source code at the time of each failure.
 
@@ -130,7 +130,7 @@ This will cause Capybara to add `<base>http://localhost:3000</base>` to the HTML
 rails s -p 3000
 ```
 
-Now when you open the page, you should have something that looks much better.  You can leave this setup in place and use the default HTML pages when you don't care about the presentation, or start the rails server when you need something better looking.  
+Now when you open the page, you should have something that looks much better.  You can leave this setup in place and use the default HTML pages when you don't care about the presentation, or start the rails server when you need something better looking.
 
 Driver configuration
 --------------------
