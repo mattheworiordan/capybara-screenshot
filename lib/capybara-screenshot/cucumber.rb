@@ -21,7 +21,13 @@ After do |scenario|
         saver.display_image
         #this will embed the image in the HTML report, embed() is defined in cucumber
         encoded_img = Base64.encode64(image)
-        embed(encoded_img, 'image/png;base64', "Screenshot of the error")
+
+        # cucumber5 deprecates embed in favor of attach
+        if respond_to? :attach
+          attach(encoded_img, 'image/png')
+        else
+          embed(encoded_img, 'image/png;base64', "Screenshot of the error")
+        end
       end
     end
   end
