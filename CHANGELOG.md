@@ -1,3 +1,9 @@
+4 Oct 2020 - 1.0.24 -> 1.0.25
+
+* [Fix Cucumber 5 deprecation warnings](https://github.com/mattheworiordan/capybara-screenshot/pull/274)
+* [Add support for Cuprite driver](https://github.com/mattheworiordan/capybara-screenshot/pull/270)
+* [Rails system spec compatibility](https://github.com/mattheworiordan/capybara-screenshot/pull/264)
+
 24 Nov 2019 - 1.0.23 -> 1.0.24
 
 * [Support Apparition driver](https://github.com/mattheworiordan/capybara-screenshot/commit/273317b241d1d1d8600b32fad998742894424f3b)
