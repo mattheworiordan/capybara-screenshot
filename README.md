@@ -330,11 +330,12 @@ About
 
 This gem was written by **Matthew O'Riordan**, with contributions from [many kind people](https://github.com/mattheworiordan/capybara-screenshot/network/members).
 
- - [http://mattheworiordan.com](http://mattheworiordan.com)
+ - [http://mattheworiordan.com](http://mattheworiordan.com), [Technical co-founder & CEO of Ably Realtime](https://ably.com/)
  - [@mattheworiordan](http://twitter.com/#!/mattheworiordan)
- - [Linked In](http://www.linkedin.com/in/lemon)
+ - [Linked In](http://www.linkedin.com/in/mattoriordan)
+
 
 License
 -------
 
-Copyright © 2016 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.
+Copyright © 2020 Matthew O'Riordan, inc. It is free software, and may be redistributed under the terms specified in the LICENSE file.
