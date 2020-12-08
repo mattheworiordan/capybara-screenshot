@@ -28,6 +28,9 @@ module Capybara
           return unless (screenshot = example.metadata[:screenshot])
           output.puts(long_padding + CapybaraScreenshot::Helpers.yellow("HTML screenshot: #{screenshot[:html]}")) if screenshot[:html]
           output.puts(long_padding + CapybaraScreenshot::Helpers.yellow("Image screenshot: #{screenshot[:image]}")) if screenshot[:image]
+          if (imgcat = screenshot[:imgcat])
+            system(imgcat)
+          end
         end
 
         def long_padding

@@ -104,7 +104,11 @@ module Capybara
 
       # Print image to screen, if imgcat is available
       def display_image
-        system("#{imgcat} #{screenshot_path}") unless imgcat.nil?
+        system(display_image_command) if display_image_command
+      end
+
+      def display_image_command
+        "#{imgcat} #{screenshot_path}" unless imgcat.nil?
       end
 
       private

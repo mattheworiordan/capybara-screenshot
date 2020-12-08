@@ -62,6 +62,7 @@ module Capybara
                 example.metadata[:screenshot] = {}
                 example.metadata[:screenshot][:html]  = saver.html_path if saver.html_saved?
                 example.metadata[:screenshot][:image] = saver.screenshot_path if saver.screenshot_saved?
+                example.metadata[:screenshot][:imgcat] = saver.display_image_command if saver.screenshot_saved?
               end
             end
           end
