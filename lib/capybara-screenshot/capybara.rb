@@ -19,12 +19,12 @@ module Capybara
     # Adds class methods to Capybara module and gets mixed into
     # the current scope during Cucumber and RSpec tests
 
-    def screenshot_and_save_page
-      Capybara::Screenshot.screenshot_and_save_page
+    def screenshot_and_save_page(prefix: nil, html: true)
+      Capybara::Screenshot.screenshot_and_save_page(prefix: prefix, html: html)
     end
 
-    def screenshot_and_open_image
-      Capybara::Screenshot.screenshot_and_open_image
+    def screenshot_and_open_image(prefix: nil)
+      Capybara::Screenshot.screenshot_and_open_image(prefix: prefix)
     end
   end
 end
