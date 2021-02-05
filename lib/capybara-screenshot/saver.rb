@@ -146,11 +146,13 @@ module Capybara
       end
 
       def within_offending_window
-        return yield unless Capybara::Screenshot.offending_window
+        return yield unless Thread.current[:capybara_screenshot_offending_window]
 
-        page.within_window(Capybara::Screenshot.offending_window) do
+        page.within_window(Thread.current[:capybara_screenshot_offending_window]) do
           yield
         end
+
+        Thread.current[:capybara_screenshot_offending_window] = nil
       end
     end
   end
