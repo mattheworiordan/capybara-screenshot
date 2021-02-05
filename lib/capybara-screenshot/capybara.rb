@@ -28,13 +28,15 @@ module Capybara
     end
   end
 
-  class Session
+  module SessionScreenshotOverrides
     def within_window(window_or_handle)
       super
     rescue Exception
-      Capybara::Screenshot.offending_window = window_or_handle
+      Thread.current[:capybara_screenshot_offending_window] = window_or_handle
 
       raise
     end
   end
+
+  Session.prepend SessionScreenshotOverrides
 end

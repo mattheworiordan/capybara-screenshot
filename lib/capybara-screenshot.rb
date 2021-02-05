@@ -11,7 +11,6 @@ module Capybara
       attr_accessor :prune_strategy
       attr_accessor :s3_configuration
       attr_accessor :s3_object_configuration
-      attr_accessor :offending_window
     end
 
     self.autosave_on_failure = true
