@@ -24,7 +24,7 @@ After do |scenario|
 
         # cucumber5 deprecates embed in favor of attach
         if respond_to? :attach
-          attach(encoded_img, 'image/png')
+          attach(encoded_img, 'image/png;base64')
         else
           embed(encoded_img, 'image/png;base64', "Screenshot of the error")
         end
