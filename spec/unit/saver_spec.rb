@@ -298,6 +298,66 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
+  describe "with selenium_billy driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium_billy)
+    end
+
+    it 'saves via browser' do
+      browser_mock = double('browser')
+      expect(driver_mock).to receive(:browser).and_return(browser_mock)
+      expect(browser_mock).to receive(:save_screenshot).with(screenshot_path)
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
+  describe "with selenium_headless_billy driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium_headless_billy)
+    end
+
+    it 'saves via browser' do
+      browser_mock = double('browser')
+      expect(driver_mock).to receive(:browser).and_return(browser_mock)
+      expect(browser_mock).to receive(:save_screenshot).with(screenshot_path)
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
+  describe "with selenium_chrome_billy driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium_chrome_billy)
+    end
+
+    it 'saves via browser' do
+      browser_mock = double('browser')
+      expect(driver_mock).to receive(:browser).and_return(browser_mock)
+      expect(browser_mock).to receive(:save_screenshot).with(screenshot_path)
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
+  describe "with selenium_chrome_headless_billy driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium_chrome_headless_billy)
+    end
+
+    it 'saves via browser' do
+      browser_mock = double('browser')
+      expect(driver_mock).to receive(:browser).and_return(browser_mock)
+      expect(browser_mock).to receive(:save_screenshot).with(screenshot_path)
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
   describe "with cuprite driver" do
     before do
       allow(capybara_mock).to receive(:current_driver).and_return(:cuprite)
