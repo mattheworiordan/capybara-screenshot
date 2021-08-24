@@ -22,7 +22,7 @@ module Capybara
         end
 
         def link_to_screenshot(title, path)
-          url = URI.escape("file://#{path}")
+          url = URI::DEFAULT_PARSER.escape("file://#{path}")
           title = CGI.escape_html(title)
           attributes = attributes_for_screenshot_link(url).map { |name, val| %{#{name}="#{CGI.escape_html(val)}"} }.join(" ")
           "<a #{attributes}>#{title}</a>"
