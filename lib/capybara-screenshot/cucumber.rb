@@ -15,17 +15,18 @@ After do |scenario|
 
       # Trying to embed the screenshot into our output."
       if File.exist?(saver.screenshot_path)
-        require "base64"
-        #encode the image into it's base64 representation
         image = open(saver.screenshot_path, 'rb') {|io|io.read}
         saver.display_image
-        #this will embed the image in the HTML report, embed() is defined in cucumber
-        encoded_img = Base64.encode64(image)
 
         # cucumber5 deprecates embed in favor of attach
         if respond_to? :attach
-          attach(encoded_img, 'image/png')
+          #this will embed the image in the HTML report, attach() is defined in cucumber
+          attach(image, 'image/png')
         else
+          #encode the image into it's base64 representation
+          require "base64"
+          encoded_img = Base64.encode64(image)
+          #this will embed the image in the HTML report, embed() is defined in cucumber
           embed(encoded_img, 'image/png;base64', "Screenshot of the error")
         end
       end
