@@ -1,3 +1,8 @@
+21 Dec 2021 - 1.0.25 -> 1.0.26
+
+* [Take screenshots of current window (when using multiple windows)](https://github.com/mattheworiordan/capybara-screenshot/pull/287)
+* [Fix embedding screenshots into cucumber HTML reports](https://github.com/mattheworiordan/capybara-screenshot/pull/288)
+
 4 Oct 2020 - 1.0.24 -> 1.0.25
 
 * [Fix Cucumber 5 deprecation warnings](https://github.com/mattheworiordan/capybara-screenshot/pull/274)
