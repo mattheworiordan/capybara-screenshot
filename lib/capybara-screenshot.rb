@@ -192,7 +192,7 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver(:apparition) do |driver, path|
-    driver.save_screenshot(path)
+    driver.save_screenshot(path, :full => true)
   end
 
   register_driver(:cuprite) do |driver, path|
