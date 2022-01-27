@@ -298,6 +298,19 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
+  describe "with apparition driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:apparition)
+    end
+
+    it 'saves driver render with :full => true' do
+      expect(driver_mock).to receive(:save_screenshot).with(screenshot_path, {:full => true})
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
   describe "with cuprite driver" do
     before do
       allow(capybara_mock).to receive(:current_driver).and_return(:cuprite)
