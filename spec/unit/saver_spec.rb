@@ -15,12 +15,25 @@ describe Capybara::Screenshot::Saver do
     Timecop.freeze(Time.local(2012, 6, 7, 8, 9, 10, 0))
   end
 
+  shared_context 'driver based on class' do |class_name|
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:some_unrecognized_alias)
+      expect(driver_mock).to receive(:class).and_return(class_name)
+      stub_const(class_name, driver_mock)
+      expect(page_mock).to receive(:driver).and_return(constantize(class_name).new)
+    end
+  end
+
   let(:capybara_root) { '/tmp' }
   let(:timestamp) { '2012-06-07-08-09-10.000' }
   let(:file_basename) { "screenshot_#{timestamp}" }
   let(:screenshot_path) { "#{capybara_root}/#{file_basename}.png" }
 
-  let(:driver_mock) { double('Capybara driver').as_null_object }
+  let(:driver_mock) {
+    double('Capybara driver').as_null_object.tap do |m|
+      allow(m).to receive(:class).and_return('MockCapybaraDriver')
+    end
+  }
   let(:page_mock) {
     double('Capybara session page', :body => 'body', :driver => driver_mock).as_null_object.tap do |m|
       allow(m).to receive(:current_path).and_return('/')
@@ -33,6 +46,8 @@ describe Capybara::Screenshot::Saver do
   }
 
   let(:saver) { Capybara::Screenshot::Saver.new(capybara_mock, page_mock) }
+
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
   context 'html filename with Capybara Version 1' do
     before do
@@ -257,11 +272,9 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
-  describe "with selenium driver" do
-    before do
-      allow(capybara_mock).to receive(:current_driver).and_return(:selenium)
-    end
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
+  shared_examples_for "with selenium driver" do
     it 'saves via browser' do
       browser_mock = double('browser')
       expect(driver_mock).to receive(:browser).and_return(browser_mock)
@@ -271,6 +284,22 @@ describe Capybara::Screenshot::Saver do
       expect(saver).to be_screenshot_saved
     end
   end
+
+  describe "with selenium driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:selenium)
+    end
+
+    it_behaves_like 'with selenium driver'
+  end
+
+  describe "with selenium driver based on class" do
+    include_context 'driver based on class', 'Capybara::Selenium::Driver'
+
+    it_behaves_like 'with selenium driver'
+  end
+
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
   describe "with poltergeist driver" do
     before do
@@ -298,11 +327,9 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
-  describe "with cuprite driver" do
-    before do
-      allow(capybara_mock).to receive(:current_driver).and_return(:cuprite)
-    end
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
+  shared_examples_for "with cuprite driver" do
     it 'saves driver render with :full => true' do
       expect(driver_mock).to receive(:render).with(screenshot_path, {:full => true})
 
@@ -310,6 +337,22 @@ describe Capybara::Screenshot::Saver do
       expect(saver).to be_screenshot_saved
     end
   end
+
+  describe "with cuprite driver" do
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:cuprite)
+    end
+
+    it_behaves_like 'with cuprite driver'
+  end
+
+  describe "with cuprite driver based on class" do
+    include_context 'driver based on class', 'Capybara::Cuprite::Driver'
+
+    it_behaves_like 'with cuprite driver'
+  end
+
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
   describe "with webkit driver" do
     before do
@@ -394,6 +437,8 @@ describe Capybara::Screenshot::Saver do
       end
     end
   end
+
+  #═════════════════════════════════════════════════════════════════════════════════════════════════
 
   describe "with unknown driver" do
     before do
