@@ -63,10 +63,12 @@ module Capybara
       def save_screenshot
         path = screenshot_path
         clear_save_path do
-          result = Capybara::Screenshot.registered_drivers.fetch(capybara.current_driver) { |driver_name|
-            warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}'. Saving with default with unknown results."
-            Capybara::Screenshot.registered_drivers[:default]
-          }.call(page.driver, path)
+          driver = Capybara::Screenshot.registered_drivers[capybara.current_driver] ||
+            Capybara::Screenshot.registered_drivers.fetch(page.driver&.class&.to_sym) { |_|
+              warn "capybara-screenshot could not detect a screenshot driver for '#{capybara.current_driver}' or #{page.driver.class}. Saving with default with unknown results."
+              Capybara::Screenshot.registered_drivers[:default]
+            }
+          result = driver.call(page.driver, path)
           @screenshot_saved = result != :not_supported
         end
         run_callbacks :after_save_screenshot, screenshot_path if screenshot_saved?

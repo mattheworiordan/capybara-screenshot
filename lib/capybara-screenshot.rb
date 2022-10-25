@@ -148,9 +148,11 @@ Capybara::Screenshot.class_eval do
     driver.render(path)
   end
 
-  register_driver(:rack_test) do |driver, path|
+  block = proc do |driver, path|
     :not_supported
   end
+  register_driver(:rack_test, &block)
+  register_driver(:'Rack::Test', &block)
 
   register_driver(:mechanize) do |driver, path|
     :not_supported
@@ -163,6 +165,7 @@ Capybara::Screenshot.class_eval do
   register_driver :selenium, &selenium_block
   register_driver :selenium_chrome, &selenium_block
   register_driver :selenium_chrome_headless, &selenium_block
+  register_driver :'Capybara::Selenium::Driver', &selenium_block
 
   register_driver(:poltergeist) do |driver, path|
     driver.render(path, :full => true)
@@ -195,9 +198,11 @@ Capybara::Screenshot.class_eval do
     driver.save_screenshot(path)
   end
 
-  register_driver(:cuprite) do |driver, path|
-    driver.render(path, :full => true)
+  block = proc do |driver, path|
+    driver.render(path, full: true)
   end
+  register_driver(:cuprite, &block)
+  register_driver(:'Capybara::Cuprite::Driver', &block)
 end
 
 # Register filename prefix formatters
