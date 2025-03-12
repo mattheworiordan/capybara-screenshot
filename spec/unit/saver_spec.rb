@@ -311,6 +311,24 @@ describe Capybara::Screenshot::Saver do
     end
   end
 
+  describe "with playwright driver" do
+    let(:playwright_page_mock) {
+      double('Playwright Page Mock').as_null_object
+    }
+
+    before do
+      allow(capybara_mock).to receive(:current_driver).and_return(:playwright)
+    end
+
+    it 'saves driver screenshot via playwright page with :fullPage => true' do
+      expect(driver_mock).to receive(:with_playwright_page).and_yield(playwright_page_mock)
+      expect(playwright_page_mock).to receive(:screenshot).with(path: screenshot_path, fullPage: true)
+
+      saver.save
+      expect(saver).to be_screenshot_saved
+    end
+  end
+
   describe "with webkit driver" do
     before do
       allow(capybara_mock).to receive(:current_driver).and_return(:webkit)

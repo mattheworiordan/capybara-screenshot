@@ -198,6 +198,12 @@ Capybara::Screenshot.class_eval do
   register_driver(:cuprite) do |driver, path|
     driver.render(path, :full => true)
   end
+
+  register_driver(:playwright) do |driver, path|
+    driver.with_playwright_page do |page|
+      page.screenshot(path: path, fullPage: true)
+    end
+  end
 end
 
 # Register filename prefix formatters
