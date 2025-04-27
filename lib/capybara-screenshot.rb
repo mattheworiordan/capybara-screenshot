@@ -172,6 +172,11 @@ Capybara::Screenshot.class_eval do
     driver.render(path, :full => true)
   end
 
+  register_driver :selenium_billy, &selenium_block
+  register_driver :selenium_headless_billy, &selenium_block
+  register_driver :selenium_chrome_billy, &selenium_block
+  register_driver :selenium_chrome_headless_billy, &selenium_block
+
   webkit_block = proc do |driver, path|
     if driver.respond_to?(:save_screenshot)
       driver.save_screenshot(path, webkit_options)
