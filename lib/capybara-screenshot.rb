@@ -11,6 +11,8 @@ module Capybara
       attr_accessor :prune_strategy
       attr_accessor :s3_configuration
       attr_accessor :s3_object_configuration
+      attr_accessor :gcs_configuration
+      attr_accessor :gcs_object_configuration
     end
 
     self.autosave_on_failure = true
@@ -22,6 +24,8 @@ module Capybara
     self.prune_strategy = :keep_all
     self.s3_configuration = {}
     self.s3_object_configuration = {}
+    self.gcs_configuration = {}
+    self.gcs_object_configuration = {}
 
     def self.append_screenshot_path=(value)
       $stderr.puts "WARNING: Capybara::Screenshot.append_screenshot_path is deprecated. " +
@@ -100,6 +104,11 @@ module Capybara
       unless s3_configuration.empty?
         require 'capybara-screenshot/s3_saver'
         saver = S3Saver.new_with_configuration(saver, s3_configuration, s3_object_configuration)
+      end
+
+      unless gcs_configuration.empty?
+        require 'capybara-screenshot/gcs_saver'
+        saver = GcsSaver.new_with_configuration(saver, gcs_configuration, gcs_object_configuration)
       end
 
       return saver
