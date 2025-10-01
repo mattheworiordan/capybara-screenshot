@@ -100,12 +100,21 @@ Anywhere the Capybara DSL methods (visit, click etc.) are available so too are t
 
 ```ruby
 screenshot_and_save_page
+
+# with custom prefix
+screenshot_and_save_page(filename_prefix: 'custom_prefix')
+
+# image only, with custom prefix:
+screenshot_and_save_page(filename_prefix: 'custom_prefix', save_html: false)
 ```
 
 Or for screenshot only, which will automatically open the image:
 
 ```ruby
 screenshot_and_open_image
+
+# with custom prefix
+screenshot_and_open_image(filename_prefix: 'custom_prefix')
 ```
 
 These are just calls on the main library methods:

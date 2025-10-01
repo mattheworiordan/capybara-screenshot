@@ -29,17 +29,19 @@ module Capybara
       RSpec.add_link_to_screenshot_for_failed_examples = value
     end
 
-    def self.screenshot_and_save_page
-      saver = new_saver(Capybara, Capybara.page)
+    def self.screenshot_and_save_page(filename_prefix: nil, save_html: true)
+      saver = new_saver(Capybara, Capybara.page, save_html, filename_prefix)
       if saver.save
         {:html => saver.html_path, :image => saver.screenshot_path}
+      elsif !save_html
+        warn 'WARN: no screenshot has been saved. You should configure the driver used by Capybara to save images.'
       end
     end
 
-    def self.screenshot_and_open_image
+    def self.screenshot_and_open_image(filename_prefix: nil)
       require "launchy"
 
-      saver = new_saver(Capybara, Capybara.page, false)
+      saver = new_saver(Capybara, Capybara.page, false, filename_prefix)
       if saver.save
         Launchy.open saver.screenshot_path
         {:html => nil, :image => saver.screenshot_path}
