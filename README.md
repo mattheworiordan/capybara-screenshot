@@ -1,7 +1,7 @@
 capybara-screenshot gem
 =======================
 
-[![Build Status](https://travis-ci.org/mattheworiordan/capybara-screenshot.svg)](https://travis-ci.org/mattheworiordan/capybara-screenshot)
+[![Build Status](https://github.com/mattheworiordan/capybara-screenshot/actions/workflows/ci.yml/badge.svg)](https://github.com/mattheworiordan/capybara-screenshot/actions/workflows/ci.yml)
 [![Code Climate](https://d3s6mut3hikguw.cloudfront.net/github/mattheworiordan/capybara-screenshot.svg)](https://codeclimate.com/github/mattheworiordan/capybara-screenshot)
 [![Gem Version](https://badge.fury.io/rb/capybara-screenshot.svg)](http://badge.fury.io/rb/capybara-screenshot)
 
@@ -319,7 +319,7 @@ Please raise an issue at [https://github.com/mattheworiordan/capybara-screenshot
 
 #### Contributions
 
-Contributions are welcome.  Please fork this gem and then submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal` to set up the your Gems. then `appraisal "rake travis:ci"` locally to test your changes against all versions of testing framework gems supported.
+Contributions are welcome.  Please fork this gem and then submit a pull request.  New features must include test coverage and must pass on all versions of the testing frameworks supported.  Run `appraisal` to set up the your Gems. then `appraisal "rspec"` locally to test your changes against all versions of testing framework gems supported.
 
 #### Rubygems
 
