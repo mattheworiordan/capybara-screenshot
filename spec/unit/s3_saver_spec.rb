@@ -135,9 +135,11 @@ describe Capybara::Screenshot::S3Saver do
       expect(File).to receive(:open).with(html_path).and_yield(html_file)
 
       expect(s3_client).to receive(:put_object).with(
-        bucket: bucket_name,
-        key: 'bar.html',
-        body: html_file
+        {
+          bucket: bucket_name,
+          key: "bar.html",
+          body: html_file
+        }
       )
 
       expect(s3_saver).to receive(:determine_bucket_host).and_call_original
@@ -155,9 +157,11 @@ describe Capybara::Screenshot::S3Saver do
       expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
 
       expect(s3_client).to receive(:put_object).with(
-        bucket: bucket_name,
-        key: 'bim.jpg',
-        body: screenshot_file
+        {
+          bucket: bucket_name,
+          key: "bim.jpg",
+          body: screenshot_file
+        }
       )
 
       s3_saver.save
@@ -177,10 +181,12 @@ describe Capybara::Screenshot::S3Saver do
         expect(File).to receive(:open).with(html_path).and_yield(html_file)
 
         expect(s3_client).to receive(:put_object).with(
-          bucket: bucket_name,
-          key: 'bar.html',
-          body: html_file,
-          acl: 'public-read'
+          {
+            bucket: bucket_name,
+            key: "bar.html",
+            body: html_file,
+            acl: "public-read"
+          }
         )
 
         s3_saver.save
@@ -196,10 +202,12 @@ describe Capybara::Screenshot::S3Saver do
         expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
 
         expect(s3_client).to receive(:put_object).with(
-          bucket: bucket_name,
-          key: 'bim.jpg',
-          body: screenshot_file,
-          acl: 'public-read'
+          {
+            bucket: bucket_name,
+            key: "bim.jpg",
+            body: screenshot_file,
+            acl: "public-read"
+          }
         )
 
         s3_saver.save
@@ -217,9 +225,11 @@ describe Capybara::Screenshot::S3Saver do
         expect(File).to receive(:open).with(html_path).and_yield(html_file)
 
         expect(s3_client).to receive(:put_object).with(
-          bucket: bucket_name,
-          key: 'some/path/bar.html',
-          body: html_file
+          {
+            bucket: bucket_name,
+            key: "some/path/bar.html",
+            body: html_file
+          }
         )
 
         s3_saver_with_key_prefix.save
@@ -235,9 +245,11 @@ describe Capybara::Screenshot::S3Saver do
         expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
 
         expect(s3_client).to receive(:put_object).with(
-          bucket: bucket_name,
-          key: 'some/path/bim.jpg',
-          body: screenshot_file
+          {
+            bucket: bucket_name,
+            key: "some/path/bim.jpg",
+            body: screenshot_file
+          }
         )
 
         s3_saver_with_key_prefix.save
@@ -256,10 +268,12 @@ describe Capybara::Screenshot::S3Saver do
           expect(File).to receive(:open).with(html_path).and_yield(html_file)
 
           expect(s3_client).to receive(:put_object).with(
-            bucket: bucket_name,
-            key: 'some/path/bar.html',
-            body: html_file,
-            acl: 'public-read'
+            {
+              bucket: bucket_name,
+              key: "some/path/bar.html",
+              body: html_file,
+              acl: "public-read"
+            }
           )
 
           s3_saver_with_key_prefix.save
@@ -275,10 +289,12 @@ describe Capybara::Screenshot::S3Saver do
           expect(File).to receive(:open).with(screenshot_path).and_yield(screenshot_file)
 
           expect(s3_client).to receive(:put_object).with(
-            bucket: bucket_name,
-            key: 'some/path/bim.jpg',
-            body: screenshot_file,
-            acl: 'public-read'
+            {
+              bucket: bucket_name,
+              key: "some/path/bim.jpg",
+              body: screenshot_file,
+              acl: "public-read"
+            }
           )
 
           s3_saver_with_key_prefix.save
