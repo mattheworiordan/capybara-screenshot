@@ -28,7 +28,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
 
   it 'saves a screenshot on failure' do
     run_failing_case <<-RUBY
-      class TestFailure < MiniTest::Unit::TestCase
+      class TestFailure < Minitest::Test
         include Capybara::DSL
 
         def test_failure
@@ -43,7 +43,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
 
   it 'saves a screenshot for the correct session for failures using_session' do
     run_failing_case <<-RUBY
-      class TestFailure < Minitest::Unit::TestCase
+      class TestFailure < Minitest::Test
         include Capybara::DSL
 
         def test_failure
@@ -64,7 +64,7 @@ describe "Using Capybara::Screenshot with MiniTest" do
     create_screenshot_for_pruning
     configure_prune_strategy :last_run
     run_failing_case <<-RUBY
-      class TestFailure < Minitest::Unit::TestCase
+      class TestFailure < Minitest::Test
         include Capybara::DSL
 
         def test_failure
