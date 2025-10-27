@@ -161,6 +161,7 @@ Capybara::Screenshot.class_eval do
   end
 
   register_driver :selenium, &selenium_block
+  register_driver :selenium_headless, &selenium_block
   register_driver :selenium_chrome, &selenium_block
   register_driver :selenium_chrome_headless, &selenium_block
 
