@@ -10,4 +10,10 @@ class TestApp < Sinatra::Base
   get '/different_page' do
     'This is a different page'
   end
+
+  get '/has_frame' do
+    'This is the has_frame page
+    <iframe src="/different_page" id="different_page_frame">
+    </iframe'
+  end
 end

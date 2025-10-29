@@ -27,7 +27,7 @@ module Capybara
 
       def save
         current_path do |path|
-          within_offending_window do
+          within_offending_window_or_frame do
             if path.empty?
               warn 'WARN: Screenshot could not be saved. `page.current_path` is empty.'
             else
@@ -145,6 +145,14 @@ module Capybara
         nil
       end
 
+      def within_offending_window_or_frame
+        within_offending_window do
+          within_offending_frame do
+            yield
+          end
+        end
+      end
+
       def within_offending_window
         return yield unless Thread.current[:capybara_screenshot_offending_window]
 
@@ -152,7 +160,19 @@ module Capybara
           yield
         end
 
+      ensure
         Thread.current[:capybara_screenshot_offending_window] = nil
+      end
+
+      def within_offending_frame
+        return yield unless Thread.current[:capybara_screenshot_offending_frame]
+
+        page.within_frame(Thread.current[:capybara_screenshot_offending_frame]) do
+          yield
+        end
+
+      ensure
+        Thread.current[:capybara_screenshot_offending_frame] = nil
       end
     end
   end
