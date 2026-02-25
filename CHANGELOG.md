@@ -1,3 +1,10 @@
+25 Feb 2025 - 1.0.26 -> 1.0.27
+
+* [Add ability to manually save screenshots with custom prefixes](https://github.com/mattheworiordan/capybara-screenshot/pull/302)
+* [Support headless Firefox screenshots](https://github.com/mattheworiordan/capybara-screenshot/pull/300)
+* [Add support for Playwright driver](https://github.com/mattheworiordan/capybara-screenshot/commit/23a27be5392c7dbc706651d7adc124d8e7c920a0)
+* [Add a workflow for CI on GitHub Actions](https://github.com/mattheworiordan/capybara-screenshot/pull/301)
+
 21 Dec 2021 - 1.0.25 -> 1.0.26
 
 * [Take screenshots of current window (when using multiple windows)](https://github.com/mattheworiordan/capybara-screenshot/pull/287)
